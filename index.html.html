@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Service Provider Application — Select Home Warranty</title>
+<meta name="description" content="Apply to join the Select Home Warranty contractor network. Complete our Service Provider Application to get started.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1a2b5f;--blue:#2557a7;--silver:#c0c4cc;--bg:#f4f5f7;--white:#fff;--red:#d32f2f;--green:#2e7d32;--orange:#f05528;--text:#333;--text-light:#666;--border:#ddd;--radius:8px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:var(--navy);padding:20px 24px;text-align:center}
+.header img{height:56px;margin-bottom:8px}
+.header h1{color:var(--white);font-size:20px;font-weight:700;margin:0}
+.header p{color:var(--silver);font-size:14px;margin:4px 0 0}
+
+/* Shared container */
+.wrap{max-width:960px;margin:0 auto;padding:8px 16px 40px}
+
+/* ===== PLAN SELECTION SCREEN ===== */
+.plans-screen{display:block}
+.plans-screen.hidden{display:none}
+.plans-welcome{text-align:center;padding:32px 16px 24px}
+.plans-welcome h2{color:var(--navy);font-size:26px;font-weight:800;margin-bottom:6px}
+.plans-welcome p{color:var(--text-light);font-size:15px;max-width:580px;margin:0 auto}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px;max-width:860px;margin-left:auto;margin-right:auto}
+@media(max-width:700px){.plans-grid{grid-template-columns:1fr}}
+.plan-card{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;transition:all .25s;cursor:pointer}
+.plan-card:hover,.plan-card.selected{border-color:var(--blue);box-shadow:0 4px 20px rgba(37,87,167,.12)}
+.plan-card.selected{border-width:3px}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--white);font-size:11px;font-weight:700;padding:3px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.plan-badge.orange{background:var(--orange)}
+.plan-name{font-size:18px;font-weight:800;color:var(--navy);margin-top:6px;margin-bottom:3px}
+.plan-tagline{font-size:13px;color:var(--text-light);margin-bottom:14px}
+.plan-price .amt{font-size:38px;font-weight:800;color:var(--navy)}
+.plan-price .per{font-size:15px;color:var(--text-light)}
+.plan-note{font-size:12px;color:var(--text-light);margin-bottom:16px}
+.plan-divider{height:1px;background:var(--border);margin:14px 0}
+.plan-features{list-style:none;margin-bottom:20px}
+.plan-features li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px;color:var(--text)}
+.plan-features li .fi{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px}
+.plan-features li .fi.ck{background:#e8f5e9;color:var(--green)}
+.plan-features li .fi.st{background:#fff3e0;color:#e65100}
+.plan-cta{display:block;width:100%;padding:12px;border:none;border-radius:6px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;color:var(--white);transition:all .2s}
+.plan-cta.blue{background:var(--blue)}
+.plan-cta.blue:hover{background:var(--navy)}
+.plan-cta.orange{background:var(--orange)}
+.plan-cta.orange:hover{background:#d44a20}
+.skip-row{text-align:center;margin:12px 0 32px}
+.skip-row a{color:var(--text-light);text-decoration:underline;font-size:14px;cursor:pointer}
+.skip-row a:hover{color:var(--navy)}
+.skip-row p{font-size:12px;color:var(--silver);margin-top:4px}
+
+/* ===== APPLICATION FORM ===== */
+.app-screen{display:none}
+.app-screen.visible{display:block}
+
+/* Stepper */
+.stepper{display:flex;justify-content:center;gap:0;padding:24px 16px 8px;max-width:800px;margin:0 auto;flex-wrap:wrap}
+.step-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--silver);font-weight:500;padding:4px 0}
+.step-item.active{color:var(--navy);font-weight:700}
+.step-item.done{color:var(--green)}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:var(--border);color:var(--text-light);flex-shrink:0}
+.step-item.active .step-num{background:var(--blue);color:var(--white)}
+.step-item.done .step-num{background:var(--green);color:var(--white)}
+.step-sep{width:24px;height:2px;background:var(--border);margin:0 4px;flex-shrink:0;align-self:center}
+.step-sep.done{background:var(--green)}
+
+/* Form */
+.form-wrap{max-width:720px;margin:0 auto;padding:0 16px 40px}
+.panel{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:28px 24px;margin-bottom:16px;display:none}
+.panel.active{display:block}
+.panel h2{color:var(--navy);font-size:18px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--blue)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.field label .req{color:var(--red);margin-left:2px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;background:var(--white);transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,87,167,.12)}
+.field textarea{resize:vertical;min-height:80px}
+.field .hint{font-size:12px;color:var(--text-light);margin-top:3px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:600px){.row,.row-3{grid-template-columns:1fr}}
+.radio-group,.check-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.radio-group label,.check-group label{display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;transition:all .2s}
+.radio-group label:has(input:checked),.check-group label:has(input:checked){border-color:var(--blue);background:rgba(37,87,167,.06);color:var(--navy)}
+.radio-group input,.check-group input{accent-color:var(--blue)}
+.license-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:8px;padding:12px;background:var(--bg);border-radius:6px}
+.license-row .field{margin-bottom:0}
+.license-row .field label{font-size:12px}
+@media(max-width:600px){.license-row{grid-template-columns:1fr;gap:6px}}
+.btn-sm{padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--white);cursor:pointer;font-size:13px;font-family:inherit}
+.btn-sm:hover{background:var(--bg)}
+.btn-sm.danger{color:var(--red);border-color:var(--red)}
+.markup-table{width:100%;border-collapse:collapse;margin:8px 0}
+.markup-table th,.markup-table td{padding:8px 12px;border:1px solid var(--border);text-align:left;font-size:13px}
+.markup-table th{background:var(--bg);font-weight:600}
+.markup-table input{width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:4px;font-size:13px;text-align:center}
+.coverage-cat{margin-bottom:16px}
+.coverage-cat h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.coverage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.coverage-grid label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;padding:6px 8px;border-radius:4px}
+.coverage-grid label:hover{background:var(--bg)}
+.agreement-box{max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:16px;font-size:13px;line-height:1.7;background:var(--bg);margin-bottom:16px}
+.agreement-box h4{font-size:14px;margin-bottom:8px;color:var(--navy)}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:8px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--blue);background:rgba(37,87,167,.04)}
+.upload-zone p{font-size:14px;color:var(--text-light)}
+.upload-zone .icon{font-size:32px;margin-bottom:8px}
+.file-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.file-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:6px;font-size:13px}
+.file-item .name{font-weight:500;color:var(--text)}
+.file-item .cat{font-size:11px;color:var(--blue);background:rgba(37,87,167,.1);padding:2px 8px;border-radius:10px}
+.file-item .remove{color:var(--red);cursor:pointer;background:none;border:none;font-size:16px;font-weight:700}
+.btn-row{display:flex;justify-content:space-between;margin-top:24px;gap:12px}
+.btn{padding:12px 28px;border:none;border-radius:6px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--navy)}
+.btn-primary:disabled{background:var(--silver);cursor:not-allowed}
+.btn-outline{background:var(--white);color:var(--navy);border:1px solid var(--border)}
+.btn-outline:hover{background:var(--bg)}
+.status{padding:12px 16px;border-radius:6px;margin-top:16px;font-size:14px;display:none}
+.status.error{display:block;background:#fde8e8;color:var(--red);border:1px solid #f5c6c6}
+.status.success{display:block;background:#e8f5e9;color:var(--green);border:1px solid #c8e6c9}
+
+/* ===== SUCCESS SCREEN ===== */
+.success-screen{display:none;text-align:center;padding:60px 24px}
+.success-screen.visible{display:block}
+.success-screen .s-icon{font-size:64px;margin-bottom:16px}
+.success-screen h2{color:var(--navy);font-size:24px;margin-bottom:8px}
+.success-screen p{color:var(--text-light);font-size:16px;margin-bottom:24px;max-width:520px;margin-left:auto;margin-right:auto}
+
+/* Selected plan banner */
+.selected-plan-banner{background:var(--navy);color:var(--white);text-align:center;padding:10px 16px;font-size:14px;font-weight:600;display:none}
+.selected-plan-banner.visible{display:block}
+.selected-plan-banner span{color:var(--silver);font-weight:400}
+
+.footer{text-align:center;padding:24px;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:40px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
+  <h1>Service Provider Application</h1>
+  <p>Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430</p>
+</div>
+
+<!-- SELECTED PLAN BANNER (shows during application) -->
+<div class="selected-plan-banner" id="plan-banner">Selected plan: <strong id="plan-banner-name"></strong> <span>— you can change this later</span></div>
+
+<!-- ===== SCREEN 1: PLAN SELECTION ===== -->
+<div class="plans-screen" id="screen-plans">
+  <div class="wrap">
+    <div style="padding-top:16px"><a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW</a></div>
+    <div class="plans-welcome">
+      <h2 id="plans-heading">Choose Your Membership Plan</h2>
+      <p>Unlock priority dispatching, faster pay, and direct homeowner leads — or continue as a free network contractor.</p>
+    </div>
+
+    <div class="plans-grid">
+      <!-- Tier 1 -->
+      <div class="plan-card" id="card-premium" onclick="pickPlan('premium')">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">SHW Premium Service Network</div>
+        <div class="plan-tagline">Priority dispatching, faster pay, and exclusive tools</div>
+        <div class="plan-price"><span style="text-decoration:line-through;color:var(--silver);font-size:22px;font-weight:600;margin-right:8px">$249.99</span><span class="amt">$174<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <div class="plan-note" style="color:var(--green);font-weight:700">&#127881; 30% OFF — Save $75/mo</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><span class="fi ck">&#10003;</span>Priority work order routing — get dispatched first</li>
+          <li><span class="fi ck">&#10003;</span>Faster payment terms — Net 15 instead of Net 30</li>
+          <li><span class="fi ck">&#10003;</span>Benefits Hub access — insurance, supplies, discounts</li>
+          <li><span class="fi ck">&#10003;</span>DispatchMe dispatch system — real-time job management</li>
+          <li><span class="fi ck">&#10003;</span>Priority phone support line</li>
+          <li><span class="fi ck">&#10003;</span>Premium badge on contractor profile</li>
+        </ul>
+        <button class="plan-cta blue" onclick="pickPlan('premium')">Select Premium — $174.99/mo</button>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="plan-card" id="card-premium-ssp" onclick="pickPlan('premium-ssp')">
+        <div class="plan-badge orange">Best Value</div>
+        <div class="plan-name">Premium + Select Service Pros</div>
+        <div class="plan-tagline">Everything in Premium, plus direct homeowner leads</div>
+        <div class="plan-price"><span style="text-decoration:line-through;color:var(--silver);font-size:22px;font-weight:600;margin-right:8px">$399.99</span><span class="amt">$299<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <div class="plan-note" style="color:var(--green);font-weight:700">&#127881; 25% OFF — Save $100/mo</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><span class="fi ck">&#10003;</span>Everything in SHW Premium Service Network</li>
+          <li><span class="fi st">&#9733;</span>Select Service Pros marketplace access</li>
+          <li><span class="fi st">&#9733;</span>Contractor profile &amp; listing on SelectServicePros.com</li>
+          <li><span class="fi st">&#9733;</span>Lead matching in your coverage area</li>
+          <li><span class="fi st">&#9733;</span>Direct homeowner leads — not just warranty work</li>
+          <li><span class="fi st">&#9733;</span>Dual revenue stream — warranty + direct jobs</li>
+        </ul>
+        <button class="plan-cta orange" onclick="pickPlan('premium-ssp')">Select Premium + SSP — $299.99/mo</button>
+      </div>
+    </div>
+
+    <div class="skip-row">
+      <a onclick="pickPlan('free')">Continue without selecting a plan &rarr;</a>
+      <p>You'll still complete the application. You can upgrade anytime.</p>
+    </div>
+    <div style="text-align:center;padding-bottom:24px"><a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW</a></div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 2: APPLICATION FORM ===== -->
+<div class="app-screen" id="screen-app">
+  <div style="max-width:720px;margin:0 auto;padding:16px 16px 0"><a href="#" onclick="goBackToPlans();return false" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to Plans</a></div>
+  <div class="stepper" id="stepper">
+    <div class="step-item active" id="si1"><span class="step-num" id="sn1">1</span><span>General</span></div>
+    <div class="step-sep" id="sl1"></div>
+    <div class="step-item" id="si2"><span class="step-num" id="sn2">2</span><span>Operations</span></div>
+    <div class="step-sep" id="sl2"></div>
+    <div class="step-item" id="si3"><span class="step-num" id="sn3">3</span><span>Rates</span></div>
+    <div class="step-sep" id="sl3"></div>
+    <div class="step-item" id="si4"><span class="step-num" id="sn4">4</span><span>Coverage</span></div>
+    <div class="step-sep" id="sl4"></div>
+    <div class="step-item" id="si5"><span class="step-num" id="sn5">5</span><span>Agreement</span></div>
+    <div class="step-sep" id="sl5"></div>
+    <div class="step-item" id="si6"><span class="step-num" id="sn6">6</span><span>Upload</span></div>
+  </div>
+
+  <div class="form-wrap">
+
+  <!-- STEP 1: GENERAL INFO -->
+  <div class="panel active" id="p1">
+    <h2>General Information</h2>
+    <div class="field"><label>Company Name<span class="req">*</span></label><input type="text" id="companyName" required></div>
+    <div class="field"><label>DBA (if applicable)</label><input type="text" id="dba"></div>
+    <div class="field"><label>Street Address<span class="req">*</span></label><input type="text" id="address" required></div>
+    <div class="row-3">
+      <div class="field"><label>City<span class="req">*</span></label><input type="text" id="city" required></div>
+      <div class="field"><label>State<span class="req">*</span></label><input type="text" id="state" required></div>
+      <div class="field"><label>ZIP<span class="req">*</span></label><input type="text" id="zip" required></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Phone<span class="req">*</span></label><input type="tel" id="phone" required></div>
+      <div class="field"><label>Fax</label><input type="tel" id="fax"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" required></div>
+      <div class="field"><label>Website</label><input type="url" id="website" placeholder="https://"></div>
+    </div>
+    <div class="field"><label>Google Business Profile URL</label><input type="url" id="googleBusinessProfile" placeholder="https://g.co/..."></div>
+    <div class="row">
+      <div class="field"><label>Owner / Principal Name<span class="req">*</span></label><input type="text" id="ownerName" required></div>
+      <div class="field"><label>Owner Cell Phone</label><input type="tel" id="ownerCell"></div>
+    </div>
+    <div class="field"><label>Nature of Business</label><input type="text" id="natureOfBusiness" placeholder="e.g. HVAC, Plumbing, Electrical"></div>
+    <div class="row">
+      <div class="field"><label>Years in Business</label><input type="number" id="yearsInBusiness" min="0"></div>
+      <div class="field"><label>Tax ID / EIN</label><input type="text" id="taxId"></div>
+    </div>
+    <div class="field">
+      <label>Business Type</label>
+      <div class="radio-group">
+        <label><input type="radio" name="businessType" value="Sole Proprietorship"> Sole Proprietorship</label>
+        <label><input type="radio" name="businessType" value="LLC"> LLC</label>
+        <label><input type="radio" name="businessType" value="Corporation"> Corporation</label>
+        <label><input type="radio" name="businessType" value="Partnership"> Partnership</label>
+        <label><input type="radio" name="businessType" value="Other"> Other</label>
+      </div>
+    </div>
+    <div class="btn-row"><div></div><button class="btn btn-primary" onclick="goTo(2)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 2: OPERATIONS -->
+  <div class="panel" id="p2">
+    <h2>Operations</h2>
+    <div class="row">
+      <div class="field"><label>Number of Technicians</label><input type="number" id="numTechnicians" min="0"></div>
+      <div class="field"><label>Number of Vehicles</label><input type="number" id="vehicles" min="0"></div>
+    </div>
+    <div class="field"><label>Are technicians uniformed?</label><div class="radio-group"><label><input type="radio" name="uniformed" value="Yes"> Yes</label><label><input type="radio" name="uniformed" value="No"> No</label></div></div>
+    <div class="row">
+      <div class="field"><label>Hours — Mon-Fri</label><input type="text" id="hoursMF" placeholder="e.g. 8am - 6pm"></div>
+      <div class="field"><label>Hours — Saturday</label><input type="text" id="hoursSat" placeholder="e.g. 9am - 2pm"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Hours — Sunday</label><input type="text" id="hoursSun" placeholder="e.g. Closed"></div>
+      <div class="field"><label>Hours — Holidays</label><input type="text" id="hoursHoliday" placeholder="e.g. Emergency only"></div>
+    </div>
+    <div class="field"><label>Who answers the phone?</label><input type="text" id="phoneHandler" placeholder="e.g. Office staff, answering service"></div>
+    <div class="field"><label>Who handles emergency/after-hours calls?</label><input type="text" id="emergencyHandler" placeholder="e.g. On-call technician, owner"></div>
+    <div class="field"><label>Scheduling system used</label><input type="text" id="schedulingSystem" placeholder="e.g. ServiceTitan, Housecall Pro, manual"></div>
+    <div class="field"><label>Credit cards accepted?</label><input type="text" id="creditCards" placeholder="e.g. Visa, MC, Amex"></div>
+    <div class="field"><label>Willing to install SHW-provided parts?</label><div class="radio-group"><label><input type="radio" name="installSHWParts" value="Yes"> Yes</label><label><input type="radio" name="installSHWParts" value="No"> No</label></div></div>
+    <div class="field"><label>Other warranty companies you work with</label><input type="text" id="otherWarrantyCompanies" placeholder="e.g. American Home Shield, First American"></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(1)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(3)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 3: LICENSES & RATES -->
+  <div class="panel" id="p3">
+    <h2>Licenses &amp; Rates</h2>
+    <div class="field"><label>Contractor Licenses</label><div class="hint">Add all applicable contractor licenses</div></div>
+    <div id="licenses-container">
+      <div class="license-row">
+        <div class="field"><label>Issuing Authority</label><input type="text" class="lic-authority" placeholder="e.g. TX TDLR"></div>
+        <div class="field"><label>License Type</label><input type="text" class="lic-type" placeholder="e.g. HVAC"></div>
+        <div class="field"><label>License #</label><input type="text" class="lic-number"></div>
+        <div class="field"><label>Permits Work For</label><input type="text" class="lic-permits" placeholder="e.g. HVAC Install/Repair"></div>
+        <button class="btn-sm danger" onclick="removeLicense(this)" style="height:36px;align-self:end">&#10005;</button>
+      </div>
+    </div>
+    <button class="btn-sm" onclick="addLicense()" style="margin-bottom:20px">+ Add License</button>
+    <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Service Call &amp; Labor Rates</h3>
+    <div class="row">
+      <div class="field"><label>Service Call Fee (Regular) $</label><input type="number" id="serviceCallRegular" min="0" step="0.01"></div>
+      <div class="field"><label>Service Call Fee (SHW Discounted) $</label><input type="number" id="serviceCallSHW" min="0" step="0.01"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Hourly Labor Rate (Regular) $</label><input type="number" id="laborRateRegular" min="0" step="0.01"></div>
+      <div class="field"><label>Hourly Labor Rate (SHW Discounted) $</label><input type="number" id="laborRateSHW" min="0" step="0.01"></div>
+    </div>
+    <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Parts Mark-Up Schedule</h3>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px">Enter your standard mark-up %. SHW maximums shown for reference.</p>
+    <table class="markup-table">
+      <thead><tr><th>Parts Cost Tier</th><th>SHW Max</th><th>Your %</th></tr></thead>
+      <tbody>
+        <tr><td>$0 – $25</td><td>100%</td><td><input type="number" class="markup-input" data-tier="0-25" min="0" max="999"></td></tr>
+        <tr><td>$25.01 – $75</td><td>75%</td><td><input type="number" class="markup-input" data-tier="25-75" min="0" max="999"></td></tr>
+        <tr><td>$75.01 – $200</td><td>50%</td><td><input type="number" class="markup-input" data-tier="75-200" min="0" max="999"></td></tr>
+        <tr><td>$200.01 – $500</td><td>35%</td><td><input type="number" class="markup-input" data-tier="200-500" min="0" max="999"></td></tr>
+        <tr><td>$500.01+</td><td>20%</td><td><input type="number" class="markup-input" data-tier="500+" min="0" max="999"></td></tr>
+      </tbody>
+    </table>
+    <div class="row" style="margin-top:16px">
+      <div class="field"><label>Sales Tax %</label><input type="number" id="salesTax" min="0" step="0.01"></div>
+      <div class="field"><label>Coverage States / Areas</label><input type="text" id="coverageAreas" placeholder="e.g. NJ, NY — Bergen, Passaic counties"></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(2)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(4)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 4: COVERAGE ITEMS -->
+  <div class="panel" id="p4">
+    <h2>Coverage Items</h2>
+    <p style="font-size:14px;color:var(--text-light);margin-bottom:20px">Select all items you are qualified and willing to service.</p>
+    <div class="coverage-cat"><h3>Appliances</h3><div class="coverage-grid" id="cov-grid-appliances"></div></div>
+    <div class="coverage-cat"><h3>HVAC</h3><div class="coverage-grid" id="cov-grid-hvac"></div></div>
+    <div class="coverage-cat"><h3>Plumbing</h3><div class="coverage-grid" id="cov-grid-plumbing"></div></div>
+    <div class="coverage-cat"><h3>Electrical</h3><div class="coverage-grid" id="cov-grid-electrical"></div></div>
+    <div class="coverage-cat"><h3>Other</h3><div class="coverage-grid" id="cov-grid-other"></div></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(3)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(5)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 5: AGREEMENT -->
+  <div class="panel" id="p5">
+    <h2>Agreement &amp; Signature</h2>
+    <div class="agreement-box">
+      <h4>SELECT HOME WARRANTY — SERVICE PROVIDER AGREEMENT SUMMARY</h4>
+      <p>By submitting this application, the Service Provider ("Contractor") agrees to the following terms and conditions with Select Home Warranty, LLC ("SHW"):</p><br>
+      <p><strong>1. Service Standards.</strong> Contractor agrees to respond to all work order dispatches within 4 hours during normal business hours and within 24 hours on weekends/holidays.</p><br>
+      <p><strong>2. Rates &amp; Billing.</strong> Contractor agrees to the discounted SHW rates specified in this application. SHW will pay approved invoices on Net 30 terms (Net 15 for Premium Service Network members).</p><br>
+      <p><strong>3. Parts &amp; Materials.</strong> Contractor will use OEM or equivalent quality parts. Parts mark-up will not exceed the SHW maximums.</p><br>
+      <p><strong>4. Insurance.</strong> Contractor must maintain General Liability insurance of at least $1,000,000 per occurrence and list Select Home Warranty, LLC, 1000 Wyckoff Ave, Mahwah, NJ 07430 as certificate holder and additional insured.</p><br>
+      <p><strong>5. Licensing.</strong> Contractor must maintain all required state and local licenses and permits.</p><br>
+      <p><strong>6. Confidentiality.</strong> Contractor will not disclose SHW customer information or pricing structures to any third party.</p><br>
+      <p><strong>7. Independent Contractor.</strong> Contractor is an independent contractor, not an employee of SHW.</p><br>
+      <p><strong>8. Termination.</strong> Either party may terminate with 30 days written notice. SHW may terminate immediately for cause.</p><br>
+      <p><strong>9. Dispute Resolution.</strong> Disputes will be resolved through binding arbitration in Bergen County, New Jersey.</p>
+    </div>
+    <div class="field"><div class="check-group"><label style="border:2px solid var(--blue);padding:12px 16px;font-size:14px"><input type="checkbox" id="agreedToTerms"> I have read, understand, and agree to the terms above<span class="req">*</span></label></div></div>
+    <div class="row">
+      <div class="field"><label>Printed Name<span class="req">*</span></label><input type="text" id="signatureName" required></div>
+      <div class="field"><label>Date</label><input type="date" id="signatureDate"></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(4)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(6)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 6: UPLOAD & SUBMIT -->
+  <div class="panel" id="p6">
+    <h2>Upload Documents &amp; Submit</h2>
+    <p style="font-size:14px;color:var(--text-light);margin-bottom:16px">Upload the following documents. Max 2MB per file. PDF, JPG, or PNG.</p>
+    <div class="field">
+      <label>Certificate of Insurance<span class="req">*</span></label>
+      <div class="hint">Must list <strong>Select Home Warranty, LLC, 1000 Wyckoff Ave, Mahwah, NJ 07430</strong> as certificate holder and additional insured.</div>
+      <div class="upload-zone" data-category="Certificate of Insurance" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Certificate of Insurance</p></div>
+    </div>
+    <div class="field">
+      <label>Trade Licenses<span class="req">*</span></label>
+      <div class="upload-zone" data-category="Trade License" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Trade License(s)</p></div>
+    </div>
+    <div class="field">
+      <label>W-9 (optional)</label>
+      <div class="upload-zone" data-category="W-9" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload W-9</p></div>
+    </div>
+    <div class="field">
+      <label>Workers' Comp Waiver (optional)</label>
+      <div class="upload-zone" data-category="Workers Comp Waiver" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Workers' Comp Waiver</p></div>
+    </div>
+    <div class="file-list" id="file-list"></div>
+    <div id="submit-status" class="status"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goTo(5)">&larr; Back</button>
+      <button class="btn btn-primary" id="submit-btn" onclick="submitApplication()">Submit Application</button>
+    </div>
+  </div>
+
+  </div><!-- end form-wrap -->
+  <div style="text-align:center;padding:0 16px 32px"><a href="#" onclick="goBackToPlans();return false" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to Plans</a></div>
+</div>
+
+<!-- ===== SCREEN 3: SUCCESS ===== -->
+<div class="success-screen" id="screen-success">
+  <div class="s-icon">&#9989;</div>
+  <h2 id="success-heading">Application Submitted!</h2>
+  <p id="success-msg">Welcome to the Select Home Warranty contractor network. Our team will review your application and reach out within 2-3 business days. A confirmation has been sent to your email.</p>
+  <a href="https://www.selecthomewarranty.com" class="btn btn-primary" style="display:inline-block;text-decoration:none;margin-top:8px">Return to SelectHomeWarranty.com &rarr;</a>
+  <br><br>
+  <a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW Contractors</a>
+</div>
+
+<div class="footer">
+  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-267-3532
+</div>
+
+<script>
+// ── State ──
+let selectedPlan = 'free';
+let currentStep = 1;
+const totalSteps = 6;
+const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/shw-contractor-app';
+
+// ── URL param pre-fill ──
+(function prefill() {
+  const params = new URLSearchParams(window.location.search);
+  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone' };
+  Object.entries(map).forEach(([param, fieldId]) => {
+    const val = params.get(param);
+    if (val) {
+      const el = document.getElementById(fieldId);
+      if (el) {
+        if (param === 'last_name' && el.value) { el.value = el.value + ' ' + val; }
+        else if (param === 'first_name') { el.value = val; }
+        else { el.value = val; }
+      }
+    }
+  });
+  // Personalize plans heading
+  const company = params.get('company') || params.get('company_name');
+  if (company) {
+    document.getElementById('plans-heading').textContent = 'Welcome, ' + company + '!';
+  }
+  // Set date
+  const dateEl = document.getElementById('signatureDate');
+  if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
+
+  // ── Handle Stripe return ──
+  // Check if returning from Stripe checkout
+  const savedPlan = sessionStorage.getItem('shw_selected_plan');
+  if (savedPlan && (savedPlan === 'premium' || savedPlan === 'premium-ssp')) {
+    // Restore prefill params from before Stripe redirect
+    const savedParams = sessionStorage.getItem('shw_prefill_params');
+    if (savedParams) {
+      const restoredParams = new URLSearchParams(savedParams);
+      Object.entries(map).forEach(([param, fieldId]) => {
+        const val = restoredParams.get(param);
+        if (val) {
+          const el = document.getElementById(fieldId);
+          if (el && !el.value) {
+            if (param === 'last_name' && el.value) { el.value = el.value + ' ' + val; }
+            else { el.value = val; }
+          }
+        }
+      });
+    }
+    // Clear session storage so refresh doesn't re-trigger
+    sessionStorage.removeItem('shw_selected_plan');
+    sessionStorage.removeItem('shw_prefill_params');
+    // Skip plans, go straight to application with payment confirmed
+    showApplication(savedPlan);
+  }
+})();
+
+// ── Plan selection ──
+function goBackToPlans() {
+  // If they already paid, warn them
+  if (selectedPlan === 'premium' || selectedPlan === 'premium-ssp') {
+    if (!confirm('You\'ve already completed payment for your plan. Going back will not change your plan. Continue?')) return;
+  }
+  document.getElementById('screen-app').classList.remove('visible');
+  document.getElementById('screen-plans').classList.remove('hidden');
+  document.getElementById('plan-banner').classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function pickPlan(plan) {
+  selectedPlan = plan;
+
+  // Stripe Payment Links
+  const STRIPE_LINKS = {
+    'premium': 'https://buy.stripe.com/bJe3cw7T3glk3sKc0p0Fi07',
+    'premium-ssp': 'https://buy.stripe.com/28E28s2yJ7OOe7oe8x0Fi08'
+  };
+
+  if (STRIPE_LINKS[plan]) {
+    // Save plan + any prefilled data to sessionStorage before leaving
+    sessionStorage.setItem('shw_selected_plan', plan);
+    // Preserve URL params so they survive the Stripe redirect
+    sessionStorage.setItem('shw_prefill_params', window.location.search);
+
+    // Build Stripe URL with email prefill if available
+    let stripeUrl = STRIPE_LINKS[plan];
+    const emailField = document.getElementById('email');
+    const email = emailField?.value || new URLSearchParams(window.location.search).get('email');
+    if (email) stripeUrl += '?prefilled_email=' + encodeURIComponent(email);
+
+    // Redirect to Stripe — they'll come back after payment
+    window.location.href = stripeUrl;
+    return;
+  }
+
+  // Free plan — go straight to application
+  showApplication(plan);
+}
+
+function showApplication(plan) {
+  selectedPlan = plan;
+
+  // Highlight selected card
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  if (plan === 'premium') document.getElementById('card-premium')?.classList.add('selected');
+  if (plan === 'premium-ssp') document.getElementById('card-premium-ssp')?.classList.add('selected');
+
+  // Show banner
+  const banner = document.getElementById('plan-banner');
+  const bannerName = document.getElementById('plan-banner-name');
+  if (plan === 'premium') {
+    bannerName.textContent = 'SHW Premium Service Network — $174.99/mo (30% off) ✅ Payment Complete';
+    banner.style.background = '#2e7d32';
+    banner.classList.add('visible');
+  } else if (plan === 'premium-ssp') {
+    bannerName.textContent = 'Premium + Select Service Pros — $299.99/mo (25% off) ✅ Payment Complete';
+    banner.style.background = '#2e7d32';
+    banner.classList.add('visible');
+  } else {
+    banner.classList.remove('visible');
+  }
+
+  // Switch screens
+  document.getElementById('screen-plans').classList.add('hidden');
+  document.getElementById('screen-app').classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Coverage items ──
+const COVERAGE = {
+  appliances:['Refrigerator','Oven/Range/Stove','Cooktop','Built-in Microwave','Dishwasher','Garbage Disposal','Trash Compactor','Washer','Dryer','Ice Maker','Range Hood','Wine Cooler','Freezer (standalone)'],
+  hvac:['Central Air Conditioning','Heating System / Furnace','Heat Pump','Ductwork','Thermostat','Mini Split','Evaporator Coil','Condenser','Compressor','Refrigerant Recharge','Humidifier','Air Handler'],
+  plumbing:['Water Heater (standard)','Water Heater (tankless)','Plumbing Stoppages','Faucets','Toilets','Sump Pump','Hose Bibs','Pipe Leaks','Bathtub/Shower Valve','Pressure Regulator','Expansion Tank','Ejector Pump','Recirculating Pump'],
+  electrical:['Electrical Panel','Wiring','Outlets/Switches','Ceiling Fans','Doorbells','Garage Door Opener','Smoke Detectors','Ground Fault Interrupters','Light Fixtures','Circuit Breakers','GFCI Outlets','Whole-House Surge Protector'],
+  other:['Pool Equipment','Spa/Hot Tub','Septic System','Well Pump','Water Softener','Central Vacuum','Sewer Line','Roof Leak Repair','Pest Control','Locksmith','Garage Door (mechanical)','Lawn Sprinkler System']
+};
+Object.keys(COVERAGE).forEach(cat => {
+  const grid = document.getElementById('cov-grid-' + cat);
+  if (!grid) return;
+  grid.innerHTML = COVERAGE[cat].map(item => '<label><input type="checkbox" name="cov-' + cat + '" value="' + item + '"> ' + item + '</label>').join('');
+});
+
+// ── Stepper navigation ──
+function goTo(step) {
+  if (step > currentStep) {
+    const panel = document.getElementById('p' + currentStep);
+    const required = panel.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(inp => {
+      if (!inp.value.trim()) { inp.style.borderColor = 'var(--red)'; valid = false; }
+      else { inp.style.borderColor = ''; }
+    });
+    if (currentStep === 5 && !document.getElementById('agreedToTerms').checked) { alert('Please agree to the terms before continuing.'); return; }
+    if (!valid) { alert('Please fill in all required fields.'); return; }
+  }
+  document.getElementById('p' + currentStep).classList.remove('active');
+  document.getElementById('p' + step).classList.add('active');
+  for (let i = 1; i <= totalSteps; i++) {
+    const si = document.getElementById('si' + i);
+    const sn = document.getElementById('sn' + i);
+    const sl = document.getElementById('sl' + i);
+    si.classList.remove('active', 'done');
+    if (sl) sl.classList.remove('done');
+    if (i < step) { si.classList.add('done'); sn.textContent = '\u2713'; if (sl) sl.classList.add('done'); }
+    else if (i === step) { si.classList.add('active'); sn.textContent = i; }
+    else { sn.textContent = i; }
+  }
+  currentStep = step;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── License repeater ──
+function addLicense() {
+  const c = document.getElementById('licenses-container');
+  const r = document.createElement('div');
+  r.className = 'license-row';
+  r.innerHTML = '<div class="field"><label>Issuing Authority</label><input type="text" class="lic-authority" placeholder="e.g. TX TDLR"></div><div class="field"><label>License Type</label><input type="text" class="lic-type" placeholder="e.g. HVAC"></div><div class="field"><label>License #</label><input type="text" class="lic-number"></div><div class="field"><label>Permits Work For</label><input type="text" class="lic-permits" placeholder="e.g. HVAC Install/Repair"></div><button class="btn-sm danger" onclick="removeLicense(this)" style="height:36px;align-self:end">&#10005;</button>';
+  c.appendChild(r);
+}
+function removeLicense(btn) { if (document.querySelectorAll('.license-row').length > 1) btn.closest('.license-row').remove(); }
+
+// ── File upload ──
+const uploadedFiles = [];
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+function handleFile(input) {
+  const zone = input.closest('.upload-zone');
+  const category = zone.dataset.category;
+  for (const file of input.files) {
+    if (file.size > MAX_FILE_SIZE) { alert(file.name + ' exceeds the 2MB limit.'); continue; }
+    const reader = new FileReader();
+    reader.onload = function(e) { uploadedFiles.push({ name: file.name, type: file.type, category: category, base64: e.target.result }); renderFileList(); };
+    reader.readAsDataURL(file);
+  }
+  input.value = '';
+}
+function renderFileList() {
+  document.getElementById('file-list').innerHTML = uploadedFiles.map((f, i) =>
+    '<div class="file-item"><span class="name">' + f.name + '</span><span class="cat">' + f.category + '</span><button class="remove" onclick="removeFile(' + i + ')">&#10005;</button></div>'
+  ).join('');
+}
+function removeFile(i) { uploadedFiles.splice(i, 1); renderFileList(); }
+
+// ── Collect data ──
+function collectData() {
+  const val = id => (document.getElementById(id)?.value || '').trim();
+  const radio = name => { const el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; };
+  const licenses = [];
+  document.querySelectorAll('.license-row').forEach(row => {
+    const a = row.querySelector('.lic-authority')?.value?.trim();
+    const t = row.querySelector('.lic-type')?.value?.trim();
+    const n = row.querySelector('.lic-number')?.value?.trim();
+    const p = row.querySelector('.lic-permits')?.value?.trim();
+    if (a || t || n) licenses.push({ authority: a, type: t, number: n, permits: p });
+  });
+  const partsMarkup = {};
+  document.querySelectorAll('.markup-input').forEach(inp => { if (inp.value) partsMarkup[inp.dataset.tier] = inp.value; });
+  const coverageItems = {};
+  Object.keys(COVERAGE).forEach(cat => {
+    const checked = [];
+    document.querySelectorAll('input[name="cov-' + cat + '"]:checked').forEach(cb => checked.push(cb.value));
+    if (checked.length) coverageItems[cat] = checked;
+  });
+  return {
+    selectedPlan, companyName: val('companyName'), dba: val('dba'), address: val('address'),
+    city: val('city'), state: val('state'), zip: val('zip'), phone: val('phone'), fax: val('fax'),
+    email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
+    ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: val('natureOfBusiness'),
+    yearsInBusiness: val('yearsInBusiness'), taxId: val('taxId'), businessType: radio('businessType'),
+    numTechnicians: val('numTechnicians'), uniformed: radio('uniformed'), vehicles: val('vehicles'),
+    hoursMF: val('hoursMF'), hoursSat: val('hoursSat'), hoursSun: val('hoursSun'), hoursHoliday: val('hoursHoliday'),
+    phoneHandler: val('phoneHandler'), emergencyHandler: val('emergencyHandler'), schedulingSystem: val('schedulingSystem'),
+    creditCards: val('creditCards'), installSHWParts: radio('installSHWParts'), otherWarrantyCompanies: val('otherWarrantyCompanies'),
+    licenses, serviceCallRegular: val('serviceCallRegular'), serviceCallSHW: val('serviceCallSHW'),
+    laborRateRegular: val('laborRateRegular'), laborRateSHW: val('laborRateSHW'), partsMarkup,
+    salesTax: val('salesTax'), coverageAreas: val('coverageAreas'), coverageItems,
+    agreedToTerms: document.getElementById('agreedToTerms').checked,
+    signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles
+  };
+}
+
+// ── Submit: email to serviceprovider@ AND send to SSP via GHL ──
+async function submitApplication() {
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('submit-status');
+  const hasCOI = uploadedFiles.some(f => f.category === 'Certificate of Insurance');
+  const hasLicense = uploadedFiles.some(f => f.category === 'Trade License');
+  if (!hasCOI || !hasLicense) {
+    status.className = 'status error';
+    status.textContent = 'Please upload both a Certificate of Insurance and at least one Trade License.';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  status.className = 'status';
+  status.style.display = 'none';
+
+  try {
+    const data = collectData();
+
+    // 1) Send to Resend (email to serviceprovider@)
+    const resp = await fetch('/api/contractor-application', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    if (!resp.ok || !result.success) throw new Error(result.error || 'Email submission failed');
+
+    // 2) Send to SSP via GHL webhook (always, regardless of plan)
+    try {
+      await fetch(GHL_WEBHOOK, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.ownerName,
+          firstName: data.ownerName.split(' ')[0] || '',
+          lastName: data.ownerName.split(' ').slice(1).join(' ') || '',
+          phone: data.phone,
+          email: data.email,
+          companyName: data.companyName,
+          zip: data.zip,
+          address1: data.address,
+          city: data.city,
+          state: data.state,
+          source: 'SHW Vendor Packet',
+          type: 'contractor',
+          contractor_membership_tier: data.selectedPlan,
+          contractor_services: data.natureOfBusiness,
+          coverage_areas: data.coverageAreas,
+          lead_id: 'SHW-VP-' + Date.now()
+        })
+      });
+    } catch (ghlErr) { console.error('GHL webhook error (non-blocking):', ghlErr); }
+
+    // 3) If SSP plan selected, create SSP Supabase account
+    if (data.selectedPlan === 'premium-ssp') {
+      try {
+        const sspResp = await fetch('/api/create-ssp-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: data.email,
+            companyName: data.companyName,
+            ownerName: data.ownerName,
+            phone: data.phone,
+            zip: data.zip,
+            state: data.state,
+            city: data.city,
+            address: data.address,
+            natureOfBusiness: data.natureOfBusiness,
+            coverageAreas: data.coverageAreas,
+            source: 'SHW Vendor Packet — Premium + SSP'
+          })
+        });
+        const sspResult = await sspResp.json();
+        if (sspResult.success) console.log('SSP account created:', sspResult);
+        else console.error('SSP account creation failed:', sspResult);
+      } catch (sspErr) { console.error('SSP account creation error (non-blocking):', sspErr); }
+    }
+
+    // 4) Show success (payment already collected if paid plan)
+    document.getElementById('screen-app').classList.remove('visible');
+    document.getElementById('plan-banner').classList.remove('visible');
+    document.getElementById('stepper').style.display = 'none';
+    document.getElementById('screen-success').classList.add('visible');
+    if (data.companyName) {
+      document.getElementById('success-heading').textContent = 'Welcome, ' + data.companyName + '!';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    status.className = 'status error';
+    status.textContent = 'Error: ' + err.message + '. Please try again or call 855-267-3532.';
+    btn.disabled = false;
+    btn.textContent = 'Submit Application';
+  }
+}
+</script>
+</body>
+</html>
