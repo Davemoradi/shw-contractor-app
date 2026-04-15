@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: process.env.RESEND_FROM || 'SHW Contractor App <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'serviceprovider@selecthomewarranty.com'],
-        cc: data.email ? [data.email] : [],
+        cc: data.email && data.email.includes('@') ? [data.email] : [],
         subject: `New Contractor Application — ${data.companyName || 'Unknown Company'}`,
         html: html,
         attachments: attachments
