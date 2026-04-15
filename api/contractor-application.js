@@ -133,7 +133,7 @@ function buildEmailHTML(d) {
         <h2 style="color:#1a2b5f;border-bottom:2px solid #2557a7;padding-bottom:8px;">Operations</h2>
         <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
           ${row('Number of Technicians', d.numTechnicians)}
-          ${row('Uniformed?', d.uniformed)}
+          ${row('Uniformed Technicians', d.uniformedTechnicians)}
           ${row('Number of Vehicles', d.vehicles)}
           ${row('Hours — Mon-Fri', d.hoursMF)}
           ${row('Hours — Saturday', d.hoursSat)}
@@ -156,7 +156,9 @@ function buildEmailHTML(d) {
           ${row('Hourly Labor Rate (SHW Discounted)', d.laborRateSHW)}
           ${row('Parts Mark-up', markupHTML)}
           ${row('Sales Tax %', d.salesTax)}
-          ${row('Coverage States/Areas', d.coverageAreas)}
+          ${row('Coverage States', d.coverageStates)}
+          ${row('Coverage Counties', d.coverageCounties)}
+          ${row('Coverage Cities', d.coverageCities)}
         </table>
 
         <h2 style="color:#1a2b5f;border-bottom:2px solid #2557a7;padding-bottom:8px;">Coverage Items</h2>
