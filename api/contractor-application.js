@@ -65,6 +65,37 @@ export default async function handler(req, res) {
       throw new Error(result.message || errMsg || 'Email send failed');
     }
 
+    // Send to GHL webhook (server-side, no CORS issues)
+    try {
+      const ghlPayload = {
+        firstName: data.ownerName ? data.ownerName.split(' ')[0] : '',
+        lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
+        name: data.ownerName,
+        phone: data.phone,
+        email: data.email,
+        companyName: data.companyName,
+        address1: data.address,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        website: data.website,
+        source: 'SHW Vendor Packet',
+        type: 'contractor',
+        contractor_membership_tier: data.selectedPlan,
+        industry: data.natureOfBusiness,
+        coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
+        lead_id: 'SHW-VP-' + Date.now()
+      };
+      const ghlResp = await fetch('https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/44c356d5-2fb0-4e5a-9b80-a3237057bccb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ghlPayload)
+      });
+      console.log('GHL webhook response:', ghlResp.status);
+    } catch (ghlErr) {
+      console.error('GHL webhook error (non-blocking):', ghlErr.message);
+    }
+
     return res.status(200).json({ success: true, message: 'Application submitted successfully' });
   } catch (error) {
     console.error('Email send error:', error);
