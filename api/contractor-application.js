@@ -62,7 +62,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, message: 'Application submitted successfully' });
   } catch (error) {
     console.error('Email send error:', error);
-    return res.status(500).json({ error: 'Failed to submit application. Please try again.' });
+    return res.status(500).json({ error: error.message || 'Failed to submit application. Please try again.' });
   }
 }
 
