@@ -52,8 +52,11 @@ export default async function handler(req, res) {
     const result = await response.json();
 
     if (!response.ok) {
-      console.error('Resend error:', result);
-      throw new Error(result.message || 'Email send failed');
+      const errMsg = JSON.stringify(result);
+      console.error('Resend error:', errMsg);
+      console.error('RESEND_FROM:', process.env.RESEND_FROM);
+      console.error('NOTIFY_EMAIL:', process.env.NOTIFY_EMAIL);
+      throw new Error(result.message || errMsg || 'Email send failed');
     }
 
     return res.status(200).json({ success: true, message: 'Application submitted successfully' });
