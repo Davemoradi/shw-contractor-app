@@ -486,7 +486,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 let selectedPlan = 'free';
 let currentStep = 1;
 const totalSteps = 6;
-const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/shw-contractor-app';
+const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/44c356d5-2fb0-4e5a-9b80-a3237057bccb';
 
 // ── URL param pre-fill ──
 (function prefill() {
@@ -754,33 +754,8 @@ async function submitApplication() {
     const result = await resp.json();
     if (!resp.ok || !result.success) throw new Error(result.error || 'Email submission failed');
 
-    // 2) Send to SSP via GHL webhook (always, regardless of plan)
-    try {
-      await fetch(GHL_WEBHOOK, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName: data.ownerName ? data.ownerName.split(' ')[0] : '',
-          lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
-          name: data.ownerName,
-          phone: data.phone,
-          email: data.email,
-          companyName: data.companyName,
-          address1: data.address,
-          city: data.city,
-          state: data.state,
-          zip: data.zip,
-          website: data.website,
-          source: 'SHW Vendor Packet',
-          type: 'contractor',
-          contractor_membership_tier: data.selectedPlan,
-          industry: data.natureOfBusiness,
-          coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
-          lead_id: 'SHW-VP-' + Date.now()
-        })
-      });
-    } catch (ghlErr) { console.error('GHL webhook error (non-blocking):', ghlErr); }
+    // 2) Send to SSP via GHL webhook (server-side, no CORS issues)
+    // Now handled in contractor-application.js on the server
 
     // 3) If SSP plan selected, create SSP Supabase account
     if (data.selectedPlan === 'premium-ssp') {
