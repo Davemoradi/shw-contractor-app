@@ -276,7 +276,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
       <div class="field"><label>Number of Technicians</label><input type="number" id="numTechnicians" min="0"></div>
       <div class="field"><label>Number of Vehicles</label><input type="number" id="vehicles" min="0"></div>
     </div>
-    <div class="field"><label>Are technicians uniformed?</label><div class="radio-group"><label><input type="radio" name="uniformed" value="Yes"> Yes</label><label><input type="radio" name="uniformed" value="No"> No</label></div></div>
+    <div class="field"><label>Uniformed Technicians</label><input type="number" id="uniformedTechnicians" min="0" placeholder="Number of uniformed technicians"></div>
     <div class="row">
       <div class="field"><label>Hours — Mon-Fri</label><input type="text" id="hoursMF" placeholder="e.g. 8am - 6pm"></div>
       <div class="field"><label>Hours — Saturday</label><input type="text" id="hoursSat" placeholder="e.g. 9am - 2pm"></div>
@@ -309,6 +309,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
     </div>
     <button class="btn-sm" onclick="addLicense()" style="margin-bottom:20px">+ Add License</button>
     <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Service Call &amp; Labor Rates</h3>
+    <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Service Call Fee includes travel to the customer&rsquo;s home and first 30 minutes on the job site. Labor rates quoted in 15-minute increments.</p>
     <div class="row">
       <div class="field"><label>Service Call Fee (Regular) $</label><input type="number" id="serviceCallRegular" min="0" step="0.01"></div>
       <div class="field"><label>Service Call Fee (SHW Discounted) $</label><input type="number" id="serviceCallSHW" min="0" step="0.01"></div>
@@ -322,17 +323,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
     <table class="markup-table">
       <thead><tr><th>Parts Cost Tier</th><th>SHW Max</th><th>Your %</th></tr></thead>
       <tbody>
-        <tr><td>$0 – $25</td><td>100%</td><td><input type="number" class="markup-input" data-tier="0-25" min="0" max="999"></td></tr>
-        <tr><td>$25.01 – $75</td><td>75%</td><td><input type="number" class="markup-input" data-tier="25-75" min="0" max="999"></td></tr>
-        <tr><td>$75.01 – $200</td><td>50%</td><td><input type="number" class="markup-input" data-tier="75-200" min="0" max="999"></td></tr>
-        <tr><td>$200.01 – $500</td><td>35%</td><td><input type="number" class="markup-input" data-tier="200-500" min="0" max="999"></td></tr>
-        <tr><td>$500.01+</td><td>20%</td><td><input type="number" class="markup-input" data-tier="500+" min="0" max="999"></td></tr>
+        <tr><td>$0.00 – $25.00</td><td>50%</td><td><input type="number" class="markup-input" data-tier="0-25" min="0" max="999"></td></tr>
+        <tr><td>$25.01 – $50.00</td><td>40%</td><td><input type="number" class="markup-input" data-tier="25-50" min="0" max="999"></td></tr>
+        <tr><td>$50.01 – $100.00</td><td>30%</td><td><input type="number" class="markup-input" data-tier="50-100" min="0" max="999"></td></tr>
+        <tr><td>$100.01 – $150.00</td><td>25%</td><td><input type="number" class="markup-input" data-tier="100-150" min="0" max="999"></td></tr>
+        <tr><td>Above $150.00</td><td>10%</td><td><input type="number" class="markup-input" data-tier="150+" min="0" max="999"></td></tr>
       </tbody>
     </table>
-    <div class="row" style="margin-top:16px">
-      <div class="field"><label>Sales Tax %</label><input type="number" id="salesTax" min="0" step="0.01"></div>
-      <div class="field"><label>Coverage States / Areas</label><input type="text" id="coverageAreas" placeholder="e.g. NJ, NY — Bergen, Passaic counties"></div>
-    </div>
+    <div class="field"><label>Sales Tax %</label><input type="number" id="salesTax" min="0" step="0.01"></div>
+    <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Coverage Area</h3>
+    <div class="field"><label>States</label><input type="text" id="coverageStates" placeholder="e.g. NJ, NY, PA"></div>
+    <div class="field"><label>Counties</label><input type="text" id="coverageCounties" placeholder="e.g. Bergen, Passaic, Rockland"></div>
+    <div class="field"><label>Cities</label><input type="text" id="coverageCities" placeholder="e.g. Mahwah, Ramsey, Suffern"></div>
     <div class="btn-row"><button class="btn btn-outline" onclick="goTo(2)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(4)">Next &rarr;</button></div>
   </div>
 
@@ -352,17 +354,75 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
   <div class="panel" id="p5">
     <h2>Agreement &amp; Signature</h2>
     <div class="agreement-box">
-      <h4>SELECT HOME WARRANTY — SERVICE PROVIDER AGREEMENT SUMMARY</h4>
-      <p>By submitting this application, the Service Provider ("Contractor") agrees to the following terms and conditions with Select Home Warranty, LLC ("SHW"):</p><br>
-      <p><strong>1. Service Standards.</strong> Contractor agrees to respond to all work order dispatches within 4 hours during normal business hours and within 24 hours on weekends/holidays.</p><br>
-      <p><strong>2. Rates &amp; Billing.</strong> Contractor agrees to the discounted SHW rates specified in this application. SHW will pay approved invoices on Net 30 terms (Net 15 for Premium Service Network members).</p><br>
-      <p><strong>3. Parts &amp; Materials.</strong> Contractor will use OEM or equivalent quality parts. Parts mark-up will not exceed the SHW maximums.</p><br>
-      <p><strong>4. Insurance.</strong> Contractor must maintain General Liability insurance of at least $1,000,000 per occurrence and list Select Home Warranty, LLC, 1000 Wyckoff Ave, Mahwah, NJ 07430 as certificate holder and additional insured.</p><br>
-      <p><strong>5. Licensing.</strong> Contractor must maintain all required state and local licenses and permits.</p><br>
-      <p><strong>6. Confidentiality.</strong> Contractor will not disclose SHW customer information or pricing structures to any third party.</p><br>
-      <p><strong>7. Independent Contractor.</strong> Contractor is an independent contractor, not an employee of SHW.</p><br>
-      <p><strong>8. Termination.</strong> Either party may terminate with 30 days written notice. SHW may terminate immediately for cause.</p><br>
-      <p><strong>9. Dispute Resolution.</strong> Disputes will be resolved through binding arbitration in Bergen County, New Jersey.</p>
+      <h4>SELECT HOME WARRANTY — MASTER SERVICES AGREEMENT</h4>
+      <p>This Master Services Agreement (&ldquo;Agreement&rdquo;) is entered into between Select Home Warranty (&ldquo;SHW&rdquo;), and the Servicer (&ldquo;Servicer&rdquo;) effective as of the date on which SHW receives the completed Service Agreement Acceptance Form from the Servicer (the &ldquo;Effective Date&rdquo;). The parties agree as follows:</p><br>
+
+      <p><strong>1. Agreement and Addendums.</strong> This Agreement contains the general terms and conditions pursuant to which Servicer will provide services (&ldquo;Services&rdquo;) to SHW and its customers (&ldquo;Customers&rdquo;).</p><br>
+
+      <p><strong>2. Servicer Obligations.</strong><br>
+      a) Servicer shall ensure that its officers, owners, employees, independent contractor technicians, and authorized subcontractors who provide Services as part of any Program (collectively, &ldquo;Servicer Associates&rdquo;) understand Servicer&rsquo;s obligations under this Agreement and agree to comply with and be bound by such obligations, and that Servicer is responsible for the actions and omissions of its Servicer Associates.<br>
+      b) Servicer will provide and pay for all labor, materials, transportation, insurance and equipment, including applicable sales tax payments, to promptly complete the Services required under any service work orders or other service requests assigned and authorized by SHW (collectively, a &ldquo;Dispatch&rdquo;) as part of any Program.<br>
+      c) If Servicer: i. fails to contact a Customer; ii. fails to initiate or complete a Dispatch; or iii. breaches any other term of this Agreement, then SHW may, in its sole discretion and without further notice, engage another service contractor, put Servicer&rsquo;s account on hold, and/or terminate this Agreement.<br>
+      d) Servicer, as required by state law or upon request by SHW, shall provide motor vehicle reports and evidence of conducting biennial criminal background checks from state or third-party resources for such checks for all Servicer Associates and acting on behalf of or under the direction or control of the Servicer whose duties require entry into a Customer&rsquo;s residence. This requirement pertains to all existing and future Servicer Associates hired, contracted, or otherwise retained by Servicer&rsquo;s firm or anyone else acting on behalf of or associated with Servicer. If any Servicer Associate or anyone else associated with Servicer fails a required check or if Servicer becomes aware of information that would cause such a person to fail a required check, Servicer shall prohibit that person from providing Services to, or performing any other work of any kind for, SHW&rsquo;s Customers.<br>
+      e) In the event a Customer harms or threatens to cause harm to Servicer, a Servicer Associate or SHW, Servicer will immediately report such harm or threat to SHW and, to the extent such harm or threat of harm is serious, to local law enforcement officials.</p><br>
+
+      <p><strong>3. Materials.</strong> Servicer shall only use materials that are free of liens in performing the Services. Servicer shall remove any lien attached to a Customer&rsquo;s property as a result of Servicer&rsquo;s Services within twenty-four (24) hours after SHW&rsquo;s or Customer&rsquo;s request. Servicer waives its rights to place, hold, or have any liens on Customer&rsquo;s property, and Servicer shall not use or cause to be issued any liens in connection with Services related to or in connection with covered work under this Agreement.</p><br>
+
+      <p><strong>4. Professionalism.</strong> Servicer shall at all times represent SHW in a professional manner to Customers and shall not make any written or oral representations, either direct or implied, to any Customer that are or could reasonably be construed to be negative or defamatory in nature toward SHW, its business, the brand name of the equipment it selects, or its Customer Contracts. Servicer shall provide to SHW a photograph representing company uniforms and service vehicles, and SHW expects this to be the standard for all Servicer Associates. Servicer shall be responsible for ensuring that Servicer and Servicer Associates comply with all SHW operating policies and procedures issued to Servicer.</p><br>
+
+      <p><strong>5. Laws.</strong> Servicer agrees to conduct itself, and to require its Servicer Associates to conduct themselves, in strict compliance with all applicable laws, rules, and regulations of all governmental authorities, including but not limited to, laws on preventing transactions with terrorists or terrorist support organizations, and to act at all times consistent with the highest standard of fair trade, fair compensation, and business ethics, including compliance with all federal, state, and local building codes, environmental, and/or hazardous waste recapture and removal laws, and federal, state, and local laws, regulations, and ordinances regarding public safety. Servicer agrees that its or its Servicer Associates&rsquo; failure to comply with any applicable laws and/or failure to adhere to any applicable standards constitutes a material breach of this Agreement, and that SHW may immediately terminate the Agreement upon such a breach and pursue any and all legal or equitable remedies.</p><br>
+
+      <p><strong>6. Permits.</strong> In addition to the obligations set forth in Paragraph 5 of this Agreement, Servicer agrees that: a) For Services requiring a permit by law or regulation, Servicer will comply with such permitting requirement and shall provide proof of compliance to SHW upon request; b) For Services where pertinent laws or regulations require obtaining a permit prior to service work or replacement installation, Servicer shall obtain a permit in a timely manner and shall provide proof of compliance to SHW upon request; and c) Servicer is knowledgeable about all permitting laws for the Services that its business performs, in the states, counties, cities and any other legal jurisdiction where it operates.</p><br>
+
+      <p><strong>7. Licensing and Certification.</strong> Servicer will at all times obtain and maintain in good standing valid, current licenses, certifications, and qualifications as required by applicable federal, state and local laws and regulations. This includes but is not limited to any permit or certification required by the U.S. Environmental Protection Agency. Servicer shall immediately provide SHW written notice of any changes with regard thereto including, without limitation, voluntary or involuntary license status, suspension, revocation, cancellation, lapse, disciplinary action, scope, type, or change of name. Servicer shall provide SHW with current copies of any and all applicable licenses, certifications or other supporting documentation: a) Upon request; b) Within 15 days of any change in status, renewal, change of business form or other alteration; and c) Annually, regardless of whether any change in form, status or name has occurred. Servicer agrees that failure to provide such documentation shall be deemed a material breach of this Agreement. Servicer warrants and represents that: a) Any and all of its contractor&rsquo;s licenses and certifications are held in the proper name of the individual and/or entity; b) If applicable, its licenses and certifications are legally assigned to the business entity; c) Servicer&rsquo;s form of business is proper and is appropriately set forth in this Agreement; and d) The name on Servicer&rsquo;s licenses and certifications is consistent with the name under which Servicer entered into this Agreement.</p><br>
+
+      <p><strong>8. Insurance.</strong><br>
+      a) Servicer shall maintain the following insurance coverages at all times during the term of this Agreement with limits no less than indicated:<br>
+      i. <em>General Liability:</em> Commercial general liability insurance with a limit of not less than $250,000 per occurrence and $500,000 in the aggregate. Coverage shall include contractual liability, independent contractor, property damage, bodily injury, liability assumed under an insured contract, products and completed operations, and premises coverage. Coverage shall name SHW and its subsidiaries, parent and affiliated companies as additional insured (including completed operations).<br>
+      ii. <em>Automobile Liability:</em> Coverage for owned, hired, and non-owned vehicles (listed and rated for business use) with minimum limits of $250,000 per person, $500,000 per occurrence for bodily injury, and $100,000 for property damage. Name SHW and its subsidiaries, parent and affiliated companies as additional insureds.<br>
+      iii. <em>Workers Compensation:</em> Coverage shall include occupational disease and employer&rsquo;s liability coverage at statutory limits for workers&rsquo; compensation and employer&rsquo;s liability at a minimum limit of $250,000 each.<br>
+      b) All Servicer&rsquo;s insurance shall be: i. Endorsed as primary coverage listing SHW coverage as excess insurance; ii. Occurrence-based; iii. Non-contributory with SHW&rsquo;s own insurance; and iv. Provided by carriers with an A.M. Best rating of at least A-.<br>
+      c) Servicer waives all rights, including subrogation, against SHW and its agents, directors, employees, subsidiaries, parents, and affiliated companies for damages.<br>
+      d) Servicer shall supply SHW with a certificate of insurance as coverages are renewed, amended, modified, canceled, terminated, or replaced.<br>
+      e) SHW does not represent that the coverage and limits required under this Section 8 will necessarily be adequate to protect Servicer.<br>
+      f) All certificates of insurance shall provide for at least thirty (30) days written notice to SHW prior to the cancellation or material change of any insurance referred to in this Section 8.<br>
+      g) If Servicer&rsquo;s liability policies do not contain the standard ISO separation of insured&rsquo;s provision, or a substantially similar clause, they shall be endorsed to provide cross-liability coverage.</p><br>
+
+      <p><strong>9. Invoicing.</strong> Invoices must be sent to SHW by email to invoices&#64;selecthomewarranty&#46;com or as otherwise directed by SHW. Servicer shall maintain all invoices for seven (7) years or such other timeframe as is required by state law. All of Servicer&rsquo;s invoices are subject to an audit process by SHW. If Servicer is selected for audit purposes: a) All invoices submitted are subject to audit; b) Servicer shall provide paper copies of the original invoices to SHW&rsquo;s auditors within five (5) business days of SHW&rsquo;s request. Servicer&rsquo;s account may be placed on hold if Servicer fails to provide the invoices requested; and c) In the event any overpayment is found during an audit, Servicer will pay the amount of the overpayment to SHW upon receipt of notice of the overpayment.</p><br>
+
+      <p><strong>10. Payment.</strong> Payment to Servicer shall be due and payable net thirty (30) days after SHW&rsquo;s approval and verification of invoices. SHW has the right to offset payments due to Servicer against any amount Servicer owes to SHW and/or unapproved invoices. All payment shall be made via paper check or as otherwise directed by SHW.</p><br>
+
+      <p><strong>11. Non-Covered or Additional Services.</strong> Servicer may agree to provide services to a Customer that are not covered under or included in an SHW Program (&ldquo;Non-Covered/Additional Services&rdquo;). Servicer accepts sole responsibility for any work performed by Servicer Associates or anyone else acting on behalf of or associated with Servicer on any Non-Covered/Additional Services. Servicer agrees that SHW has no responsibility for Non-Covered/Additional Services nor payment or collection of monies for Non-Covered/Additional Services. Servicer shall notify Customer prior to commencement of any Non-Covered/Additional Services that: a) Customer can choose its own vendor; b) Servicer is providing such work solely on its own behalf and not in conjunction with SHW; c) SHW is not responsible for Servicer&rsquo;s rates or charges on Non-Covered/Additional Services; provided, however, Servicer shall charge competitive market rates for such Non-Covered/Additional Services; and d) Servicer will notify SHW, provide customer with a written estimate, acquire Customer&rsquo;s signature as written authorization before beginning any Non-Covered/Additional Services, and provide SHW a copy of such documents upon request.</p><br>
+
+      <p><strong>12. Confidential Information &ndash; Information Security.</strong> Servicer acknowledges that it may receive Confidential Information in connection with providing Services hereunder. &ldquo;Confidential Information&rdquo; shall include (a) trade secrets and proprietary information of SHW, including but not limited to financial information, manuals and procedures, communications, dispatch information and related costs, pricing and rate information, and any other materials or information provided by SHW to Servicer, and (b) personal information related to a Customer, including but not limited to social security number, driver&rsquo;s license number, state or federal identification number, date of birth, and financial information (including but not limited to account numbers, credit or debit card numbers and access codes). Servicer shall not use or disclose any Confidential Information for any purpose other than providing Services under this Agreement. Servicer shall implement and maintain security controls and measures necessary to protect Confidential Information from unauthorized access, loss, destruction, disclosure or use. Servicer shall not allow persons outside the United States to access Confidential Information without SHW&rsquo;s prior written consent. Servicer shall immediately notify SHW of any security breach or unauthorized disclosure of Confidential Information.</p><br>
+
+      <p><strong>13. Relationship.</strong> In performing the Services, Servicer shall be acting solely as an independent contractor, and neither Servicer nor any of its Servicer Associates shall be deemed to be employees of SHW. Neither SHW nor Servicer shall have the authority to bind, commit or incur any liability on behalf of the other party. Servicer shall be solely responsible for any income, employment, sales, use, service, payroll, withholding, workers&rsquo; compensation, unemployment and other taxes that may be imposed with respect to the performance of the Services and any payments made by SHW to Servicer. Servicer agrees that acceptance of work or performance of Services under this Agreement binds Servicer to a contract with the Customer on all work performed and any bond required of Servicer shall be actionable by the Customer.</p><br>
+
+      <p><strong>14. Subcontractors and Independent Contractors.</strong> Servicer agrees that: a) SHW must approve the use of any subcontractor or independent contractor technician before using them to provide Services hereunder; and b) Servicer shall be responsible for ensuring that any subcontractor or independent contractor technician used by Servicer to provide services under this Agreement shall comply with all applicable provisions of this Agreement, including, without limitation, insurance, licensing, name on license, laws and state regulations, professionalism, workmanship, materials, and confidential information.</p><br>
+
+      <p><strong>15. Term and Notice.</strong><br>
+      a) This Agreement shall remain in effect for one (1) year commencing on the Effective Date and shall be automatically renewed for successive one (1)-year periods unless terminated earlier in accordance with the terms of this Agreement. Either party may immediately terminate this Agreement at any time by giving written notice to the other party. Upon termination of this Agreement, all Addendums will also terminate.<br>
+      b) If Servicer does not cure any breach under this Agreement within ten (10) days after receiving notice from SHW, then Contractor shall be in default of this Agreement and SHW, at its sole discretion, may seek damages, including without limitation, court costs, attorney fees, and consequential secondary damages.<br>
+      c) SHW also may terminate this Agreement as set forth in Sections 2(c) and 5. Servicer shall immediately notify SHW of Servicer&rsquo;s insolvency, bankruptcy, or potential financial instability.<br>
+      d) Any notice or other written communication is deemed given: (i) Three (3) days after deposit in the U.S. Mail, postage prepaid; (ii) When sent by facsimile or electronic mail (with date/time noted); (iii) On the next business day if sent overnight by priority courier; or (iv) When personally delivered to an authorized representative of the party receiving notice.</p><br>
+
+      <p><strong>16. Indemnification.</strong><br>
+      a) To the fullest extent permitted by law, Servicer agrees to indemnify, hold harmless and defend, at Servicer&rsquo;s sole expense (including expenses and attorney&rsquo;s fees), SHW, its subsidiaries, parent and affiliated companies, and the agents, directors, and employees of SHW against any and all actions, investigations, commenced or threatened claims, losses, liabilities, and/or damages alleged to have been incurred or caused, either directly or indirectly, by the acts or omissions of Servicer or any of its Servicer Associates or any other person acting on Servicer&rsquo;s behalf in relation to any Dispatch, any Services performed for any Program, any non-covered items or additional services, and/or any and all consequential damages arising out of the performance of services for Customers.<br>
+      b) If the resolution of any Claim is reasonably expected to have a significant adverse effect on SHW or if Servicer fails to assume the defense of such Claim within fifteen (15) days after receipt of notice, then SHW may elect, at its sole discretion, to control the defense, compromise, or settlement of such Claim at Servicer&rsquo;s sole cost, risk, and expense.</p><br>
+
+      <p><strong>17. Trademarks.</strong> Neither party shall use, modify, or change the trademarks, service marks, logo types, customer contracts, or other commercial and promotional materials of the other party without such party&rsquo;s prior written consent.</p><br>
+
+      <p><strong>18. Assignment.</strong> Servicer shall not assign or transfer any of its rights, duties, or obligations under this Agreement without the prior written consent of SHW. SHW may assign or transfer this Agreement, in whole or in part, as it deems appropriate.</p><br>
+
+      <p><strong>19. Service.</strong><br>
+      a) Upon request from a Customer, SHW will dispatch a service work order to Servicer (a &ldquo;Dispatch&rdquo;). Servicer shall contact the Customer after receiving a Dispatch from SHW to schedule an appointment. Servicer shall: (i) use best efforts to commence diagnosis and authorized repairs or replacements at the customer&rsquo;s home within forty-eight (48) hours of receipt of a Dispatch; and (ii) notify SHW Service Network Team in accordance with guidelines established by SHW if service will commence more than forty-eight (48) hours after receipt of a Dispatch.<br>
+      b) For every Dispatch, Servicer shall provide SHW an accurate diagnosis of whether a Unit failed, a description of what failed, the reason why it failed and recommended repair or replacement. Upon request by SHW, Servicer will provide SHW with digital pictures and such other documentation as is reasonably necessary to support Servicer&rsquo;s diagnosis. Servicer agrees to contact SHW&rsquo;s Authorizations Department at 855-267-3532 if: (i) coverage may be denied; (ii) coverage questions exist; or (iii) the total expected liability exceeds any pre-approval provided in writing. Servicer shall use best efforts to respond to all Customer requests related to a Dispatch or a Covered Unit within four (4) business hours.</p><br>
+
+      <p><strong>20. Compensation.</strong> Servicer will agree to an hourly rate (the &ldquo;Hourly Service Rate&rdquo;). Upon completion of a Dispatch, SHW will pay Servicer a fee (the &ldquo;Labor Fee&rdquo;) for approved and covered labor required to repair or replace a Covered Unit. The Labor Fee will be equal to the Hourly Service Rate multiplied by the number of hours, which are quoted in quarter hour increments, Servicer spends in completing a repair or replacement (&ldquo;Labor Hours&rdquo;); provided, however, that the Labor Hours for each repair or replacement shall not (i) include any time spent traveling to the Customer&rsquo;s home or diagnosing the issue, or (ii) exceed the maximum labor hours allowed for a repair/replacement which would be standard and customary of a similar type of repair/replacement with a highly qualified service technician. In addition to the Labor Fee, SHW shall pay Servicer a service call fee, as agreed upon, for Contractor&rsquo;s time spent traveling to the Customer&rsquo;s home and diagnosing the malfunction.</p><br>
+
+      <p><strong>21. Workmanship.</strong> Servicer shall perform a thorough diagnosis of the Covered Unit and perform all repairs and replacements hereunder (a) in a skillful, non-defective, workmanlike manner; and (b) in accordance with all applicable laws, rules and regulations, including building codes (&ldquo;Servicer&rsquo;s Warranty&rdquo;). In the event a repair or replacement performed by Servicer hereunder fails to meet the requirements of the Servicer&rsquo;s Warranty or malfunctions within sixty (60) days following completion of the repair or replacement due to normal wear and tear, Servicer will perform the work necessary to remedy the failure under the Servicer&rsquo;s Warranty or the malfunction without expense to Customer or SHW.</p><br>
+
+      <p><strong>22. Other.</strong> This Agreement supersedes all prior Service and/or Operational Agreements along with any negotiations, proposals and/or understandings, and constitutes the entire understanding of the parties. This Agreement shall not be modified or amended in any manner except in writing, signed by the parties; provided, however, this Agreement can be modified or amended electronically in accordance with applicable law. The invalidity or unenforceability of any provision shall not affect the enforceability of the remaining provisions. SHW&rsquo;s failure to exercise any of its rights does not constitute a waiver of such right. To the extent such waiver is permitted by law, the parties waive trial by jury in any proceedings. For quality assurance and other purposes, SHW may record calls between SHW and Servicer and Servicer hereby authorizes such recordings.</p>
     </div>
     <div class="field"><div class="check-group"><label style="border:2px solid var(--blue);padding:12px 16px;font-size:14px"><input type="checkbox" id="agreedToTerms"> I have read, understand, and agree to the terms above<span class="req">*</span></label></div></div>
     <div class="row">
@@ -386,8 +446,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
       <div class="upload-zone" data-category="Trade License" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Trade License(s)</p></div>
     </div>
     <div class="field">
-      <label>W-9 (optional)</label>
-      <div class="upload-zone" data-category="W-9" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload W-9</p></div>
+      <label>W-9<span class="req">*</span></label>
+      <div class="hint">Need a blank W-9? <a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Download Blank W-9 from IRS.gov &darr;</a></div>
+      <div class="upload-zone" data-category="W-9" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload completed W-9</p></div>
     </div>
     <div class="field">
       <label>Workers' Comp Waiver (optional)</label>
@@ -419,6 +480,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
   &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-267-3532
 </div>
 
+<!--email_off-->
 <script>
 // ── State ──
 let selectedPlan = 'free';
@@ -550,11 +612,11 @@ function showApplication(plan) {
 
 // ── Coverage items ──
 const COVERAGE = {
-  appliances:['Refrigerator','Oven/Range/Stove','Cooktop','Built-in Microwave','Dishwasher','Garbage Disposal','Trash Compactor','Washer','Dryer','Ice Maker','Range Hood','Wine Cooler','Freezer (standalone)'],
-  hvac:['Central Air Conditioning','Heating System / Furnace','Heat Pump','Ductwork','Thermostat','Mini Split','Evaporator Coil','Condenser','Compressor','Refrigerant Recharge','Humidifier','Air Handler'],
-  plumbing:['Water Heater (standard)','Water Heater (tankless)','Plumbing Stoppages','Faucets','Toilets','Sump Pump','Hose Bibs','Pipe Leaks','Bathtub/Shower Valve','Pressure Regulator','Expansion Tank','Ejector Pump','Recirculating Pump'],
-  electrical:['Electrical Panel','Wiring','Outlets/Switches','Ceiling Fans','Doorbells','Garage Door Opener','Smoke Detectors','Ground Fault Interrupters','Light Fixtures','Circuit Breakers','GFCI Outlets','Whole-House Surge Protector'],
-  other:['Pool Equipment','Spa/Hot Tub','Septic System','Well Pump','Water Softener','Central Vacuum','Sewer Line','Roof Leak Repair','Pest Control','Locksmith','Garage Door (mechanical)','Lawn Sprinkler System']
+  appliances:['Clothes Washer','Refrigerator','Stand Alone Freezer','Microwave Oven','Cooktop – Electric','Cooktop – Gas','Range – Electric','Range – Gas','Wall Oven – Electric','Wall Oven – Gas','Trash Compactors','Exhaust Hoods','Garbage Disposals','Clothes Dryer – Electric','Clothes Dryer – Gas','Dishwasher'],
+  hvac:['Straight Cool / Heat Pump Split Units','Straight Cool / Heat Pump Package Units','Wall Units','Window Units','Mini-Split Units','Furnaces – Gas','Furnaces – Oil','Boilers – Gas','Boilers – Oil','Gas Package Units','Geothermal Units'],
+  plumbing:['Faucets','Water Lines','Waste Lines','Stoppages','Garbage Disposals','Water Heaters – Electric','Water Heater – Tankless','Water Heaters – Gas','Water Heaters – Oil','Gas Lines','Septic Systems','Sump Pumps','Water Softeners','Well Pumps','Tub/Shower Valves'],
+  electrical:['Main / Sub Panels','Electrical Wiring','Electrical Switches','Electrical Receptacles','Ceiling Fans','Exhaust Fans'],
+  other:['Garage Door Openers','Central Vacuum System','Sprinkler Systems','Pool/Spa Pumps','Pool/Spa Heaters','Roof Repairs']
 };
 Object.keys(COVERAGE).forEach(cat => {
   const grid = document.getElementById('cov-grid-' + cat);
@@ -648,13 +710,13 @@ function collectData() {
     email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
     ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: val('natureOfBusiness'),
     yearsInBusiness: val('yearsInBusiness'), taxId: val('taxId'), businessType: radio('businessType'),
-    numTechnicians: val('numTechnicians'), uniformed: radio('uniformed'), vehicles: val('vehicles'),
+    numTechnicians: val('numTechnicians'), uniformedTechnicians: val('uniformedTechnicians'), vehicles: val('vehicles'),
     hoursMF: val('hoursMF'), hoursSat: val('hoursSat'), hoursSun: val('hoursSun'), hoursHoliday: val('hoursHoliday'),
     phoneHandler: val('phoneHandler'), emergencyHandler: val('emergencyHandler'), schedulingSystem: val('schedulingSystem'),
     creditCards: val('creditCards'), installSHWParts: radio('installSHWParts'), otherWarrantyCompanies: val('otherWarrantyCompanies'),
     licenses, serviceCallRegular: val('serviceCallRegular'), serviceCallSHW: val('serviceCallSHW'),
     laborRateRegular: val('laborRateRegular'), laborRateSHW: val('laborRateSHW'), partsMarkup,
-    salesTax: val('salesTax'), coverageAreas: val('coverageAreas'), coverageItems,
+    salesTax: val('salesTax'), coverageStates: val('coverageStates'), coverageCounties: val('coverageCounties'), coverageCities: val('coverageCities'), coverageItems,
     agreedToTerms: document.getElementById('agreedToTerms').checked,
     signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles
   };
@@ -666,9 +728,10 @@ async function submitApplication() {
   const status = document.getElementById('submit-status');
   const hasCOI = uploadedFiles.some(f => f.category === 'Certificate of Insurance');
   const hasLicense = uploadedFiles.some(f => f.category === 'Trade License');
-  if (!hasCOI || !hasLicense) {
+  const hasW9 = uploadedFiles.some(f => f.category === 'W-9');
+  if (!hasCOI || !hasLicense || !hasW9) {
     status.className = 'status error';
-    status.textContent = 'Please upload both a Certificate of Insurance and at least one Trade License.';
+    status.textContent = 'Please upload a Certificate of Insurance, at least one Trade License, and a completed W-9.';
     return;
   }
   btn.disabled = true;
@@ -709,7 +772,7 @@ async function submitApplication() {
           type: 'contractor',
           contractor_membership_tier: data.selectedPlan,
           contractor_services: data.natureOfBusiness,
-          coverage_areas: data.coverageAreas,
+          coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
           lead_id: 'SHW-VP-' + Date.now()
         })
       });
@@ -731,7 +794,7 @@ async function submitApplication() {
             city: data.city,
             address: data.address,
             natureOfBusiness: data.natureOfBusiness,
-            coverageAreas: data.coverageAreas,
+            coverageAreas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
             source: 'SHW Vendor Packet — Premium + SSP'
           })
         });
@@ -760,5 +823,6 @@ async function submitApplication() {
   }
 }
 </script>
+<!--/email_off-->
 </body>
 </html>
