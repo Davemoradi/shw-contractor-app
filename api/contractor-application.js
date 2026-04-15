@@ -18,16 +18,22 @@ export default async function handler(req, res) {
     // Build attachments from base64 files
     const attachments = [];
     if (data.files && Array.isArray(data.files)) {
+      console.log('Files received:', data.files.length);
       for (const file of data.files) {
         if (file.base64 && file.name) {
+          const content = file.base64.split(',').pop();
+          console.log('Attaching:', file.name, '(' + file.category + ')', Math.round(content.length / 1024) + 'KB base64');
           attachments.push({
-            filename: file.name,
-            content: file.base64.split(',').pop(),
+            filename: file.category + ' - ' + file.name,
+            content: content,
             content_type: file.type || 'application/octet-stream'
           });
         }
       }
+    } else {
+      console.log('No files array in request body');
     }
+    console.log('Total attachments to send:', attachments.length);
 
     // Build HTML email body
     const html = buildEmailHTML(data);
