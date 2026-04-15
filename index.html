@@ -149,7 +149,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 </div>
 
 <!-- SELECTED PLAN BANNER (shows during application) -->
-<div class="selected-plan-banner" id="plan-banner">Selected plan: <strong id="plan-banner-name"></strong> <span>— you can change this later</span></div>
+<!-- Plan banner removed -->
 
 <!-- ===== SCREEN 1: PLAN SELECTION ===== -->
 <div class="plans-screen" id="screen-plans">
@@ -547,7 +547,6 @@ function goBackToPlans() {
   }
   document.getElementById('screen-app').classList.remove('visible');
   document.getElementById('screen-plans').classList.remove('hidden');
-  document.getElementById('plan-banner').classList.remove('visible');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -556,8 +555,8 @@ function pickPlan(plan) {
 
   // Stripe Payment Links
   const STRIPE_LINKS = {
-    'premium': 'https://buy.stripe.com/test_dRm4gA6P4eyldaj7JX8N202',
-    'premium-ssp': 'https://buy.stripe.com/test_14A6oIgpEai5gmv0hv8N201'
+    'premium': 'https://buy.stripe.com/bJe3cw7T3glk3sKc0p0Fi07',
+    'premium-ssp': 'https://buy.stripe.com/28E28s2yJ7OOe7oe8x0Fi08'
   };
 
   if (STRIPE_LINKS[plan]) {
@@ -588,21 +587,6 @@ function showApplication(plan) {
   document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
   if (plan === 'premium') document.getElementById('card-premium')?.classList.add('selected');
   if (plan === 'premium-ssp') document.getElementById('card-premium-ssp')?.classList.add('selected');
-
-  // Show banner
-  const banner = document.getElementById('plan-banner');
-  const bannerName = document.getElementById('plan-banner-name');
-  if (plan === 'premium') {
-    bannerName.textContent = 'SHW Premium Service Network — $174.99/mo (30% off) ✅ Payment Complete';
-    banner.style.background = '#2e7d32';
-    banner.classList.add('visible');
-  } else if (plan === 'premium-ssp') {
-    bannerName.textContent = 'Premium + Select Service Pros — $299.99/mo (25% off) ✅ Payment Complete';
-    banner.style.background = '#2e7d32';
-    banner.classList.add('visible');
-  } else {
-    banner.classList.remove('visible');
-  }
 
   // Switch screens
   document.getElementById('screen-plans').classList.add('hidden');
@@ -825,7 +809,6 @@ async function submitApplication() {
 
     // 4) Show success (payment already collected if paid plan)
     document.getElementById('screen-app').classList.remove('visible');
-    document.getElementById('plan-banner').classList.remove('visible');
     document.getElementById('stepper').style.display = 'none';
     document.getElementById('screen-success').classList.add('visible');
     if (data.companyName) {
