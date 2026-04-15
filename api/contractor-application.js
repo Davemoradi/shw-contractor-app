@@ -67,6 +67,16 @@ export default async function handler(req, res) {
 
     // Send to GHL webhook (server-side, no CORS issues)
     try {
+      const planNames = {
+        'premium': 'SHW Premium Service Network',
+        'premium-ssp': 'Premium + Select Service Pros',
+        'free': 'Free Network Contractor'
+      };
+      const planPrices = {
+        'premium': '$174.99/mo',
+        'premium-ssp': '$299.99/mo',
+        'free': '$0'
+      };
       const ghlPayload = {
         firstName: data.ownerName ? data.ownerName.split(' ')[0] : '',
         lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
@@ -82,6 +92,9 @@ export default async function handler(req, res) {
         source: 'SHW Vendor Packet',
         type: 'contractor',
         contractor_membership_tier: data.selectedPlan,
+        contractor_plan_name: planNames[data.selectedPlan] || 'Unknown',
+        contractor_plan_price: planPrices[data.selectedPlan] || '$0',
+        paying_member: data.selectedPlan === 'premium' || data.selectedPlan === 'premium-ssp' ? 'Yes' : 'No',
         industry: data.natureOfBusiness,
         coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
         lead_id: 'SHW-VP-' + Date.now()
