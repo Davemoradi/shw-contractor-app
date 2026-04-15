@@ -731,6 +731,7 @@ async function submitApplication() {
   const hasW9 = uploadedFiles.some(f => f.category === 'W-9');
   if (!hasCOI || !hasLicense || !hasW9) {
     status.className = 'status error';
+    status.style.display = '';
     status.textContent = 'Please upload a Certificate of Insurance, at least one Trade License, and a completed W-9.';
     return;
   }
@@ -817,6 +818,7 @@ async function submitApplication() {
 
   } catch (err) {
     status.className = 'status error';
+    status.style.display = '';
     status.textContent = 'Error: ' + err.message + '. Please try again or call 855-267-3532.';
     btn.disabled = false;
     btn.textContent = 'Submit Application';
