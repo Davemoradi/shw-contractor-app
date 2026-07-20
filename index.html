@@ -71,7 +71,8 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 .included-head{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:12px}
 .included-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
 @media(max-width:700px){.included-list{grid-template-columns:1fr}}
-.included-list li{position:relative;padding:5px 0 5px 24px;font-size:13px;color:var(--text);line-height:1.45}
+.included-list li{position:relative;padding:5px 0 5px 24px;font-size:13px;color:var(--text-light);line-height:1.45}
+.included-list li b{color:var(--navy);font-weight:650}
 .included-list li::before{content:'\2713';position:absolute;left:2px;top:5px;color:var(--green);font-weight:800;font-size:14px}
 .plan-reassure{text-align:center;font-size:12px;color:var(--text-light);margin-top:10px}
 
@@ -86,7 +87,7 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 .cost-table tr:last-child{background:#f2f7ff}
 .cost-old{color:var(--red);font-weight:600;white-space:nowrap}
 .cost-new{color:var(--green);font-weight:700}
-.cost-note{font-size:13px;color:var(--text-light);margin-top:16px;max-width:560px;margin-left:auto;margin-right:auto}
+
 @media(max-width:600px){.cost-table th,.cost-table td{padding:10px 11px;font-size:12px}}
 
 /* ===== APPLICATION FORM ===== */
@@ -190,12 +191,12 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 
   <div class="plans-hero">
     <div class="plans-hero-inner">
-      <h2 id="plans-heading">Choose Your Membership Plan</h2>
-      <p>Stop paying for leads. Get dispatched work orders, guaranteed payment, and free software &mdash; starting at $49.99/mo.</p>
+      <h2 id="plans-heading">Stop chasing leads. We send you paying jobs.</h2>
+      <p>Pick your plan, complete a short application, and start receiving dispatched work orders in your area. Most contractors are approved in 2&ndash;3 business days.</p>
       <div class="trust-row">
-        <div class="trust-item"><strong>100,000s</strong><span>Customers nationwide</span></div>
-        <div class="trust-item"><strong>1,000s</strong><span>Contractors in the network</span></div>
-        <div class="trust-item"><strong>50 States</strong><span>Nationwide coverage</span></div>
+        <div class="trust-item"><strong>100,000+</strong><span>Homeowners covered</span></div>
+        <div class="trust-item"><strong>30,000+</strong><span>Contractors in the network</span></div>
+        <div class="trust-item"><strong>All 50</strong><span>States</span></div>
       </div>
     </div>
   </div>
@@ -205,11 +206,14 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
     <div class="included-strip">
       <div class="included-head">Included with every membership</div>
       <ul class="included-list">
-        <li>Work orders dispatched to you &mdash; never resold to competing contractors</li>
-        <li>You set your own coverage area &mdash; states, counties, and cities</li>
-        <li>SHW pays you directly on approved invoices &mdash; no chasing homeowners</li>
-        <li>If a claim isn&rsquo;t covered, you&rsquo;re free to quote that work directly</li>
-        <li>Cancel anytime &mdash; no long-term contract, no cancellation fee</li>
+        <li><b>Never pay for a lead</b> &mdash; jobs are dispatched to you, not resold to four competitors</li>
+        <li><b>Every job is a real claim</b> &mdash; the homeowner already filed and needs it fixed today</li>
+        <li><b>Jobs in your zip code</b> &mdash; no long hauls for small tickets</li>
+        <li><b>You pick what you take</b> &mdash; accept or decline, no minimums</li>
+        <li><b>We handle the homeowner</b> &mdash; billing, disputes, scheduling</li>
+        <li><b>Denied claims stay yours</b> &mdash; you&rsquo;re on site and free to quote that work directly</li>
+        <li><b>Get paid without chasing</b> &mdash; Net 30, or Net 15 on Premium</li>
+        <li><b>Cancel anytime</b> &mdash; no long-term contract, no cancellation fee</li>
       </ul>
     </div>
 
@@ -218,15 +222,15 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
       <div class="plan-card" id="card-basic" onclick="pickPlan('basic')">
         <div class="plan-badge">Great Start</div>
         <div class="plan-name">SHW Basic Plan</div>
-        <div class="plan-tagline">Work orders, payment terms, and dispatch software included</div>
+        <div class="plan-tagline">Everything you need to start taking warranty work</div>
         <div class="plan-price"><span class="amt">$49<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
         <div class="plan-note">&nbsp;</div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="fi ck">&#10003;</span>Access to work orders &mdash; you never pay for a lead</li>
+          <li><span class="fi ck">&#10003;</span>Work orders in your zip code &mdash; you never pay for a lead</li>
           <li><span class="fi ck">&#10003;</span>Net 30 payment terms on approved invoices</li>
           <li><span class="fi ck">&#10003;</span>Free Dispatch.me software &mdash; a $300/mo value</li>
-          <li><span class="fi ck">&#10003;</span>Steady warranty work to fill your schedule year-round</li>
+          <li><span class="fi ck">&#10003;</span>Steady warranty work year-round</li>
         </ul>
         <button class="plan-cta blue" onclick="pickPlan('basic')">Select Basic — $49.99/mo</button>
         <div class="plan-reassure">Cancel anytime &middot; No long-term contract</div>
@@ -236,17 +240,16 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
       <div class="plan-card" id="card-premium" onclick="pickPlan('premium')">
         <div class="plan-badge orange">Best Value</div>
         <div class="plan-name">SHW Premium Service Network</div>
-        <div class="plan-tagline">Priority dispatching, faster pay, and exclusive tools</div>
+        <div class="plan-tagline">Get dispatched first and paid in half the time</div>
         <div class="plan-price"><span class="amt">$129<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
         <div class="plan-note">&nbsp;</div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
           <li><span class="fi ck">&#10003;</span>Everything in the Basic Plan</li>
-          <li><span class="fi st">&#9733;</span>Priority work order routing — get dispatched first</li>
+          <li><span class="fi st">&#9733;</span>Priority dispatch &mdash; you get offered jobs first</li>
           <li><span class="fi st">&#9733;</span>Paid twice as fast &mdash; Net 15 instead of Net 30</li>
-          <li><span class="fi st">&#9733;</span>Benefits Hub access — insurance, supplies, discounts</li>
-          <li><span class="fi st">&#9733;</span>Priority phone support line</li>
-          <li><span class="fi st">&#9733;</span>Premium badge on your contractor profile</li>
+          <li><span class="fi st">&#9733;</span>Benefits Hub &mdash; insurance, supplies, discounts</li>
+          <li><span class="fi st">&#9733;</span>Priority phone support and a Premium profile badge</li>
         </ul>
         <button class="plan-cta orange" onclick="pickPlan('premium')">Select Premium — $129.99/mo</button>
         <div class="plan-reassure">Cancel anytime &middot; No long-term contract</div>
@@ -267,14 +270,14 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
           <tr><th>Expense</th><th>Without SHW</th><th>With SHW</th></tr>
         </thead>
         <tbody>
-          <tr><td>Lead generation (Google, HomeAdvisor, etc.)</td><td class="cost-old">$2,000&ndash;$5,000/mo</td><td class="cost-new">$0</td></tr>
-          <tr><td>Cost per lead</td><td class="cost-old">$15&ndash;$75 each</td><td class="cost-new">$0</td></tr>
+          <tr><td>Marketing spend (Google, HomeAdvisor, Angi)</td><td class="cost-old">$2,000&ndash;$5,000/mo</td><td class="cost-new">$0</td></tr>
+          <tr><td>Cost per lead</td><td class="cost-old">$20&ndash;$200 each</td><td class="cost-new">$0</td></tr>
           <tr><td>Dispatch.me software</td><td class="cost-old">~$300/mo</td><td class="cost-new">$0 (included)</td></tr>
           <tr><td>Chasing invoices &amp; collections</td><td class="cost-old">Hours of your time</td><td class="cost-new">SHW pays you directly</td></tr>
-          <tr><td>SHW membership</td><td class="cost-old">&mdash;</td><td class="cost-new">Starting at $49.99/mo</td></tr>
+          <tr><td>SHW membership</td><td class="cost-old">&mdash;</td><td class="cost-new">From $49.99/mo</td></tr>
+          <tr style="background:#eef5ee"><td><strong>Your savings, after membership</strong></td><td class="cost-old">&mdash;</td><td class="cost-new" style="font-size:15px">$27,000&ndash;$63,000/yr</td></tr>
         </tbody>
       </table>
-      <p class="cost-note">Your Basic membership costs less than one shared lead from a marketplace &mdash; and includes software that runs $300/mo on its own.</p>
     </div>
     <div style="text-align:center;padding-bottom:24px"><a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW</a></div>
   </div>
@@ -507,7 +510,7 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
   <!-- STEP 6: UPLOAD & SUBMIT -->
   <div class="panel" id="p6">
     <h2>Upload Documents &amp; Submit</h2>
-    <p style="font-size:14px;color:var(--text-light);margin-bottom:16px">Upload the following documents. Max 2MB per file. PDF, JPG, or PNG.</p>
+    <p style="font-size:14px;color:var(--text-light);margin-bottom:16px">Last step. Upload these four documents and you&rsquo;re done &mdash; we need them to verify your license and add you to the dispatch network. Max 2MB per file. PDF, JPG, or PNG.</p>
     <div class="field">
       <label>Certificate of Insurance<span class="req">*</span></label>
       <div class="hint">Must list <strong>Select Home Warranty, LLC, 1000 Wyckoff Ave, Mahwah, NJ 07430</strong> as certificate holder and additional insured.</div>
@@ -530,7 +533,7 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
     <div id="submit-status" class="status"></div>
     <div class="btn-row">
       <button class="btn btn-outline" onclick="goTo(5)">&larr; Back</button>
-      <button class="btn btn-primary" id="submit-btn" onclick="submitApplication()">Submit Application</button>
+      <button class="btn btn-primary" id="submit-btn" onclick="submitApplication()">Submit My Application</button>
     </div>
   </div>
 
@@ -541,15 +544,15 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 <!-- ===== SCREEN 3: SUCCESS ===== -->
 <div class="success-screen" id="screen-success">
   <div class="s-icon">&#9989;</div>
-  <h2 id="success-heading">Application Submitted!</h2>
-  <p id="success-msg">Welcome to the Select Home Warranty contractor network. Our team will review your application and reach out within 2-3 business days. A confirmation has been sent to your email.</p>
+  <h2 id="success-heading">You&rsquo;re In &mdash; Application Received</h2>
+  <p id="success-msg">Your application is in. Our service provider team reviews it within 2&ndash;3 business days, and once you&rsquo;re approved we&rsquo;ll add you to the dispatch network for your coverage area and work orders start coming to you. A confirmation has been sent to your email. Questions in the meantime? Call us at 855-224-3399.</p>
   <a href="https://www.selecthomewarranty.com" class="btn btn-primary" style="display:inline-block;text-decoration:none;margin-top:8px">Return to SelectHomeWarranty.com &rarr;</a>
   <br><br>
   <a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW Contractors</a>
 </div>
 
 <div class="footer">
-  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-267-3532
+  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-224-3399
 </div>
 
 <!--email_off-->
@@ -907,7 +910,7 @@ async function submitApplication() {
   } catch (err) {
     status.className = 'status error';
     status.style.display = '';
-    status.textContent = 'Error: ' + err.message + '. Please try again or call 855-267-3532.';
+    status.textContent = 'Error: ' + err.message + '. Please try again or call 855-224-3399.';
     btn.disabled = false;
     btn.textContent = 'Submit Application';
   }
