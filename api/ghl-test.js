@@ -1,16 +1,18 @@
 export default async function handler(req, res) {
-  // Visit in a browser to fire a full-field payload at GHL.
-  // Add ?stage=paid to send the post-payment variant.
+  // Fires a full-field payload at GHL for mapping/verification.
+  // ?stage=paid  -> post-payment variant
+  // Each call uses a unique name + email so it always creates a NEW contact.
   const paid = (req.query && req.query.stage === 'paid');
+  const stamp = Date.now().toString().slice(-6);
+  const label = paid ? 'Paidtest' : 'Leadtest';
 
   const payload = {
-    // Contact
-    firstName: 'Test',
-    lastName: 'Contractor',
-    name: 'Test Contractor',
-    email: paid ? 'test-paid@testcompany.com' : 'test-lead@testcompany.com',
-    phone: '5555555555',
-    companyName: 'Test HVAC Services LLC',
+    firstName: label,
+    lastName: stamp,
+    name: label + ' ' + stamp,
+    email: label.toLowerCase() + stamp + '@shwtest.com',
+    phone: '5555' + stamp,
+    companyName: label + ' Co ' + stamp,
     address1: '123 Main Street',
     city: 'Mahwah',
     state: 'NJ',
@@ -19,21 +21,17 @@ export default async function handler(req, res) {
     source: 'SHW Landing Page',
     type: 'contractor',
 
-    // Trade / coverage
     industry: 'HVAC',
     coverage_areas: 'NJ NY | Bergen Passaic | Mahwah Ramsey',
 
-    // Funnel stage
     lead_status: paid ? 'Paid - Application Incomplete' : 'Started - Not Paid',
     lead_status_tag: paid ? 'SHW Lead - Paid No App' : 'SHW Lead - Started',
 
-    // Plan / payment
     paying_member: paid ? 'Yes' : 'No',
     contractor_membership_tier: paid ? 'basic' : '',
     contractor_plan_name: paid ? 'SHW Basic Plan' : 'Not selected yet',
     contractor_plan_price: paid ? '$49.99/mo' : '$0',
 
-    // Salesperson (dormant unless a ?sp= code is used)
     salesperson: '',
     salesperson_tag: '',
 
@@ -47,7 +45,14 @@ export default async function handler(req, res) {
       body: JSON.stringify(payload)
     });
     const text = await resp.text();
-    return res.status(200).json({ success: true, stage: paid ? 'paid' : 'started', ghlStatus: resp.status, ghlResponse: text, payloadSent: payload });
+    return res.status(200).json({
+      success: true,
+      stage: paid ? 'paid' : 'started',
+      searchFor: payload.name,
+      ghlStatus: resp.status,
+      ghlResponse: text,
+      payloadSent: payload
+    });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
