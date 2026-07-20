@@ -157,46 +157,43 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
     <div style="padding-top:16px"><a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW</a></div>
     <div class="plans-welcome">
       <h2 id="plans-heading">Choose Your Membership Plan</h2>
-      <p>Unlock priority dispatching, faster pay, and direct homeowner leads — or continue as a free network contractor.</p>
+      <p>Unlock work orders, faster pay, and exclusive tools — or continue as a free network contractor.</p>
     </div>
 
     <div class="plans-grid">
-      <!-- Tier 1 -->
-      <div class="plan-card" id="card-premium" onclick="pickPlan('premium')">
-        <div class="plan-badge">Most Popular</div>
-        <div class="plan-name">SHW Premium Service Network</div>
-        <div class="plan-tagline">Priority dispatching, faster pay, and exclusive tools</div>
-        <div class="plan-price"><span style="text-decoration:line-through;color:var(--silver);font-size:22px;font-weight:600;margin-right:8px">$249.99</span><span class="amt">$174<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
-        <div class="plan-note" style="color:var(--green);font-weight:700">&#127881; 30% OFF — Save $75/mo</div>
+      <!-- Tier 1: Basic -->
+      <div class="plan-card" id="card-basic" onclick="pickPlan('basic')">
+        <div class="plan-badge">Great Start</div>
+        <div class="plan-name">SHW Basic Plan</div>
+        <div class="plan-tagline">Work orders, payment terms, and dispatch software included</div>
+        <div class="plan-price"><span class="amt">$49<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <div class="plan-note">&nbsp;</div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="fi ck">&#10003;</span>Priority work order routing — get dispatched first</li>
-          <li><span class="fi ck">&#10003;</span>Faster payment terms — Net 15 instead of Net 30</li>
-          <li><span class="fi ck">&#10003;</span>Benefits Hub access — insurance, supplies, discounts</li>
-          <li><span class="fi ck">&#10003;</span>DispatchMe dispatch system — real-time job management</li>
-          <li><span class="fi ck">&#10003;</span>Priority phone support line</li>
-          <li><span class="fi ck">&#10003;</span>Premium badge on contractor profile</li>
+          <li><span class="fi ck">&#10003;</span>Access to work orders — no paying for leads</li>
+          <li><span class="fi ck">&#10003;</span>30 day payment terms</li>
+          <li><span class="fi ck">&#10003;</span>Free Dispatch.me software — real-time job management</li>
         </ul>
-        <button class="plan-cta blue" onclick="pickPlan('premium')">Select Premium — $174.99/mo</button>
+        <button class="plan-cta blue" onclick="pickPlan('basic')">Select Basic — $49.99/mo</button>
       </div>
 
-      <!-- Tier 2 -->
-      <div class="plan-card" id="card-premium-ssp" onclick="pickPlan('premium-ssp')">
+      <!-- Tier 2: Premium -->
+      <div class="plan-card" id="card-premium" onclick="pickPlan('premium')">
         <div class="plan-badge orange">Best Value</div>
-        <div class="plan-name">Premium + Select Service Pros</div>
-        <div class="plan-tagline">Everything in Premium, plus direct homeowner leads</div>
-        <div class="plan-price"><span style="text-decoration:line-through;color:var(--silver);font-size:22px;font-weight:600;margin-right:8px">$399.99</span><span class="amt">$299<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
-        <div class="plan-note" style="color:var(--green);font-weight:700">&#127881; 25% OFF — Save $100/mo</div>
+        <div class="plan-name">SHW Premium Service Network</div>
+        <div class="plan-tagline">Priority dispatching, faster pay, and exclusive tools</div>
+        <div class="plan-price"><span class="amt">$129<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <div class="plan-note">&nbsp;</div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="fi ck">&#10003;</span>Everything in SHW Premium Service Network</li>
-          <li><span class="fi st">&#9733;</span>Select Service Pros marketplace access</li>
-          <li><span class="fi st">&#9733;</span>Contractor profile &amp; listing on SelectServicePros.com</li>
-          <li><span class="fi st">&#9733;</span>Lead matching in your coverage area</li>
-          <li><span class="fi st">&#9733;</span>Direct homeowner leads — not just warranty work</li>
-          <li><span class="fi st">&#9733;</span>Dual revenue stream — warranty + direct jobs</li>
+          <li><span class="fi ck">&#10003;</span>Everything in the Basic Plan</li>
+          <li><span class="fi st">&#9733;</span>Priority work order routing — get dispatched first</li>
+          <li><span class="fi st">&#9733;</span>Faster payment terms — Net 15 instead of Net 30</li>
+          <li><span class="fi st">&#9733;</span>Benefits Hub access — insurance, supplies, discounts</li>
+          <li><span class="fi st">&#9733;</span>Priority phone support line</li>
+          <li><span class="fi st">&#9733;</span>Premium badge on contractor profile</li>
         </ul>
-        <button class="plan-cta orange" onclick="pickPlan('premium-ssp')">Select Premium + SSP — $299.99/mo</button>
+        <button class="plan-cta orange" onclick="pickPlan('premium')">Select Premium — $129.99/mo</button>
       </div>
     </div>
 
@@ -503,6 +500,11 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
       }
     }
   });
+  // Capture salesperson if provided in URL
+  const salespersonParam = params.get('sp') || params.get('salesperson');
+  if (salespersonParam) {
+    sessionStorage.setItem('shw_salesperson', salespersonParam.toLowerCase());
+  }
   // Personalize plans heading
   const company = params.get('company') || params.get('company_name');
   if (company) {
@@ -515,7 +517,7 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
   // ── Handle Stripe return ──
   // Check if returning from Stripe checkout
   const savedPlan = sessionStorage.getItem('shw_selected_plan');
-  if (savedPlan && (savedPlan === 'premium' || savedPlan === 'premium-ssp')) {
+  if (savedPlan && (savedPlan === 'basic' || savedPlan === 'premium')) {
     // Restore prefill params from before Stripe redirect
     const savedParams = sessionStorage.getItem('shw_prefill_params');
     if (savedParams) {
@@ -542,7 +544,7 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
 // ── Plan selection ──
 function goBackToPlans() {
   // If they already paid, warn them
-  if (selectedPlan === 'premium' || selectedPlan === 'premium-ssp') {
+  if (selectedPlan === 'basic' || selectedPlan === 'premium') {
     if (!confirm('You\'ve already completed payment for your plan. Going back will not change your plan. Continue?')) return;
   }
   document.getElementById('screen-app').classList.remove('visible');
@@ -554,25 +556,26 @@ function pickPlan(plan) {
   selectedPlan = plan;
 
   // Stripe Payment Links
-  const STRIPE_LINKS = {
-    'premium': 'https://buy.stripe.com/bJe3cw7T3glk3sKc0p0Fi07',
-    'premium-ssp': 'https://buy.stripe.com/28E28s2yJ7OOe7oe8x0Fi08'
+  // Payment Links
+  const PAYMENT_LINKS = {
+    'basic': 'https://buy.stripe.com/bJe6oIc9jedc4wOe8x0Fi0c',
+    'premium': 'https://buy.stripe.com/cNi8wQ6OZedc7J0c0p0Fi0d'
   };
 
-  if (STRIPE_LINKS[plan]) {
+  if (PAYMENT_LINKS[plan] && PAYMENT_LINKS[plan] !== '') {
     // Save plan + any prefilled data to sessionStorage before leaving
     sessionStorage.setItem('shw_selected_plan', plan);
     // Preserve URL params so they survive the Stripe redirect
     sessionStorage.setItem('shw_prefill_params', window.location.search);
 
     // Build Stripe URL with email prefill if available
-    let stripeUrl = STRIPE_LINKS[plan];
+    let payUrl = PAYMENT_LINKS[plan];
     const emailField = document.getElementById('email');
     const email = emailField?.value || new URLSearchParams(window.location.search).get('email');
-    if (email) stripeUrl += '?prefilled_email=' + encodeURIComponent(email);
+    if (email) payUrl += (payUrl.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(email);
 
     // Redirect to Stripe — they'll come back after payment
-    window.location.href = stripeUrl;
+    window.location.href = payUrl;
     return;
   }
 
@@ -585,8 +588,8 @@ function showApplication(plan) {
 
   // Highlight selected card
   document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  if (plan === 'basic') document.getElementById('card-basic')?.classList.add('selected');
   if (plan === 'premium') document.getElementById('card-premium')?.classList.add('selected');
-  if (plan === 'premium-ssp') document.getElementById('card-premium-ssp')?.classList.add('selected');
 
   // Switch screens
   document.getElementById('screen-plans').classList.add('hidden');
@@ -712,7 +715,8 @@ function collectData() {
     laborRateRegular: val('laborRateRegular'), laborRateSHW: val('laborRateSHW'), partsMarkup,
     salesTax: val('salesTax'), coverageStates: val('coverageStates'), coverageCounties: val('coverageCounties'), coverageCities: val('coverageCities'), coverageItems,
     agreedToTerms: document.getElementById('agreedToTerms').checked,
-    signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles
+    signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles,
+    salesperson: sessionStorage.getItem('shw_salesperson') || ''
   };
 }
 
@@ -754,36 +758,9 @@ async function submitApplication() {
     const result = await resp.json();
     if (!resp.ok || !result.success) throw new Error(result.error || 'Email submission failed');
 
-    // 2) Send to SSP via GHL webhook (server-side, no CORS issues)
-    // Now handled in contractor-application.js on the server
+    // 2) GHL webhook handled server-side in contractor-application.js
 
-    // 3) If SSP plan selected, create SSP Supabase account
-    if (data.selectedPlan === 'premium-ssp') {
-      try {
-        const sspResp = await fetch('/api/create-ssp-account', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: data.email,
-            companyName: data.companyName,
-            ownerName: data.ownerName,
-            phone: data.phone,
-            zip: data.zip,
-            state: data.state,
-            city: data.city,
-            address: data.address,
-            natureOfBusiness: data.natureOfBusiness,
-            coverageAreas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
-            source: 'SHW Vendor Packet — Premium + SSP'
-          })
-        });
-        const sspResult = await sspResp.json();
-        if (sspResult.success) console.log('SSP account created:', sspResult);
-        else console.error('SSP account creation failed:', sspResult);
-      } catch (sspErr) { console.error('SSP account creation error (non-blocking):', sspErr); }
-    }
-
-    // 4) Show success (payment already collected if paid plan)
+    // 3) Show success
     document.getElementById('screen-app').classList.remove('visible');
     document.getElementById('stepper').style.display = 'none';
     document.getElementById('screen-success').classList.add('visible');
