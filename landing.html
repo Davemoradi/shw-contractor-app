@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Join the Select Home Warranty Contractor Network — Stop Paying for Leads</title>
+<meta name="description" content="Join Select Home Warranty's contractor network. Get dispatched work orders, guaranteed payment, and free dispatch software. No more paying for leads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1a2b5f;--blue:#2557a7;--silver:#c0c4cc;--bg:#f4f5f7;--white:#fff;--red:#d32f2f;--green:#2e7d32;--orange:#f05528;--text:#333;--text-light:#666;--border:#ddd;--radius:8px}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);line-height:1.6}
+
+/* ── NAV ── */
+.nav{background:var(--white);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);box-shadow:0 1px 12px rgba(0,0,0,.05)}
+.nav img{height:46px;display:block}
+.nav-phone{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;margin-right:20px}
+.nav-right{display:flex;align-items:center}
+@media(max-width:600px){.nav{padding:10px 16px}.nav img{height:36px}.nav-phone{display:none}}
+.nav-cta{background:var(--orange);color:var(--white);padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;transition:background .2s}
+.nav-cta:hover{background:#d44a20}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0d1a3a 100%);padding:80px 24px 90px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:80px;background:var(--white);clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1}
+.hero-logo{display:inline-block;background:var(--white);padding:14px 30px;border-radius:10px;margin-bottom:28px;box-shadow:0 4px 24px rgba(0,0,0,.18)}
+.hero-logo img{height:52px;display:block}
+@media(max-width:600px){.hero-logo{padding:11px 22px;margin-bottom:22px}.hero-logo img{height:38px}}
+.hero h1{color:var(--white);font-size:clamp(32px,5vw,52px);font-weight:800;line-height:1.15;margin-bottom:20px;letter-spacing:-0.5px}
+.hero h1 span{color:var(--orange)}
+.hero p{color:var(--silver);font-size:clamp(16px,2.2vw,20px);max-width:620px;margin:0 auto 32px;line-height:1.5}
+.hero-cta{display:inline-block;background:var(--orange);color:var(--white);padding:16px 40px;border-radius:8px;text-decoration:none;font-weight:700;font-size:18px;transition:all .2s;box-shadow:0 4px 20px rgba(240,85,40,.3)}
+.hero-cta:hover{background:#d44a20;transform:translateY(-2px);box-shadow:0 6px 28px rgba(240,85,40,.4)}
+.hero-sub{color:rgba(255,255,255,.5);font-size:13px;margin-top:14px}
+
+/* ── PAIN SECTION ── */
+.pain{padding:80px 24px;background:var(--white)}
+.pain-inner{max-width:900px;margin:0 auto;text-align:center}
+.section-label{text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--orange);margin-bottom:8px}
+.section-title{font-size:clamp(26px,3.5vw,38px);font-weight:800;color:var(--navy);margin-bottom:12px}
+.section-sub{font-size:16px;color:var(--text-light);max-width:600px;margin:0 auto 48px}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;text-align:left}
+.pain-card{background:var(--bg);border-radius:var(--radius);padding:28px 24px;border-left:4px solid var(--red)}
+.pain-card .pain-icon{font-size:28px;margin-bottom:12px}
+.pain-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.pain-card p{font-size:14px;color:var(--text-light);line-height:1.5}
+
+/* ── BEFORE / AFTER ── */
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px;text-align:left}
+@media(max-width:760px){.vs-grid{grid-template-columns:1fr}}
+.vs-col{border-radius:12px;padding:28px 26px}
+.vs-before{background:var(--bg);border:1px solid var(--border)}
+.vs-after{background:#f2f7ff;border:2px solid var(--blue)}
+.vs-head{margin-bottom:18px}
+.vs-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.vs-tag.red{background:#fde8e8;color:var(--red)}
+.vs-tag.green{background:#e8f5e9;color:var(--green)}
+.vs-head h3{font-size:17px;font-weight:800;color:var(--navy);line-height:1.3}
+.vs-list{list-style:none}
+.vs-list li{position:relative;padding:9px 0 9px 30px;font-size:14px;line-height:1.5;border-bottom:1px solid rgba(0,0,0,.05)}
+.vs-list li:last-child{border-bottom:none}
+.vs-before .vs-list li{color:var(--text-light)}
+.vs-before .vs-list li::before{content:'\2715';position:absolute;left:4px;top:9px;color:var(--red);font-weight:700;font-size:13px}
+.vs-after .vs-list li{color:var(--text)}
+.vs-after .vs-list li::before{content:'\2713';position:absolute;left:2px;top:8px;color:var(--green);font-weight:800;font-size:15px}
+
+/* ── HOW IT WORKS ── */
+.how{padding:80px 24px;background:var(--bg)}
+.how-inner{max-width:900px;margin:0 auto;text-align:center}
+.how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px;margin-top:48px}
+.how-step{background:var(--white);border-radius:12px;padding:36px 28px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.how-num{width:52px;height:52px;border-radius:50%;background:var(--blue);color:var(--white);font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.how-step h3{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.how-step p{font-size:14px;color:var(--text-light);line-height:1.5}
+
+/* ── BENEFITS ── */
+.benefits{padding:80px 24px;background:var(--white)}
+.benefits-inner{max-width:1000px;margin:0 auto;text-align:center}
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:48px;text-align:left}
+.benefit{display:flex;gap:14px;padding:20px;border-radius:var(--radius);transition:background .2s}
+.benefit:hover{background:var(--bg)}
+.benefit-icon{flex-shrink:0;width:44px;height:44px;border-radius:10px;background:rgba(37,87,167,.08);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:22px}
+.benefit h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.benefit p{font-size:13px;color:var(--text-light);line-height:1.5}
+
+/* ── NUMBERS ── */
+.numbers{padding:60px 24px;background:var(--navy);text-align:center}
+.numbers-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px}
+.num-item .num-val{font-size:clamp(36px,5vw,48px);font-weight:800;color:var(--orange)}
+.num-item .num-label{font-size:14px;color:var(--silver);margin-top:4px}
+
+/* ── PLANS SECTION ── */
+.plans{padding:80px 24px;background:var(--bg)}
+.plans-inner{max-width:900px;margin:0 auto;text-align:center}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px;max-width:760px;margin-left:auto;margin-right:auto}
+@media(max-width:700px){.plans-grid{grid-template-columns:1fr}}
+.plan-card{background:var(--white);border:2px solid var(--border);border-radius:12px;padding:32px 28px;position:relative;transition:all .25s;text-align:left}
+.plan-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(37,87,167,.12)}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--white);font-size:11px;font-weight:700;padding:3px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.plan-badge.orange{background:var(--orange)}
+.plan-card h3{font-size:18px;font-weight:800;color:var(--navy);margin-top:6px;margin-bottom:12px}
+.plan-price .amt{font-size:42px;font-weight:800;color:var(--navy)}
+.plan-price .per{font-size:15px;color:var(--text-light)}
+.plan-features{list-style:none;margin:20px 0}
+.plan-features li{padding:6px 0;font-size:13px;display:flex;align-items:flex-start;gap:8px}
+.plan-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.plan-cta{display:block;width:100%;padding:14px;border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;color:var(--white);transition:all .2s;text-decoration:none}
+.plan-cta.blue{background:var(--blue)}
+.plan-cta.blue:hover{background:var(--navy)}
+.plan-cta.orange{background:var(--orange)}
+.plan-cta.orange:hover{background:#d44a20}
+.plans-free{margin-top:20px;font-size:14px;color:var(--text-light)}
+.plans-free a{color:var(--blue);text-decoration:underline;cursor:pointer}
+
+/* ── LEAD QUALITY ── */
+.leads{padding:80px 24px;background:var(--bg)}
+.leads-inner{max-width:900px;margin:0 auto;text-align:center}
+.lead-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px;text-align:left}
+@media(max-width:760px){.lead-cards{grid-template-columns:1fr}}
+.lead-card{border-radius:12px;padding:30px 28px;background:var(--white)}
+.lead-card.cold{border:1px solid var(--border)}
+.lead-card.warm{border:2px solid var(--blue);box-shadow:0 4px 24px rgba(37,87,167,.10)}
+.lead-card h3{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.lead-card .lead-kicker{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
+.lead-card.cold .lead-kicker{color:var(--red)}
+.lead-card.warm .lead-kicker{color:var(--green)}
+.lead-card .lead-desc{font-size:14px;color:var(--text-light);line-height:1.55;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.lead-facts{list-style:none}
+.lead-facts li{display:flex;gap:10px;padding:8px 0;font-size:14px;line-height:1.45}
+.lead-facts li strong{color:var(--navy)}
+.lead-card.cold .lead-facts li::before{content:'\2715';color:var(--red);font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px}
+.lead-card.warm .lead-facts li::before{content:'\2713';color:var(--green);font-weight:800;font-size:15px;flex-shrink:0;margin-top:1px}
+.leads-note{margin-top:28px;font-size:14px;color:var(--text-light);max-width:620px;margin-left:auto;margin-right:auto}
+
+.mid-cta{padding:56px 24px;background:var(--bg);text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.mid-cta-inner{max-width:640px;margin:0 auto}
+.mid-cta h3{font-size:clamp(20px,2.8vw,27px);font-weight:800;color:var(--navy);margin-bottom:22px;line-height:1.3}
+.numbers{padding:44px 24px;background:var(--navy);text-align:center}
+
+/* ── COMPARE ── */
+.compare{padding:60px 24px;background:var(--white)}
+.compare-inner{max-width:700px;margin:0 auto;text-align:center}
+.compare-table{width:100%;border-collapse:collapse;margin-top:32px;text-align:left}
+.compare-table th{background:var(--navy);color:var(--white);padding:12px 16px;font-size:13px;font-weight:700}
+.compare-table th:first-child{border-radius:8px 0 0 0}
+.compare-table th:last-child{border-radius:0 8px 0 0}
+.compare-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .cost-old{color:var(--red);font-weight:600}
+.compare-table .cost-new{color:var(--green);font-weight:700}
+
+/* ── FAQ ── */
+.faq{padding:80px 24px;background:var(--bg)}
+.faq-inner{max-width:700px;margin:0 auto}
+.faq-item{background:var(--white);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.faq-q{padding:18px 24px;font-size:15px;font-weight:700;color:var(--navy);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-q::after{content:'+';font-size:22px;font-weight:400;color:var(--silver);transition:transform .2s}
+.faq-item.open .faq-q::after{content:'−'}
+.faq-a{padding:0 24px 18px;font-size:14px;color:var(--text-light);line-height:1.6;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* ── FINAL CTA ── */
+.final-cta{padding:80px 24px;background:linear-gradient(135deg,var(--navy) 0%,#0d1a3a 100%);text-align:center}
+.final-cta h2{color:var(--white);font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:12px}
+.final-cta p{color:var(--silver);font-size:17px;max-width:500px;margin:0 auto 32px}
+.final-cta .hero-cta{font-size:18px;padding:16px 48px}
+
+/* ── FOOTER ── */
+.footer{background:var(--navy);padding:32px 24px;text-align:center;font-size:12px;color:rgba(255,255,255,.45);border-top:1px solid rgba(255,255,255,.08)}
+.footer-logo{display:inline-block;background:var(--white);padding:10px 22px;border-radius:8px;margin-bottom:16px}
+.footer-logo img{height:34px;display:block}
+
+@media(max-width:600px){
+  .hero{padding:60px 20px 70px}
+  .pain,.how,.benefits,.plans,.compare,.faq,.final-cta{padding:60px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
+  <div class="nav-right">
+    <a href="tel:8552673532" class="nav-phone">855-267-3532</a>
+    <a href="https://apply.selectservicepros.com" class="nav-cta">Apply Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo"><img src="/logo.png" alt="Select Home Warranty" onerror="this.parentElement.style.display='none'"></div>
+    <h1>Stop Chasing Leads.<br><span>Let the Work Come to You.</span></h1>
+    <p>Join the thousands of contractors nationwide who get dispatched work orders, guaranteed payment, and free software &mdash; without spending a dime on marketing.</p>
+    <a href="https://apply.selectservicepros.com" class="hero-cta">Join the Network →</a>
+    <div class="hero-sub">Plans starting at $49.99/mo · Cancel anytime · No long-term contracts</div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers">
+  <div class="numbers-inner">
+    <div class="num-item">
+      <div class="num-val">100,000s</div>
+      <div class="num-label">Customers nationwide</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val">1,000s</div>
+      <div class="num-label">Contractors in the network</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val">50 States</div>
+      <div class="num-label">Nationwide coverage</div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section class="pain">
+  <div class="pain-inner">
+    <div class="section-label">Sound Familiar?</div>
+    <div class="section-title">The Lead Generation Trap</div>
+    <p class="section-sub">Most contractors are stuck paying for leads that don't convert. Here's what changes when the work comes to you.</p>
+
+    <div class="vs-grid">
+      <div class="vs-col vs-before">
+        <div class="vs-head">
+          <span class="vs-tag red">Right Now</span>
+          <h3>Running your business on lead spend</h3>
+        </div>
+        <ul class="vs-list">
+          <li>Spending $2,000&ndash;$5,000/mo on Google Ads, HomeAdvisor, Angi, Thumbtack</li>
+          <li>Paying $15&ndash;$75 per lead &mdash; shared with 4 other contractors</li>
+          <li>Calling leads that already booked someone else</li>
+          <li>Slammed one month, dead the next &mdash; no way to plan</li>
+          <li>Chasing homeowners for payment after the job is done</li>
+          <li>Paying around $300/mo for dispatch software</li>
+          <li>Getting undercut by unlicensed guys on price alone</li>
+        </ul>
+      </div>
+
+      <div class="vs-col vs-after">
+        <div class="vs-head">
+          <span class="vs-tag green">With SHW</span>
+          <h3>Running your business on dispatched work</h3>
+        </div>
+        <ul class="vs-list">
+          <li>$0 spent on marketing &mdash; work orders come to you</li>
+          <li>$0 per lead &mdash; ever</li>
+          <li>Every work order is a homeowner who already filed a claim</li>
+          <li>Steady, year-round warranty work to fill your schedule</li>
+          <li>SHW pays you directly &mdash; Net 30 or Net 15</li>
+          <li>Dispatch.me software included free</li>
+          <li>Show up backed by a national brand homeowners trust</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD QUALITY -->
+<section class="leads" style="background:var(--white)">
+  <div class="leads-inner">
+    <div class="section-label">Not All Leads Are Equal</div>
+    <div class="section-title">A Shared Lead vs. a Real Work Order</div>
+    <p class="section-sub">Lead marketplaces sell you contact information. We send you a homeowner who already has a claim open and needs the repair now.</p>
+
+    <div class="lead-cards">
+      <div class="lead-card cold">
+        <div class="lead-kicker">Lead Marketplaces</div>
+        <h3>You buy a name and a phone number</h3>
+        <p class="lead-desc">Someone filled out a form asking about a price. That same form gets sold to several contractors at once, and whoever calls first usually wins.</p>
+        <ul class="lead-facts">
+          <li><span>The same lead is sold to <strong>multiple contractors</strong> &mdash; you're racing everyone else to the phone</span></li>
+          <li><span>You pay <strong>whether or not</strong> they answer, book, or were ever serious</span></li>
+          <li><span>Many are still shopping around, comparing prices, or just curious</span></li>
+          <li><span>You compete on price against whoever bids lowest</span></li>
+          <li><span>Collecting payment is entirely on you</span></li>
+        </ul>
+      </div>
+
+      <div class="lead-card warm">
+        <div class="lead-kicker">Select Home Warranty</div>
+        <h3>You get a dispatched job with a claim behind it</h3>
+        <p class="lead-desc">A homeowner with an active warranty has something broken, has already filed a claim, and is waiting for a technician. That work order is dispatched to you.</p>
+        <ul class="lead-facts">
+          <li><span>Dispatched to <strong>you</strong> &mdash; not resold to a list of competitors</span></li>
+          <li><span><strong>$0 per lead.</strong> You never pay for a name and a phone number</span></li>
+          <li><span>Something is already broken and the homeowner wants it fixed now</span></li>
+          <li><span>Rates are agreed up front &mdash; no bidding war on price</span></li>
+          <li><span>SHW pays you directly on approved invoices</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="leads-note">The difference is intent. A marketplace lead is someone thinking about a repair. An SHW work order is someone whose water heater failed this morning and has a warranty claim open on it.</p>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="benefits-inner">
+    <div class="section-label">Why Contractors Choose SHW</div>
+    <div class="section-title">Everything You Need to Grow Your Business</div>
+    <p class="section-sub">We handle the marketing, the customer billing, and the dispatch. You focus on what you do best — the work.</p>
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="benefit-icon">📋</div>
+        <div>
+          <h3>Work Orders Dispatched to You</h3>
+          <p>No more marketing. No more cold calling. Work orders come directly to your phone based on your trade and coverage area.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">🚫</div>
+        <div>
+          <h3>Zero Lead Costs</h3>
+          <p>You'll never pay for a single lead. Every work order is a real homeowner with a real problem that needs fixing today.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">📝</div>
+        <div>
+          <h3>The Job Stays With You — Approved or Not</h3>
+          <p>If a claim isn't covered under the homeowner's plan, they still have a problem and you're already on site. You're free to quote and perform that work directly, on your own terms.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">💰</div>
+        <div>
+          <h3>Guaranteed Payment</h3>
+          <p>No chasing customers. SHW pays you directly — Net 30 on Basic, Net 15 on Premium. Predictable cash flow, every time.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">📱</div>
+        <div>
+          <h3>Free Dispatch.me Software</h3>
+          <p>Real-time job management, scheduling, and dispatch — included with your membership. On its own that's about $300/mo, more than your entire Basic membership.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">📍</div>
+        <div>
+          <h3>Work in Your Coverage Area</h3>
+          <p>You set your service area. We only dispatch jobs within it. No driving 45 minutes to a job that pays $75.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">🛡️</div>
+        <div>
+          <h3>National Brand Credibility</h3>
+          <p>Homeowners trust Select Home Warranty. When you show up as an SHW contractor, you're backed by a brand they already know.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">📊</div>
+        <div>
+          <h3>Steady, Predictable Revenue</h3>
+          <p>Warranty work doesn't dry up seasonally. Fill your schedule gaps and build a reliable income stream year-round.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">🔓</div>
+        <div>
+          <h3>No Long-Term Contracts</h3>
+          <p>Cancel anytime. No commitment, no cancellation fees, no strings attached. Stay because it works, not because you're locked in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MID CTA -->
+<section class="mid-cta">
+  <div class="mid-cta-inner">
+    <h3>Every month you wait is another month of ad spend.</h3>
+    <a href="https://apply.selectservicepros.com" class="hero-cta">Join the Network &rarr;</a>
+    <div class="hero-sub" style="color:var(--text-light);margin-top:12px">Plans from $49.99/mo &middot; Cancel anytime</div>
+  </div>
+</section>
+
+<!-- COST COMPARISON -->
+<section class="compare" style="background:var(--bg)">
+  <div class="compare-inner">
+    <div class="section-label">The Math Speaks for Itself</div>
+    <div class="section-title">What You're Spending Now vs. SHW</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Expense</th><th>Without SHW</th><th>With SHW</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Lead generation (Google, HomeAdvisor, etc.)</td><td class="cost-old">$2,000–$5,000/mo</td><td class="cost-new">$0</td></tr>
+        <tr><td>Cost per lead</td><td class="cost-old">$15–$75 each</td><td class="cost-new">$0</td></tr>
+        <tr><td>Dispatch.me software</td><td class="cost-old">~$300/mo</td><td class="cost-new">$0 (included)</td></tr>
+        <tr><td>Chasing invoices & collections</td><td class="cost-old">Hours of your time</td><td class="cost-new">SHW pays you directly</td></tr>
+        <tr><td>SHW membership</td><td class="cost-old">—</td><td class="cost-new">Starting at $49.99/mo</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" style="background:var(--white)">
+  <div class="how-inner">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">From Application to Dispatched in Days</div>
+    <p class="section-sub">Getting started takes less than 15 minutes. Here's how it works.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <h3>Apply Online</h3>
+        <p>Complete the application, upload your insurance and licenses, and choose your plan. The whole process takes only a few minutes.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <h3>Get Approved</h3>
+        <p>Our team reviews your application within 2–3 business days. Once approved, you're added to the dispatch network for your coverage area.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <h3>Start Getting Work Orders</h3>
+        <p>Homeowners in your area file claims, and work orders are dispatched directly to you. Complete the job, submit your invoice, get paid.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="plans" id="plans">
+  <div class="plans-inner">
+    <div class="section-label">Membership Plans</div>
+    <div class="section-title">Choose the Plan That Fits Your Business</div>
+    <p class="section-sub">Both plans include work orders, guaranteed payment, and free software. Premium unlocks priority dispatch and faster pay.</p>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-badge">Great Start</div>
+        <h3>SHW Basic Plan</h3>
+        <div class="plan-price"><span class="amt">$49<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <ul class="plan-features">
+          <li>Access to work orders — no paying for leads</li>
+          <li>30 day payment terms</li>
+          <li>Free Dispatch.me software</li>
+        </ul>
+        <a href="https://apply.selectservicepros.com" class="plan-cta blue">Get Started →</a>
+      </div>
+      <div class="plan-card">
+        <div class="plan-badge orange">Best Value</div>
+        <h3>SHW Premium Service Network</h3>
+        <div class="plan-price"><span class="amt">$129<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <ul class="plan-features">
+          <li>Everything in the Basic Plan</li>
+          <li>Priority work order routing — dispatched first</li>
+          <li>Faster payment — Net 15 instead of Net 30</li>
+          <li>Benefits Hub — insurance, supplies, discounts</li>
+          <li>Priority phone support line</li>
+          <li>Premium badge on your profile</li>
+        </ul>
+        <a href="https://apply.selectservicepros.com" class="plan-cta orange">Go Premium →</a>
+      </div>
+    </div>
+    <div class="plans-free">Not ready to commit? <a href="https://apply.selectservicepros.com">Apply as a free network contractor</a> and upgrade anytime.</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div style="text-align:center">
+      <div class="section-label">FAQ</div>
+      <div class="section-title" style="margin-bottom:32px">Common Questions</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How quickly will I start getting work orders?</div>
+      <div class="faq-a">Most contractors start receiving work orders within 1–2 weeks of approval, depending on demand in your coverage area and trade specialty. Premium members get priority routing, which means faster dispatch.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I have to pay for leads?</div>
+      <div class="faq-a">Never. Unlike HomeAdvisor or Angie's List, you never pay per lead. Work orders are dispatched directly to you as part of your membership. The homeowner has already filed a claim — you just show up and do the work.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I get paid?</div>
+      <div class="faq-a">After you complete a work order and submit your invoice, SHW pays you directly. Basic plan members are paid on Net 30 terms. Premium members get Net 15 — meaning you get paid in half the time.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I set my own coverage area?</div>
+      <div class="faq-a">Yes. During the application, you specify the states, counties, and cities you want to cover. We only dispatch jobs within your chosen area. You can update your coverage area at any time.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What trades do you need?</div>
+      <div class="faq-a">We need contractors across all home service trades: HVAC, plumbing, electrical, appliance repair, garage door, pool/spa, roofing, and more. If you're licensed and insured, we likely have work for you.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is there a long-term contract?</div>
+      <div class="faq-a">No. You can cancel your membership at any time with no cancellation fees or penalties. We believe you should stay because it works for your business, not because you're locked into a contract.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is Dispatch.me?</div>
+      <div class="faq-a">Dispatch.me is a professional dispatch and scheduling platform included free with every membership. It lets you receive work orders, schedule appointments, track jobs, and manage your workflow — all from your phone. On its own it runs about $300/mo — more than the Basic membership costs in total.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What do I need to apply?</div>
+      <div class="faq-a">You'll need your business information, contractor license(s), a Certificate of Insurance listing SHW as additional insured, and a completed W-9. The application takes only a few minutes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Ready to Stop Paying for Leads?</h2>
+  <p>Join the network, get dispatched work, and focus on what you do best.</p>
+  <a href="https://apply.selectservicepros.com" class="hero-cta">Apply Now — It Only Takes a Few Minutes →</a>
+  <div class="hero-sub" style="margin-top:14px">Plans starting at $49.99/mo · Cancel anytime</div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo"><img src="/logo.png" alt="Select Home Warranty" onerror="this.parentElement.style.display='none'"></div>
+  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-267-3532
+</div>
+
+</body>
+</html>
