@@ -1,18 +1,20 @@
 export default async function handler(req, res) {
   // Fires a full-field payload at GHL for mapping/verification.
-  // ?stage=paid      -> paid, application not yet submitted
-  // ?stage=complete  -> application submitted
+  // ?stage=lead | app | paid | paidcomplete | freecomplete
   // Each call uses a unique name + email so it always creates a NEW contact.
-  const stage = (req.query && req.query.stage) || 'started';
+  const stage = (req.query && req.query.stage) || 'lead';
   const stamp = Date.now().toString().slice(-6);
 
-  const cfg = {
-    started:  { label: 'Leadtest',  status: 'Started - Not Paid',            tag: 'SHW Lead - Started',  paying: 'No',  tier: '',      plan: 'Not selected yet',            price: '$0' },
-    paid:     { label: 'Paidtest',  status: 'Paid - Application Incomplete', tag: 'SHW Lead - Paid No App', paying: 'Yes', tier: 'basic', plan: 'SHW Basic Plan',           price: '$49.99/mo' },
-    complete: { label: 'Donetest',  status: 'Complete - Application Submitted', tag: 'SHW Lead - Complete', paying: 'Yes', tier: 'basic', plan: 'SHW Basic Plan',           price: '$49.99/mo' }
-  }[stage] || null;
+  const CFG = {
+    lead:         { label: 'S1lead',  status: '1 - Lead, Not Paid',        tag: 'SHW Lead - Not Paid',     paying: 'No',  tier: '',        plan: 'Not selected yet',            price: '$0' },
+    app:          { label: 'S2app',   status: '2 - App Started, Not Paid', tag: 'SHW Lead - App Started',  paying: 'No',  tier: 'free',    plan: 'Free Network Contractor',     price: '$0' },
+    paid:         { label: 'S3paid',  status: '3 - Paid, App Pending',     tag: 'SHW Lead - Paid Pending', paying: 'Yes', tier: 'basic',   plan: 'SHW Basic Plan',              price: '$49.99/mo' },
+    paidcomplete: { label: 'S4done',  status: '4 - Paid, App Complete',    tag: 'SHW Lead - Paid Complete',paying: 'Yes', tier: 'premium', plan: 'SHW Premium Service Network', price: '$129.99/mo' },
+    freecomplete: { label: 'S5free',  status: '5 - Free, App Complete',    tag: 'SHW Lead - Free Complete',paying: 'No',  tier: 'free',    plan: 'Free Network Contractor',     price: '$0' }
+  };
 
-  if (!cfg) return res.status(400).json({ error: 'stage must be started, paid, or complete' });
+  const cfg = CFG[stage];
+  if (!cfg) return res.status(400).json({ error: 'stage must be one of: ' + Object.keys(CFG).join(', ') });
 
   const payload = {
     firstName: cfg.label,
@@ -53,7 +55,7 @@ export default async function handler(req, res) {
       body: JSON.stringify(payload)
     });
     const text = await resp.text();
-    return res.status(200).json({ success: true, stage: stage, searchFor: payload.name, ghlStatus: resp.status, ghlResponse: text, payloadSent: payload });
+    return res.status(200).json({ success: true, stage: stage, searchFor: payload.name, status: cfg.status, ghlStatus: resp.status, ghlResponse: text });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }

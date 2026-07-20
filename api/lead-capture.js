@@ -13,9 +13,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'A valid email is required' });
     }
 
-    // stage: 'started'  = filled the landing form, has not paid
-    //        'paid'     = payment completed, application not yet submitted
-    const stage = d.stage === 'paid' ? 'paid' : 'started';
+    // stage: 'started'      = filled the landing form, has not paid
+    //        'app_started'  = began the application (free path), not submitted
+    //        'paid'         = payment completed, application not yet submitted
+    const VALID = ['started', 'app_started', 'paid'];
+    const stage = VALID.indexOf(d.stage) !== -1 ? d.stage : 'started';
 
     const planNames = {
       'basic': 'SHW Basic Plan',
@@ -34,6 +36,12 @@ export default async function handler(req, res) {
     const paid = stage === 'paid';
     const plan = d.plan || '';
 
+    const STATUS = {
+      'started':     { label: '1 - Lead, Not Paid',       tag: 'SHW Lead - Not Paid' },
+      'app_started': { label: '2 - App Started, Not Paid', tag: 'SHW Lead - App Started' },
+      'paid':        { label: '3 - Paid, App Pending',    tag: 'SHW Lead - Paid Pending' }
+    }[stage];
+
     const payload = {
       firstName: d.firstName || '',
       lastName: d.lastName || '',
@@ -47,8 +55,8 @@ export default async function handler(req, res) {
       type: 'contractor',
 
       // Funnel stage — lets GHL route these differently
-      lead_status: paid ? 'Paid - Application Incomplete' : 'Started - Not Paid',
-      lead_status_tag: paid ? 'SHW Lead - Paid No App' : 'SHW Lead - Started',
+      lead_status: STATUS.label,
+      lead_status_tag: STATUS.tag,
 
       // Plan + payment state
       paying_member: paid ? 'Yes' : 'No',

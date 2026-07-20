@@ -78,6 +78,7 @@ export default async function handler(req, res) {
         'free': '$0'
       };
       // Capitalize salesperson code for display (e.g. "celia" -> "Celia")
+      const isPaid = (data.selectedPlan === 'basic' || data.selectedPlan === 'premium');
       const spRaw = (data.salesperson || '').toLowerCase().trim();
       const spDisplay = spRaw ? spRaw.charAt(0).toUpperCase() + spRaw.slice(1) : '';
 
@@ -98,13 +99,13 @@ export default async function handler(req, res) {
         contractor_membership_tier: data.selectedPlan,
         contractor_plan_name: planNames[data.selectedPlan] || 'Unknown',
         contractor_plan_price: planPrices[data.selectedPlan] || '$0',
-        paying_member: (data.selectedPlan === 'basic' || data.selectedPlan === 'premium') ? 'Yes' : 'No',
+        paying_member: isPaid ? 'Yes' : 'No',
         industry: data.natureOfBusiness,
         coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
 
-        // Final funnel stage — application is submitted
-        lead_status: 'Complete - Application Submitted',
-        lead_status_tag: 'SHW Lead - Complete',
+        // Final funnel stage — paying members and free contractors tracked separately
+        lead_status: isPaid ? '4 - Paid, App Complete' : '5 - Free, App Complete',
+        lead_status_tag: isPaid ? 'SHW Lead - Paid Complete' : 'SHW Lead - Free Complete',
 
         salesperson: spDisplay,
         salesperson_tag: spDisplay ? 'Sold by ' + spDisplay : '',
@@ -115,7 +116,7 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ghlPayload)
       });
-      console.log('GHL webhook response:', ghlResp.status, '| plan:', data.selectedPlan, '| status: Complete | salesperson:', spDisplay || 'none');
+      console.log('GHL webhook response:', ghlResp.status, '| plan:', data.selectedPlan, '| status:', isPaid ? '4-Paid Complete' : '5-Free Complete', '| salesperson:', spDisplay || 'none');
     } catch (ghlErr) {
       console.error('GHL webhook error (non-blocking):', ghlErr.message);
     }
