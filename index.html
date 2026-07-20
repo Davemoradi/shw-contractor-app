@@ -6,11 +6,12 @@
 <title>Service Provider Application — Select Home Warranty</title>
 <meta name="description" content="Apply to join the Select Home Warranty contractor network. Complete our Service Provider Application to get started.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#1a2b5f;--blue:#2557a7;--silver:#c0c4cc;--bg:#f4f5f7;--white:#fff;--red:#d32f2f;--green:#2e7d32;--orange:#f05528;--text:#333;--text-light:#666;--border:#ddd;--radius:8px}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+:root{--navy:#1a2b5f;--blue:#2557a7;--silver:#c0c4cc;--bg:#f4f5f7;--white:#fff;--red:#d32f2f;--green:#2e7d32;--orange:#f05528;--text:#333;--text-light:#666;--border:#ddd;--radius:8px;--display:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-cta,.step-num,.included-head,.cost-label,.plan-badge{font-family:var(--display)}
 .header{background:var(--white);padding:14px 24px;text-align:center;border-bottom:1px solid var(--border)}
 .header img{height:52px;display:block;margin:0 auto}
 .header h1{color:var(--navy);font-size:19px;font-weight:700;margin:0}
@@ -33,9 +34,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .plan-card.selected{border-width:3px}
 .plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--white);font-size:11px;font-weight:700;padding:3px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
 .plan-badge.orange{background:var(--orange)}
-.plan-name{font-size:18px;font-weight:800;color:var(--navy);margin-top:6px;margin-bottom:3px}
+.plan-name{font-size:18px;font-weight:700;color:var(--navy);margin-top:6px;margin-bottom:3px;letter-spacing:-.3px}
 .plan-tagline{font-size:13px;color:var(--text-light);margin-bottom:14px}
-.plan-price .amt{font-size:38px;font-weight:800;color:var(--navy)}
+.plan-price .amt{font-size:38px;font-weight:800;color:var(--navy);letter-spacing:-1.4px;font-variant-numeric:tabular-nums}
 .plan-price .per{font-size:15px;color:var(--text-light)}
 .plan-note{font-size:12px;color:var(--text-light);margin-bottom:16px}
 .plan-divider{height:1px;background:var(--border);margin:14px 0}
@@ -44,7 +45,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .plan-features li .fi{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px}
 .plan-features li .fi.ck{background:#e8f5e9;color:var(--green)}
 .plan-features li .fi.st{background:#fff3e0;color:#e65100}
-.plan-cta{display:block;width:100%;padding:12px;border:none;border-radius:6px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;color:var(--white);transition:all .2s}
+.plan-cta{display:block;width:100%;padding:12px;border:none;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:-.2px;cursor:pointer;text-align:center;color:var(--white);transition:all .2s}
 .plan-cta.blue{background:var(--blue)}
 .plan-cta.blue:hover{background:var(--navy)}
 .plan-cta.orange{background:var(--orange)}
@@ -57,17 +58,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 /* ===== PLANS HERO ===== */
 .plans-hero{background:linear-gradient(135deg,var(--navy) 0%,#0d1a3a 100%);padding:48px 24px 42px;text-align:center}
 .plans-hero-inner{max-width:760px;margin:0 auto}
-.plans-hero h2{color:var(--white);font-size:clamp(24px,4vw,34px);font-weight:800;margin-bottom:10px;letter-spacing:-.3px}
+.plans-hero h2{color:var(--white);font-size:clamp(24px,4vw,34px);font-weight:800;margin-bottom:10px;letter-spacing:-1px}
 .plans-hero p{color:var(--silver);font-size:16px;max-width:560px;margin:0 auto}
 .trust-row{display:flex;justify-content:center;gap:40px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
 .trust-item{text-align:center}
-.trust-item strong{display:block;color:var(--orange);font-size:22px;font-weight:800;line-height:1.2}
+.trust-item strong{display:block;color:var(--orange);font-size:23px;font-weight:800;line-height:1.2;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
 .trust-item span{color:rgba(255,255,255,.55);font-size:12px}
 @media(max-width:600px){.plans-hero{padding:34px 18px 30px}.trust-row{gap:22px}.trust-item strong{font-size:18px}}
 
 /* ===== INCLUDED STRIP ===== */
 .included-strip{max-width:860px;margin:0 auto 26px;background:var(--white);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:10px;padding:20px 24px}
-.included-head{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.included-head{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:12px}
 .included-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
 @media(max-width:700px){.included-list{grid-template-columns:1fr}}
 .included-list li{position:relative;padding:5px 0 5px 24px;font-size:13px;color:var(--text);line-height:1.45}
@@ -77,10 +78,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 /* ===== COST COMPARISON ===== */
 .cost-section{max-width:720px;margin:8px auto 40px;text-align:center}
 .cost-label{text-transform:uppercase;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--orange);margin-bottom:6px}
-.cost-title{font-size:clamp(20px,3vw,27px);font-weight:800;color:var(--navy);margin-bottom:22px}
+.cost-title{font-size:clamp(20px,3vw,27px);font-weight:800;color:var(--navy);margin-bottom:22px;letter-spacing:-.6px}
 .cost-table{width:100%;border-collapse:collapse;text-align:left;background:var(--white);border-radius:10px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07)}
 .cost-table th{background:var(--navy);color:var(--white);padding:13px 16px;font-size:13px;font-weight:700}
-.cost-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top}
+.cost-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;font-variant-numeric:tabular-nums}
 .cost-table tr:last-child td{border-bottom:none}
 .cost-table tr:last-child{background:#f2f7ff}
 .cost-old{color:var(--red);font-weight:600;white-space:nowrap}
@@ -107,11 +108,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .form-wrap{max-width:720px;margin:0 auto;padding:0 16px 40px}
 .panel{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:28px 24px;margin-bottom:16px;display:none}
 .panel.active{display:block}
-.panel h2{color:var(--navy);font-size:18px;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--blue)}
+.panel h2{color:var(--navy);font-size:18px;font-weight:700;letter-spacing:-.3px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--blue)}
 .field{margin-bottom:16px}
 .field label{display:block;font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)}
 .field label .req{color:var(--red);margin-left:2px}
-.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;background:var(--white);transition:border-color .2s}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:var(--body);background:var(--white);transition:border-color .2s;font-variant-numeric:tabular-nums}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,87,167,.12)}
 .field textarea{resize:vertical;min-height:80px}
 .field .hint{font-size:12px;color:var(--text-light);margin-top:3px}
@@ -150,7 +151,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .file-item .cat{font-size:11px;color:var(--blue);background:rgba(37,87,167,.1);padding:2px 8px;border-radius:10px}
 .file-item .remove{color:var(--red);cursor:pointer;background:none;border:none;font-size:16px;font-weight:700}
 .btn-row{display:flex;justify-content:space-between;margin-top:24px;gap:12px}
-.btn{padding:12px 28px;border:none;border-radius:6px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
+.btn{padding:12px 28px;border:none;border-radius:6px;font-size:15px;font-weight:600;letter-spacing:-.1px;cursor:pointer;transition:all .2s}
 .btn-primary{background:var(--blue);color:var(--white)}
 .btn-primary:hover{background:var(--navy)}
 .btn-primary:disabled{background:var(--silver);cursor:not-allowed}
@@ -562,7 +563,7 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
 // ── URL param pre-fill ──
 (function prefill() {
   const params = new URLSearchParams(window.location.search);
-  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone' };
+  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone', nature:'natureOfBusiness', trade:'natureOfBusiness' };
   Object.entries(map).forEach(([param, fieldId]) => {
     const val = params.get(param);
     if (val) {
@@ -609,6 +610,32 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
         }
       });
     }
+    // Tell GHL the payment landed, before they start the 6-step form.
+    // Without this, someone who pays then abandons the form stays flagged as unpaid.
+    try {
+      const rp = new URLSearchParams(savedParams || '');
+      const paidEmail = rp.get('email') || document.getElementById('email')?.value || '';
+      if (paidEmail && paidEmail.includes('@') && !sessionStorage.getItem('shw_paid_pinged')) {
+        sessionStorage.setItem('shw_paid_pinged', '1');
+        fetch('/api/lead-capture', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            stage: 'paid',
+            plan: savedPlan,
+            email: paidEmail,
+            firstName: rp.get('first_name') || '',
+            lastName: rp.get('last_name') || '',
+            companyName: rp.get('company') || '',
+            phone: rp.get('phone') || '',
+            zip: rp.get('zip') || '',
+            trade: rp.get('nature') || '',
+            salesperson: rp.get('sp') || rp.get('salesperson') || ''
+          })
+        }).catch(function(){ /* never block the applicant on this */ });
+      }
+    } catch (e) { /* non-blocking */ }
+
     // Clear session storage so refresh doesn't re-trigger
     sessionStorage.removeItem('shw_selected_plan');
     sessionStorage.removeItem('shw_prefill_params');
