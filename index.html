@@ -156,6 +156,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
   <div class="wrap">
     <div style="padding-top:16px"><a href="https://www.selecthomewarranty.com/contractors" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to SHW</a></div>
     <div class="plans-welcome">
+      <img src="/logo.png" alt="Select Home Warranty" style="height:72px;margin-bottom:16px" onerror="this.style.display='none'">
       <h2 id="plans-heading">Choose Your Membership Plan</h2>
       <p>Unlock work orders, faster pay, and exclusive tools — or continue as a free network contractor.</p>
     </div>
@@ -515,9 +516,11 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
   if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
 
   // ── Handle Stripe return ──
-  // Check if returning from Stripe checkout
+  // Only skip to application if payment_complete=1 param exists (set on Stripe redirect URL)
+  // Browser back button from Stripe won't have this param, so they'll see the plans page
   const savedPlan = sessionStorage.getItem('shw_selected_plan');
-  if (savedPlan && (savedPlan === 'basic' || savedPlan === 'premium')) {
+  const paymentComplete = params.get('payment_complete');
+  if (savedPlan && paymentComplete === '1' && (savedPlan === 'basic' || savedPlan === 'premium')) {
     // Restore prefill params from before Stripe redirect
     const savedParams = sessionStorage.getItem('shw_prefill_params');
     if (savedParams) {
@@ -538,6 +541,10 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
     sessionStorage.removeItem('shw_prefill_params');
     // Skip plans, go straight to application with payment confirmed
     showApplication(savedPlan);
+  } else {
+    // Clear stale sessionStorage if no payment was completed (e.g. browser back from Stripe)
+    sessionStorage.removeItem('shw_selected_plan');
+    sessionStorage.removeItem('shw_prefill_params');
   }
 })();
 
