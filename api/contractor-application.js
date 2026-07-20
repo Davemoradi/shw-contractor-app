@@ -68,15 +68,19 @@ export default async function handler(req, res) {
     // Send to GHL webhook (server-side, no CORS issues)
     try {
       const planNames = {
+        'basic': 'SHW Basic Plan',
         'premium': 'SHW Premium Service Network',
-        'premium-ssp': 'Premium + Select Service Pros',
         'free': 'Free Network Contractor'
       };
       const planPrices = {
-        'premium': '$174.99/mo',
-        'premium-ssp': '$299.99/mo',
+        'basic': '$49.99/mo',
+        'premium': '$129.99/mo',
         'free': '$0'
       };
+      // Capitalize salesperson code for display (e.g. "celia" -> "Celia")
+      const spRaw = (data.salesperson || '').toLowerCase().trim();
+      const spDisplay = spRaw ? spRaw.charAt(0).toUpperCase() + spRaw.slice(1) : '';
+
       const ghlPayload = {
         firstName: data.ownerName ? data.ownerName.split(' ')[0] : '',
         lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
@@ -89,14 +93,16 @@ export default async function handler(req, res) {
         state: data.state,
         zip: data.zip,
         website: data.website,
-        source: 'SHW Vendor Packet',
+        source: spDisplay ? 'SHW Vendor Packet - ' + spDisplay : 'SHW Vendor Packet',
         type: 'contractor',
         contractor_membership_tier: data.selectedPlan,
         contractor_plan_name: planNames[data.selectedPlan] || 'Unknown',
         contractor_plan_price: planPrices[data.selectedPlan] || '$0',
-        paying_member: data.selectedPlan === 'premium' || data.selectedPlan === 'premium-ssp' ? 'Yes' : 'No',
+        paying_member: (data.selectedPlan === 'basic' || data.selectedPlan === 'premium') ? 'Yes' : 'No',
         industry: data.natureOfBusiness,
         coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
+        salesperson: spDisplay,
+        salesperson_tag: spDisplay ? 'Sold by ' + spDisplay : '',
         lead_id: 'SHW-VP-' + Date.now()
       };
       const ghlResp = await fetch('https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/44c356d5-2fb0-4e5a-9b80-a3237057bccb', {
@@ -104,7 +110,7 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ghlPayload)
       });
-      console.log('GHL webhook response:', ghlResp.status);
+      console.log('GHL webhook response:', ghlResp.status, '| plan:', data.selectedPlan, '| salesperson:', spDisplay || 'none');
     } catch (ghlErr) {
       console.error('GHL webhook error (non-blocking):', ghlErr.message);
     }
@@ -152,6 +158,11 @@ function buildEmailHTML(d) {
     filesHTML = d.files.map(f => `📎 ${f.name} (${f.category || 'document'})`).join('<br>');
   }
 
+  const planBg = d.selectedPlan === 'premium' ? '#f05528' : d.selectedPlan === 'basic' ? '#2557a7' : '#666';
+  const planLabel = d.selectedPlan === 'basic' ? 'SHW Basic Plan — $49.99/mo'
+    : d.selectedPlan === 'premium' ? 'SHW Premium Service Network — $129.99/mo'
+    : 'Free Network Contractor (no plan selected)';
+
   return `
     <div style="font-family:'DM Sans',Arial,sans-serif;max-width:700px;margin:0 auto;color:#333;">
       <div style="background:#1a2b5f;padding:24px;text-align:center;">
@@ -160,9 +171,10 @@ function buildEmailHTML(d) {
       </div>
 
       <div style="padding:24px;">
-        <div style="background:${d.selectedPlan === 'premium-ssp' ? '#f05528' : d.selectedPlan === 'premium' ? '#2557a7' : '#666'};color:#fff;padding:12px 16px;border-radius:6px;margin-bottom:20px;font-size:15px;font-weight:600;">
-          Selected Plan: ${d.selectedPlan === 'premium' ? 'SHW Premium Service Network — $174.99/mo' : d.selectedPlan === 'premium-ssp' ? 'Premium + Select Service Pros — $299.99/mo' : 'Free Network Contractor (no plan selected)'}
+        <div style="background:${planBg};color:#fff;padding:12px 16px;border-radius:6px;margin-bottom:20px;font-size:15px;font-weight:600;">
+          Selected Plan: ${planLabel}
         </div>
+        ${d.salesperson ? `<div style="background:#f0f2f5;border-left:4px solid #1a2b5f;padding:10px 14px;margin-bottom:20px;font-size:14px;">Referred by: <strong>${d.salesperson}</strong></div>` : ''}
 
         <h2 style="color:#1a2b5f;border-bottom:2px solid #2557a7;padding-bottom:8px;">General Information</h2>
         <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
@@ -181,6 +193,7 @@ function buildEmailHTML(d) {
           ${row('Years in Business', d.yearsInBusiness)}
           ${row('Tax ID / EIN', d.taxId)}
           ${row('Business Type', d.businessType)}
+          ${row('Salesperson', d.salesperson)}
         </table>
 
         <h2 style="color:#1a2b5f;border-bottom:2px solid #2557a7;padding-bottom:8px;">Operations</h2>
