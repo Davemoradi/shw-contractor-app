@@ -11,11 +11,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#1a2b5f;--blue:#2557a7;--silver:#c0c4cc;--bg:#f4f5f7;--white:#fff;--red:#d32f2f;--green:#2e7d32;--orange:#f05528;--text:#333;--text-light:#666;--border:#ddd;--radius:8px}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-.header{background:var(--white);padding:16px 24px;text-align:center;border-bottom:1px solid var(--border)}
-.header img{height:52px;margin-bottom:10px}
+.header{background:var(--white);padding:14px 24px;text-align:center;border-bottom:1px solid var(--border)}
+.header img{height:52px;display:block;margin:0 auto}
 .header h1{color:var(--navy);font-size:19px;font-weight:700;margin:0}
 .header p{color:var(--text-light);font-size:13px;margin:3px 0 0}
-@media(max-width:600px){.header{padding:14px 18px}.header img{height:40px}.header h1{font-size:17px}}
+@media(max-width:600px){.header{padding:12px 18px}.header img{height:40px}}
 
 /* Shared container */
 .wrap{max-width:960px;margin:0 auto;padding:8px 16px 40px}
@@ -179,8 +179,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 
 <div class="header">
   <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
-  <h1>Service Provider Application</h1>
-  <p>Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430</p>
 </div>
 
 <!-- SELECTED PLAN BANNER (shows during application) -->
