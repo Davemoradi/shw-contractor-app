@@ -16,9 +16,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 /* ── NAV ── */
 .nav{background:var(--white);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);box-shadow:0 1px 12px rgba(0,0,0,.05)}
 .nav img{height:46px;display:block}
+.nav-link{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;margin-right:20px}
+.nav-link:hover{color:var(--blue)}
+@media(max-width:760px){.nav-link{display:none}}
 .nav-phone{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;margin-right:20px}
 .nav-right{display:flex;align-items:center}
-@media(max-width:600px){.nav{padding:10px 16px}.nav img{height:36px}.nav-phone{display:none}}
+@media(max-width:600px){.nav{padding:10px 16px}.nav img{height:36px}.nav-link{color:var(--navy);text-decoration:none;font-weight:700;font-size:14px;margin-right:20px}
+.nav-link:hover{color:var(--blue)}
+@media(max-width:760px){.nav-link{display:none}}
+.nav-phone{display:none}}
 .nav-cta{background:var(--orange);color:var(--white);padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;transition:background .2s}
 .nav-cta:hover{background:#d44a20}
 
@@ -26,9 +32,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 .hero{background:linear-gradient(135deg,var(--navy) 0%,#0d1a3a 100%);padding:80px 24px 90px;text-align:center;position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:80px;background:var(--white);clip-path:ellipse(55% 100% at 50% 100%)}
 .hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1}
-.hero-logo{display:inline-block;background:var(--white);padding:14px 30px;border-radius:10px;margin-bottom:28px;box-shadow:0 4px 24px rgba(0,0,0,.18)}
-.hero-logo img{height:52px;display:block}
-@media(max-width:600px){.hero-logo{padding:11px 22px;margin-bottom:22px}.hero-logo img{height:38px}}
 .hero h1{color:var(--white);font-size:clamp(32px,5vw,52px);font-weight:800;line-height:1.15;margin-bottom:20px;letter-spacing:-0.5px}
 .hero h1 span{color:var(--orange)}
 .hero p{color:var(--silver);font-size:clamp(16px,2.2vw,20px);max-width:620px;margin:0 auto 32px;line-height:1.5}
@@ -152,6 +155,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 .compare-table .cost-old{color:var(--red);font-weight:600}
 .compare-table .cost-new{color:var(--green);font-weight:700}
 
+.included-strip{max-width:760px;margin:44px auto 26px;background:var(--white);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:12px;padding:22px 26px;text-align:left}
+.included-head{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.included-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+@media(max-width:700px){.included-list{grid-template-columns:1fr}}
+.included-list li{position:relative;padding:5px 0 5px 24px;font-size:13px;color:var(--text);line-height:1.45}
+.included-list li::before{content:'\2713';position:absolute;left:2px;top:5px;color:var(--green);font-weight:800;font-size:14px}
+.plan-reassure{text-align:center;font-size:12px;color:var(--text-light);margin-top:11px}
+.plans-grid{margin-top:0 !important}
+
 /* ── FAQ ── */
 .faq{padding:80px 24px;background:var(--bg)}
 .faq-inner{max-width:700px;margin:0 auto}
@@ -202,7 +214,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 <nav class="nav">
   <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
   <div class="nav-right">
-    <a href="tel:8552673532" class="nav-phone">855-267-3532</a>
+    <a href="#plans" class="nav-link">See Plans</a>
+    <a href="tel:8552243399" class="nav-phone">855-224-3399</a>
     <a href="https://apply.selectservicepros.com" class="nav-cta">Apply Now</a>
   </div>
 </nav>
@@ -210,7 +223,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-logo"><img src="/logo.png" alt="Select Home Warranty" onerror="this.parentElement.style.display='none'"></div>
     <h1>Stop Chasing Leads.<br><span>Let the Work Come to You.</span></h1>
     <p>Join the thousands of contractors nationwide who get dispatched work orders, guaranteed payment, and free software &mdash; without spending a dime on marketing.</p>
     <a href="https://apply.selectservicepros.com" class="hero-cta">Join the Network →</a>
@@ -421,8 +433,59 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
   </div>
 </section>
 
+<!-- PLANS -->
+<section class="plans" id="plans" style="background:var(--white)">
+  <div class="plans-inner">
+    <div class="section-label">Membership Plans</div>
+    <div class="section-title">Choose the Plan That Fits Your Business</div>
+    <p class="section-sub">Both plans include work orders, guaranteed payment, and free software. Premium unlocks priority dispatch and faster pay.</p>
+    <div class="included-strip">
+      <div class="included-head">Included with every membership</div>
+      <ul class="included-list">
+        <li>Work orders dispatched to you &mdash; never resold to competing contractors</li>
+        <li>You set your own coverage area &mdash; states, counties, and cities</li>
+        <li>SHW pays you directly on approved invoices &mdash; no chasing homeowners</li>
+        <li>If a claim isn&rsquo;t covered, you&rsquo;re free to quote that work directly</li>
+        <li>Cancel anytime &mdash; no long-term contract, no cancellation fee</li>
+      </ul>
+    </div>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-badge">Great Start</div>
+        <h3>SHW Basic Plan</h3>
+        <div class="plan-price"><span class="amt">$49<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <ul class="plan-features">
+          <li>Access to work orders &mdash; you never pay for a lead</li>
+          <li>Net 30 payment terms on approved invoices</li>
+          <li>Free Dispatch.me software &mdash; a $300/mo value</li>
+          <li>Steady warranty work to fill your schedule year-round</li>
+        </ul>
+        <a href="#" onclick="return goToCheckout('basic')" class="plan-cta blue">Get Started &rarr;</a>
+        <div class="plan-reassure">Cancel anytime &middot; No long-term contract</div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-badge orange">Best Value</div>
+        <h3>SHW Premium Service Network</h3>
+        <div class="plan-price"><span class="amt">$129<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <ul class="plan-features">
+          <li>Everything in the Basic Plan</li>
+          <li>Priority work order routing &mdash; get dispatched first</li>
+          <li>Paid twice as fast &mdash; Net 15 instead of Net 30</li>
+          <li>Benefits Hub access &mdash; insurance, supplies, discounts</li>
+          <li>Priority phone support line</li>
+          <li>Premium badge on your contractor profile</li>
+        </ul>
+        <a href="#" onclick="return goToCheckout('premium')" class="plan-cta orange">Go Premium &rarr;</a>
+        <div class="plan-reassure">Cancel anytime &middot; No long-term contract</div>
+      </div>
+    </div>
+    <div class="plans-free">Not ready to commit? <a href="https://apply.selectservicepros.com">Apply as a free network contractor</a> and upgrade anytime.</div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
-<section class="how" style="background:var(--white)">
+<section class="how" style="background:var(--bg)">
   <div class="how-inner">
     <div class="section-label">How It Works</div>
     <div class="section-title">From Application to Dispatched in Days</div>
@@ -444,43 +507,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
         <p>Homeowners in your area file claims, and work orders are dispatched directly to you. Complete the job, submit your invoice, get paid.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- PLANS -->
-<section class="plans" id="plans">
-  <div class="plans-inner">
-    <div class="section-label">Membership Plans</div>
-    <div class="section-title">Choose the Plan That Fits Your Business</div>
-    <p class="section-sub">Both plans include work orders, guaranteed payment, and free software. Premium unlocks priority dispatch and faster pay.</p>
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div class="plan-badge">Great Start</div>
-        <h3>SHW Basic Plan</h3>
-        <div class="plan-price"><span class="amt">$49<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
-        <ul class="plan-features">
-          <li>Access to work orders — no paying for leads</li>
-          <li>30 day payment terms</li>
-          <li>Free Dispatch.me software</li>
-        </ul>
-        <a href="https://apply.selectservicepros.com" class="plan-cta blue">Get Started →</a>
-      </div>
-      <div class="plan-card">
-        <div class="plan-badge orange">Best Value</div>
-        <h3>SHW Premium Service Network</h3>
-        <div class="plan-price"><span class="amt">$129<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
-        <ul class="plan-features">
-          <li>Everything in the Basic Plan</li>
-          <li>Priority work order routing — dispatched first</li>
-          <li>Faster payment — Net 15 instead of Net 30</li>
-          <li>Benefits Hub — insurance, supplies, discounts</li>
-          <li>Priority phone support line</li>
-          <li>Premium badge on your profile</li>
-        </ul>
-        <a href="https://apply.selectservicepros.com" class="plan-cta orange">Go Premium →</a>
-      </div>
-    </div>
-    <div class="plans-free">Not ready to commit? <a href="https://apply.selectservicepros.com">Apply as a free network contractor</a> and upgrade anytime.</div>
   </div>
 </section>
 
@@ -537,8 +563,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-logo"><img src="/logo.png" alt="Select Home Warranty" onerror="this.parentElement.style.display='none'"></div>
-  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-267-3532
+  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-224-3399
 </div>
+
+<script>
+// ── Plan checkout: remember the plan, then send to Stripe ──
+var PAYMENT_LINKS = {
+  'basic':   'https://buy.stripe.com/bJe6oIc9jedc4wOe8x0Fi0c',
+  'premium': 'https://buy.stripe.com/cNi8wQ6OZedc7J0c0p0Fi0d'
+};
+function goToCheckout(plan){
+  var url = PAYMENT_LINKS[plan];
+  if(!url){ window.location.href = 'https://apply.selectservicepros.com'; return false; }
+  try {
+    // apply.selectservicepros.com reads these after Stripe redirects back
+    sessionStorage.setItem('shw_selected_plan', plan);
+    sessionStorage.setItem('shw_prefill_params', window.location.search);
+  } catch(e){}
+  window.location.href = url;
+  return false;
+}
+</script>
 
 <!-- FLOATING APPLY CTA -->
 <a href="https://apply.selectservicepros.com" class="float-cta" id="floatCta" aria-label="Join the Select Home Warranty contractor network">
