@@ -101,6 +101,11 @@ export default async function handler(req, res) {
         paying_member: (data.selectedPlan === 'basic' || data.selectedPlan === 'premium') ? 'Yes' : 'No',
         industry: data.natureOfBusiness,
         coverage_areas: [data.coverageStates, data.coverageCounties, data.coverageCities].filter(Boolean).join(' | '),
+
+        // Final funnel stage — application is submitted
+        lead_status: 'Complete - Application Submitted',
+        lead_status_tag: 'SHW Lead - Complete',
+
         salesperson: spDisplay,
         salesperson_tag: spDisplay ? 'Sold by ' + spDisplay : '',
         lead_id: 'SHW-VP-' + Date.now()
@@ -110,7 +115,7 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ghlPayload)
       });
-      console.log('GHL webhook response:', ghlResp.status, '| plan:', data.selectedPlan, '| salesperson:', spDisplay || 'none');
+      console.log('GHL webhook response:', ghlResp.status, '| plan:', data.selectedPlan, '| status: Complete | salesperson:', spDisplay || 'none');
     } catch (ghlErr) {
       console.error('GHL webhook error (non-blocking):', ghlErr.message);
     }
