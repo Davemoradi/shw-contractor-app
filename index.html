@@ -741,6 +741,33 @@ function goTo(step) {
     if (currentStep === 5 && !document.getElementById('agreedToTerms').checked) { alert('Please agree to the terms before continuing.'); return; }
     if (!valid) { alert('Please fill in all required fields.'); return; }
   }
+  // Capture free-path applicants after Step 1 so abandoners aren't invisible.
+  // Paid users already have a status from the payment ping, so skip them.
+  if (currentStep === 1 && step === 2 && selectedPlan === 'free' && !sessionStorage.getItem('shw_app_pinged')) {
+    var apEmail = (document.getElementById('email').value || '').trim();
+    if (apEmail && apEmail.includes('@')) {
+      sessionStorage.setItem('shw_app_pinged', '1');
+      var owner = (document.getElementById('ownerName').value || '').trim();
+      var qp = new URLSearchParams(window.location.search);
+      fetch('/api/lead-capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stage: 'app_started',
+          plan: 'free',
+          email: apEmail,
+          firstName: owner.split(' ')[0] || '',
+          lastName: owner.split(' ').slice(1).join(' ') || '',
+          companyName: (document.getElementById('companyName').value || '').trim(),
+          phone: (document.getElementById('phone').value || '').trim(),
+          zip: (document.getElementById('zip').value || '').trim(),
+          trade: (document.getElementById('natureOfBusiness').value || '').trim(),
+          salesperson: qp.get('sp') || qp.get('salesperson') || ''
+        })
+      }).catch(function(){ /* never block the applicant */ });
+    }
+  }
+
   document.getElementById('p' + currentStep).classList.remove('active');
   document.getElementById('p' + step).classList.add('active');
   for (let i = 1; i <= totalSteps; i++) {
