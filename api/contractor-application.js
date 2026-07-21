@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: process.env.RESEND_FROM || 'SHW Contractor App <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'serviceprovider@selecthomewarranty.com'],
-        cc: data.email && data.email.includes('@') ? [data.email] : [],
+        cc: [],
         subject: `New Contractor Application — ${data.companyName || 'Unknown Company'}${data.docsMissing ? ' [DOCS MISSING]' : ''}`,
         html: html,
         attachments: attachments
@@ -63,6 +63,28 @@ export default async function handler(req, res) {
       console.error('RESEND_FROM:', process.env.RESEND_FROM);
       console.error('NOTIFY_EMAIL:', process.env.NOTIFY_EMAIL);
       throw new Error(result.message || errMsg || 'Email send failed');
+    }
+
+    // Confirmation to the contractor — separate from the internal notification
+    try {
+      if (data.email && data.email.includes('@')) {
+        const confResp = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: process.env.RESEND_FROM || 'Select Home Warranty <noreply@selectservicepros.com>',
+            to: [data.email],
+            subject: 'We received your application — Select Home Warranty',
+            html: buildConfirmationHTML(data)
+          })
+        });
+        console.log('Contractor confirmation:', confResp.status, '->', data.email);
+      }
+    } catch (confErr) {
+      console.error('Confirmation email failed (non-blocking):', confErr.message);
     }
 
     // Send to GHL webhook (server-side, no CORS issues)
@@ -378,4 +400,93 @@ function buildEmailHTML(d) {
       </div>
     </div>
   `;
+}
+
+function buildConfirmationHTML(d) {
+  const planNames = {
+    'basic': 'SHW Basic Plan',
+    'premium': 'SHW Premium Service Network',
+    'free': 'Free Network Contractor'
+  };
+  const planPrices = { 'basic': '$49.99/mo', 'premium': '$129.99/mo', 'free': 'No monthly fee' };
+  const planName = planNames[d.selectedPlan] || 'Free Network Contractor';
+  const planPrice = planPrices[d.selectedPlan] || 'No monthly fee';
+  const firstName = (d.ownerName || '').split(' ')[0] || 'there';
+
+  const docsBlock = d.docsMissing
+    ? `<div style="background:#fff4e5;border:1px solid #ffcc80;border-left:4px solid #f57c00;border-radius:6px;padding:16px 18px;margin:22px 0;">
+         <div style="font-size:15px;font-weight:700;color:#8a4b00;margin-bottom:6px;">One thing left</div>
+         <div style="font-size:14px;color:#5d3200;line-height:1.6;">
+           We still need your <strong>${d.docsMissing}</strong> before we can approve your account and start sending you work.<br><br>
+           Just reply to this email with the documents attached, or send them to
+           <a href="mailto:serviceprovider@selecthomewarranty.com" style="color:#8a4b00;font-weight:600;">serviceprovider@selecthomewarranty.com</a>.
+         </div>
+       </div>`
+    : `<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-left:4px solid #2e7d32;border-radius:6px;padding:14px 18px;margin:22px 0;">
+         <div style="font-size:14px;color:#1b5e20;font-weight:600;">&#10003; We have everything we need &mdash; nothing further is required from you right now.</div>
+       </div>`;
+
+  const step = (num, title, body) => `
+    <tr>
+      <td style="width:34px;vertical-align:top;padding:0 0 18px 0;">
+        <div style="width:26px;height:26px;border-radius:50%;background:#2557a7;color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:26px;">${num}</div>
+      </td>
+      <td style="vertical-align:top;padding:0 0 18px 0;">
+        <div style="font-size:15px;font-weight:700;color:#1a2b5f;margin-bottom:3px;">${title}</div>
+        <div style="font-size:14px;color:#666;line-height:1.55;">${body}</div>
+      </td>
+    </tr>`;
+
+  return `
+  <div style="font-family:Arial,Helvetica,sans-serif;background:#f4f5f7;padding:28px 14px;">
+    <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;">
+
+      <div style="background:#1a2b5f;padding:26px 28px;text-align:center;">
+        <div style="color:#fff;font-size:21px;font-weight:700;">Application Received</div>
+        <div style="color:#c0c4cc;font-size:14px;margin-top:5px;">Select Home Warranty Contractor Network</div>
+      </div>
+
+      <div style="padding:28px;">
+        <p style="font-size:16px;color:#333;margin:0 0 16px;">Hi ${firstName},</p>
+        <p style="font-size:15px;color:#444;line-height:1.65;margin:0 0 8px;">
+          Thanks for applying to the Select Home Warranty contractor network${d.companyName ? ' on behalf of <strong>' + d.companyName + '</strong>' : ''}.
+          We have your application and our service provider team is reviewing it now.
+        </p>
+
+        ${docsBlock}
+
+        <div style="font-size:15px;font-weight:700;color:#1a2b5f;margin:26px 0 14px;">What happens next</div>
+        <table style="width:100%;border-collapse:collapse;">
+          ${step(1, 'We review your application', 'Our team verifies your license, insurance, and coverage area. This usually takes 2&ndash;3 business days.')}
+          ${step(2, 'We reach out', 'You&rsquo;ll hear from us by phone or email once the review is complete, whether we need anything else or you&rsquo;re approved.')}
+          ${step(3, 'Work orders start coming to you', 'Once approved, you&rsquo;re added to the dispatch network for your area and jobs are sent straight to you.')}
+        </table>
+
+        <div style="background:#f4f5f7;border-radius:6px;padding:16px 18px;margin:24px 0;">
+          <div style="font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;">Your submission</div>
+          <table style="width:100%;font-size:14px;color:#444;">
+            ${d.companyName ? `<tr><td style="padding:3px 0;color:#888;width:120px;">Company</td><td style="padding:3px 0;font-weight:600;color:#1a2b5f;">${d.companyName}</td></tr>` : ''}
+            <tr><td style="padding:3px 0;color:#888;">Plan</td><td style="padding:3px 0;font-weight:600;color:#1a2b5f;">${planName} &mdash; ${planPrice}</td></tr>
+            ${d.natureOfBusiness ? `<tr><td style="padding:3px 0;color:#888;">Trades</td><td style="padding:3px 0;">${d.natureOfBusiness}</td></tr>` : ''}
+            ${d.coverageStates ? `<tr><td style="padding:3px 0;color:#888;">Coverage</td><td style="padding:3px 0;">${d.coverageStates}</td></tr>` : ''}
+          </table>
+        </div>
+
+        <p style="font-size:14px;color:#666;line-height:1.6;margin:22px 0 0;">
+          Questions in the meantime? Call us at <a href="tel:8552243399" style="color:#2557a7;font-weight:600;text-decoration:none;">855-224-3399</a>
+          or reply to this email.
+        </p>
+
+        <p style="font-size:14px;color:#444;margin:20px 0 0;">
+          &mdash; The Select Home Warranty Service Provider Team
+        </p>
+      </div>
+
+      <div style="background:#f4f5f7;padding:16px 28px;text-align:center;font-size:11px;color:#999;line-height:1.6;">
+        Select Home Warranty, LLC &mdash; 1000 Wyckoff Ave, Mahwah, NJ 07430<br>
+        You received this because you submitted a contractor application at apply.selectservicepros.com
+      </div>
+
+    </div>
+  </div>`;
 }
