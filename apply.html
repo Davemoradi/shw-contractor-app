@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Service Provider Application — Select Home Warranty</title>
+<meta name="description" content="Apply to join the Select Home Warranty contractor network. Complete our Service Provider Application to get started.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1a2b5f;--blue:#2557a7;--silver:#c0c4cc;--bg:#f4f5f7;--white:#fff;--red:#d32f2f;--green:#2e7d32;--orange:#f05528;--text:#333;--text-light:#666;--border:#ddd;--radius:8px;--display:'Archivo',system-ui,sans-serif;--body:'Inter',system-ui,sans-serif}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-cta,.step-num,.included-head,.cost-label,.plan-badge{font-family:var(--display)}
+.header{background:var(--white);padding:14px 24px;text-align:center;border-bottom:1px solid var(--border)}
+.header img{height:52px;display:block;margin:0 auto}
+.header h1{color:var(--navy);font-size:19px;font-weight:700;margin:0}
+.header p{color:var(--text-light);font-size:13px;margin:3px 0 0}
+@media(max-width:600px){.header{padding:12px 18px}.header img{height:40px}}
+
+/* Shared container */
+.wrap{max-width:960px;margin:0 auto;padding:8px 16px 40px}
+
+/* ===== PLAN SELECTION SCREEN ===== */
+.plans-screen{display:block}
+.plans-screen.hidden{display:none}
+.plans-welcome{text-align:center;padding:32px 16px 24px}
+.plans-welcome h2{color:var(--navy);font-size:26px;font-weight:800;margin-bottom:6px}
+.plans-welcome p{color:var(--text-light);font-size:15px;max-width:580px;margin:0 auto}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px;max-width:860px;margin-left:auto;margin-right:auto}
+@media(max-width:700px){.plans-grid{grid-template-columns:1fr}}
+.plan-card{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;transition:all .25s;cursor:pointer}
+.plan-card:hover,.plan-card.selected{border-color:var(--blue);box-shadow:0 4px 20px rgba(37,87,167,.12)}
+.plan-card.selected{border-width:3px}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--white);font-size:11px;font-weight:700;padding:3px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.plan-badge.orange{background:var(--orange)}
+.plan-name{font-size:18px;font-weight:700;color:var(--navy);margin-top:6px;margin-bottom:3px;letter-spacing:-.3px}
+.plan-tagline{font-size:13px;color:var(--text-light);margin-bottom:14px}
+.plan-price .amt{font-size:38px;font-weight:800;color:var(--navy);letter-spacing:-1.4px;font-variant-numeric:tabular-nums}
+.plan-price .per{font-size:15px;color:var(--text-light)}
+.plan-note{font-size:12px;color:var(--text-light);margin-bottom:16px}
+.plan-divider{height:1px;background:var(--border);margin:14px 0}
+.plan-features{list-style:none;margin-bottom:20px}
+.plan-features li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px;color:var(--text)}
+.plan-features li .fi{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px}
+.plan-features li .fi.ck{background:#e8f5e9;color:var(--green)}
+.plan-features li .fi.st{background:#fff3e0;color:#e65100}
+.plan-cta{display:block;width:100%;padding:12px;border:none;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:-.2px;cursor:pointer;text-align:center;color:var(--white);transition:all .2s}
+.plan-cta.blue{background:var(--blue)}
+.plan-cta.blue:hover{background:var(--navy)}
+.plan-cta.orange{background:var(--orange)}
+.plan-cta.orange:hover{background:#d44a20}
+.skip-row{text-align:center;margin:12px 0 32px}
+.skip-row a{color:var(--text-light);text-decoration:underline;font-size:14px;cursor:pointer}
+.skip-row a:hover{color:var(--navy)}
+.skip-row p{font-size:12px;color:var(--silver);margin-top:4px}
+
+/* ===== PLANS HERO ===== */
+.plans-hero{background:linear-gradient(135deg,var(--navy) 0%,#0d1a3a 100%);padding:48px 24px 42px;text-align:center}
+.plans-hero-inner{max-width:760px;margin:0 auto}
+.plans-hero h2{color:var(--white);font-size:clamp(24px,4vw,34px);font-weight:800;margin-bottom:10px;letter-spacing:-1px}
+.plans-hero p{color:var(--silver);font-size:16px;max-width:560px;margin:0 auto}
+.trust-row{display:flex;justify-content:center;gap:40px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
+.trust-item{text-align:center}
+.trust-item strong{display:block;color:var(--orange);font-size:23px;font-weight:800;line-height:1.2;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+.trust-item span{color:rgba(255,255,255,.55);font-size:12px}
+@media(max-width:600px){.plans-hero{padding:34px 18px 30px}.trust-row{gap:22px}.trust-item strong{font-size:18px}}
+
+/* ===== INCLUDED STRIP ===== */
+.included-strip{max-width:860px;margin:0 auto 26px;background:var(--white);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:10px;padding:20px 24px}
+.included-head{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.included-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+@media(max-width:700px){.included-list{grid-template-columns:1fr}}
+.included-list li{position:relative;padding:5px 0 5px 24px;font-size:13px;color:var(--text-light);line-height:1.45}
+.included-list li b{color:var(--navy);font-weight:650}
+.included-list li::before{content:'\2713';position:absolute;left:2px;top:5px;color:var(--green);font-weight:800;font-size:14px}
+.plan-reassure{text-align:center;font-size:12px;color:var(--text-light);margin-top:10px}
+
+/* ===== COST COMPARISON ===== */
+.cost-section{max-width:720px;margin:8px auto 40px;text-align:center}
+.cost-label{text-transform:uppercase;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--orange);margin-bottom:6px}
+.cost-title{font-size:clamp(20px,3vw,27px);font-weight:800;color:var(--navy);margin-bottom:22px;letter-spacing:-.6px}
+.cost-table{width:100%;border-collapse:collapse;text-align:left;background:var(--white);border-radius:10px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07)}
+.cost-table th{background:var(--navy);color:var(--white);padding:13px 16px;font-size:13px;font-weight:700}
+.cost-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;font-variant-numeric:tabular-nums}
+.cost-table tr:last-child td{border-bottom:none}
+.cost-table tr:last-child{background:#f2f7ff}
+.cost-old{color:var(--red);font-weight:600;white-space:nowrap}
+.cost-new{color:var(--green);font-weight:700}
+
+@media(max-width:600px){.cost-table th,.cost-table td{padding:10px 11px;font-size:12px}}
+
+/* ===== APPLICATION FORM ===== */
+.app-screen{display:none}
+.app-screen.visible{display:block}
+
+/* Stepper */
+.stepper{display:flex;justify-content:center;gap:0;padding:24px 16px 8px;max-width:800px;margin:0 auto;flex-wrap:wrap}
+.step-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--silver);font-weight:500;padding:4px 0}
+.step-item.active{color:var(--navy);font-weight:700}
+.step-item.done{color:var(--green)}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:var(--border);color:var(--text-light);flex-shrink:0}
+.step-item.active .step-num{background:var(--blue);color:var(--white)}
+.step-item.done .step-num{background:var(--green);color:var(--white)}
+.step-sep{width:24px;height:2px;background:var(--border);margin:0 4px;flex-shrink:0;align-self:center}
+.step-sep.done{background:var(--green)}
+
+/* Form */
+.form-wrap{max-width:720px;margin:0 auto;padding:0 16px 40px}
+.panel{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:28px 24px;margin-bottom:16px;display:none}
+.panel.active{display:block}
+.panel h2{color:var(--navy);font-size:18px;font-weight:700;letter-spacing:-.3px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--blue)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.field label .req{color:var(--red);margin-left:2px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:var(--body);background:var(--white);transition:border-color .2s;font-variant-numeric:tabular-nums}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,87,167,.12)}
+.field textarea{resize:vertical;min-height:80px}
+.field .hint{font-size:12px;color:var(--text-light);margin-top:3px}
+.field input.ok,.field select.ok{border-color:#7cc496;background-image:linear-gradient(transparent,transparent)}
+.field input.bad,.field select.bad{border-color:var(--red)}
+.fe{font-size:12px;color:var(--red);margin-top:4px;display:none}
+.fe.on{display:block}
+.fok{font-size:12px;color:var(--green);margin-top:4px;display:none}
+.fok.on{display:block}
+.pre{position:relative}
+.pre span.sym{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:14px;pointer-events:none}
+.pre input{padding-left:26px !important}
+.suf{position:relative}
+.suf span.sym{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:14px;pointer-events:none}
+.suf input{padding-right:28px !important}
+.pay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:7px}
+.pay-grid label{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--navy);cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;background:var(--white);transition:all .15s}
+.pay-grid label:hover{border-color:#b9c6dd}
+.pay-grid label:has(input:checked){border-color:var(--blue);border-width:2px;background:rgba(37,87,167,.06);padding:9.5px 11.5px}
+.pay-grid input{width:auto;accent-color:var(--blue);flex-shrink:0}
+.trade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px}
+.trade-grid label{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--navy);cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;background:var(--white);transition:all .15s}
+.trade-grid label:hover{border-color:#b9c6dd}
+.trade-grid label:has(input:checked){border-color:var(--blue);border-width:2px;background:rgba(37,87,167,.06);padding:9.5px 11.5px}
+.trade-grid input{width:auto;accent-color:var(--blue);flex-shrink:0}
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:4px;max-height:190px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:10px;background:var(--white)}
+.state-grid label{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:400;cursor:pointer;padding:3px 4px;border-radius:4px}
+.state-grid label:hover{background:var(--bg)}
+.state-grid input{width:auto;accent-color:var(--blue)}
+.state-tools{display:flex;gap:10px;margin-bottom:6px;font-size:12px}
+.state-tools button{background:none;border:none;color:var(--blue);cursor:pointer;font-family:inherit;font-size:12px;text-decoration:underline;padding:0}
+.state-count{font-size:12px;color:var(--text-light);margin-top:5px}
+.markup-warn{color:var(--red);font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:600px){.row,.row-3{grid-template-columns:1fr}}
+.radio-group,.check-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.radio-group label,.check-group label{display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;transition:all .2s}
+.radio-group label:has(input:checked),.check-group label:has(input:checked){border-color:var(--blue);background:rgba(37,87,167,.06);color:var(--navy)}
+.radio-group input,.check-group input{accent-color:var(--blue)}
+.license-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:8px;padding:12px;background:var(--bg);border-radius:6px}
+.license-row .field{margin-bottom:0}
+.license-row .field label{font-size:12px}
+@media(max-width:600px){.license-row{grid-template-columns:1fr;gap:6px}}
+.btn-sm{padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--white);cursor:pointer;font-size:13px;font-family:inherit}
+.btn-sm:hover{background:var(--bg)}
+.btn-sm.danger{color:var(--red);border-color:var(--red)}
+.markup-table{width:100%;border-collapse:collapse;margin:8px 0}
+.markup-table th,.markup-table td{padding:8px 12px;border:1px solid var(--border);text-align:left;font-size:13px}
+.markup-table th{background:var(--bg);font-weight:600}
+.markup-table input{width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:4px;font-size:13px;text-align:center}
+.coverage-cat{margin-bottom:16px}
+.coverage-cat h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.coverage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.coverage-grid label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;padding:6px 8px;border-radius:4px}
+.coverage-grid label:hover{background:var(--bg)}
+.agreement-box{max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:16px;font-size:13px;line-height:1.7;background:var(--bg);margin-bottom:16px}
+.agreement-box h4{font-size:14px;margin-bottom:8px;color:var(--navy)}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:8px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--blue);background:rgba(37,87,167,.04)}
+.upload-zone p{font-size:14px;color:var(--text-light)}
+.upload-zone .icon{font-size:32px;margin-bottom:8px}
+.file-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.file-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:6px;font-size:13px}
+.file-item .name{font-weight:500;color:var(--text)}
+.file-item .cat{font-size:11px;color:var(--blue);background:rgba(37,87,167,.1);padding:2px 8px;border-radius:10px}
+.file-item .remove{color:var(--red);cursor:pointer;background:none;border:none;font-size:16px;font-weight:700}
+.btn-row{display:flex;justify-content:space-between;margin-top:24px;gap:12px}
+.btn{padding:12px 28px;border:none;border-radius:6px;font-size:15px;font-weight:600;letter-spacing:-.1px;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--navy)}
+.btn-primary:disabled{background:var(--silver);cursor:not-allowed}
+.btn-outline{background:var(--white);color:var(--navy);border:1px solid var(--border)}
+.btn-outline:hover{background:var(--bg)}
+.status{padding:12px 16px;border-radius:6px;margin-top:16px;font-size:14px;display:none}
+.status.error{display:block;background:#fde8e8;color:var(--red);border:1px solid #f5c6c6}
+.status.success{display:block;background:#e8f5e9;color:var(--green);border:1px solid #c8e6c9}
+
+/* ===== SUCCESS SCREEN ===== */
+.success-screen{display:none;text-align:center;padding:60px 24px}
+.success-screen.visible{display:block}
+.success-screen .s-icon{font-size:64px;margin-bottom:16px}
+.success-screen h2{color:var(--navy);font-size:24px;margin-bottom:8px}
+.success-screen p{color:var(--text-light);font-size:16px;margin-bottom:24px;max-width:520px;margin-left:auto;margin-right:auto}
+
+/* Selected plan banner */
+.selected-plan-banner{background:var(--navy);color:var(--white);text-align:center;padding:10px 16px;font-size:14px;font-weight:600;display:none}
+.selected-plan-banner.visible{display:block}
+.selected-plan-banner span{color:var(--silver);font-weight:400}
+
+.footer{text-align:center;padding:24px;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:40px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
+</div>
+
+<!-- SELECTED PLAN BANNER (shows during application) -->
+<!-- Plan banner removed -->
+
+<!-- ===== SCREEN 1: PLAN SELECTION ===== -->
+<div class="plans-screen" id="screen-plans">
+
+  <div class="plans-hero">
+    <div class="plans-hero-inner">
+      <h2 id="plans-heading">Stop chasing leads. We send you paying jobs.</h2>
+      <p>Pick your plan, complete a short application, and start receiving dispatched work orders in your area. Most contractors are approved in 2&ndash;3 business days.</p>
+      <div class="trust-row">
+        <div class="trust-item"><strong>100,000+</strong><span>Homeowners covered</span></div>
+        <div class="trust-item"><strong>30,000+</strong><span>Contractors in the network</span></div>
+        <div class="trust-item"><strong>All 50</strong><span>States</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="included-strip">
+      <div class="included-head">Included with every membership</div>
+      <ul class="included-list">
+        <li><b>Never pay for a lead</b> &mdash; jobs are dispatched to you, not resold to four competitors</li>
+        <li><b>Every job is a real claim</b> &mdash; the homeowner already filed and needs it fixed today</li>
+        <li><b>Jobs in your zip code</b> &mdash; no long hauls for small tickets</li>
+        <li><b>You pick what you take</b> &mdash; accept or decline, no minimums</li>
+        <li><b>We handle the homeowner</b> &mdash; billing, disputes, scheduling</li>
+        <li><b>Denied claims stay yours</b> &mdash; you&rsquo;re on site and free to quote that work directly</li>
+        <li><b>Get paid without chasing</b> &mdash; Net 30, or Net 15 on Premium</li>
+        <li><b>Cancel anytime</b> &mdash; no long-term contract, no cancellation fee</li>
+      </ul>
+    </div>
+
+    <div class="plans-grid">
+      <!-- Tier 1: Basic -->
+      <div class="plan-card" id="card-basic" onclick="pickPlan('basic')">
+        <div class="plan-badge">Great Start</div>
+        <div class="plan-name">SHW Basic Plan</div>
+        <div class="plan-tagline">Everything you need to start taking warranty work</div>
+        <div class="plan-price"><span class="amt">$49<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <div class="plan-note">&nbsp;</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><span class="fi ck">&#10003;</span>Work orders in your zip code &mdash; you never pay for a lead</li>
+          <li><span class="fi ck">&#10003;</span>Net 30 payment terms on approved invoices</li>
+          <li><span class="fi ck">&#10003;</span>Free Dispatch.me software &mdash; a $300/mo value</li>
+          <li><span class="fi ck">&#10003;</span>Steady warranty work year-round</li>
+        </ul>
+        <button class="plan-cta blue" onclick="pickPlan('basic')">Select Basic — $49.99/mo</button>
+        <div class="plan-reassure">Cancel anytime &middot; No long-term contract</div>
+      </div>
+
+      <!-- Tier 2: Premium -->
+      <div class="plan-card" id="card-premium" onclick="pickPlan('premium')">
+        <div class="plan-badge orange">Best Value</div>
+        <div class="plan-name">SHW Premium Service Network</div>
+        <div class="plan-tagline">Get dispatched first and paid in half the time</div>
+        <div class="plan-price"><span class="amt">$129<sup style="font-size:18px">.99</sup></span><span class="per">/mo</span></div>
+        <div class="plan-note">&nbsp;</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><span class="fi ck">&#10003;</span>Everything in the Basic Plan</li>
+          <li><span class="fi st">&#9733;</span>Priority dispatch &mdash; you get offered jobs first</li>
+          <li><span class="fi st">&#9733;</span>Paid twice as fast &mdash; Net 15 instead of Net 30</li>
+          <li><span class="fi st">&#9733;</span>Benefits Hub &mdash; insurance, supplies, discounts</li>
+          <li><span class="fi st">&#9733;</span>Priority phone support and a Premium profile badge</li>
+        </ul>
+        <button class="plan-cta orange" onclick="pickPlan('premium')">Select Premium — $129.99/mo</button>
+        <div class="plan-reassure">Cancel anytime &middot; No long-term contract</div>
+      </div>
+    </div>
+
+    <div class="skip-row">
+      <a onclick="pickPlan('free')">Continue without selecting a plan &rarr;</a>
+      <p>You'll still complete the application. You can upgrade anytime.</p>
+    </div>
+
+    <!-- COST COMPARISON -->
+    <div class="cost-section">
+      <div class="cost-label">The Math Speaks for Itself</div>
+      <div class="cost-title">What You're Spending Now vs. SHW</div>
+      <table class="cost-table">
+        <thead>
+          <tr><th>Expense</th><th>Without SHW</th><th>With SHW</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Marketing spend (Google, HomeAdvisor, Angi)</td><td class="cost-old">$2,000&ndash;$5,000/mo</td><td class="cost-new">$0</td></tr>
+          <tr><td>Cost per lead</td><td class="cost-old">$20&ndash;$200 each</td><td class="cost-new">$0</td></tr>
+          <tr><td>Dispatch.me software</td><td class="cost-old">~$300/mo</td><td class="cost-new">$0 (included)</td></tr>
+          <tr><td>Chasing invoices &amp; collections</td><td class="cost-old">Hours of your time</td><td class="cost-new">SHW pays you directly</td></tr>
+          <tr><td>SHW membership</td><td class="cost-old">&mdash;</td><td class="cost-new">From $49.99/mo</td></tr>
+          <tr style="background:#eef5ee"><td><strong>Your savings, after membership</strong></td><td class="cost-old">&mdash;</td><td class="cost-new" style="font-size:15px">$27,000&ndash;$63,000/yr</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align:center;padding-bottom:24px"><a href="/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back</a></div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 2: APPLICATION FORM ===== -->
+<div class="app-screen" id="screen-app">
+  <div style="max-width:720px;margin:0 auto;padding:16px 16px 0"><a href="#" onclick="goBackToPlans();return false" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to Plans</a></div>
+  <div class="stepper" id="stepper">
+    <div class="step-item active" id="si1"><span class="step-num" id="sn1">1</span><span>General</span></div>
+    <div class="step-sep" id="sl1"></div>
+    <div class="step-item" id="si2"><span class="step-num" id="sn2">2</span><span>Operations</span></div>
+    <div class="step-sep" id="sl2"></div>
+    <div class="step-item" id="si3"><span class="step-num" id="sn3">3</span><span>Rates</span></div>
+    <div class="step-sep" id="sl3"></div>
+    <div class="step-item" id="si4"><span class="step-num" id="sn4">4</span><span>Coverage</span></div>
+    <div class="step-sep" id="sl4"></div>
+    <div class="step-item" id="si5"><span class="step-num" id="sn5">5</span><span>Agreement</span></div>
+    <div class="step-sep" id="sl5"></div>
+    <div class="step-item" id="si6"><span class="step-num" id="sn6">6</span><span>Upload</span></div>
+  </div>
+
+  <div class="form-wrap">
+
+  <!-- STEP 1: GENERAL INFO -->
+  <div class="panel active" id="p1">
+    <h2>General Information</h2>
+    <div class="field"><label>Company Name<span class="req">*</span></label><input type="text" id="companyName" required></div>
+    <div class="field"><label>DBA (if applicable)</label><input type="text" id="dba"></div>
+    <div class="field"><label>Street Address<span class="req">*</span></label><input type="text" id="address" required></div>
+    <div class="row-3">
+      <div class="field"><label>City<span class="req">*</span></label><input type="text" id="city" required></div>
+      <div class="field"><label>State<span class="req">*</span></label>
+        <select id="state" required>
+          <option value="">Select...</option>
+        </select>
+      </div>
+      <div class="field"><label>ZIP<span class="req">*</span></label><input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="07430" autocomplete="postal-code" required><div class="fe" id="fe-zip">Enter a 5-digit ZIP code</div></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Business Phone<span class="req">*</span></label><input type="tel" id="phone" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="fe" id="fe-phone">Enter a 10-digit phone number</div></div>
+      <div class="field"><label>Mobile Number<span class="req">*</span></label><input type="tel" id="mobile" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="hint">Where we text work order dispatches</div><div class="fe" id="fe-mobile">Enter a 10-digit mobile number</div></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" spellcheck="false" autocomplete="email" placeholder="you@company.com" required><div class="fe" id="fe-email">Enter a valid email address, like you@company.com</div></div>
+      <div class="field"><label>Website</label><input type="text" id="website" placeholder="yourcompany.com"><div class="hint">We\u2019ll add https:// automatically</div></div>
+    </div>
+    <div class="field"><label>Google Business Profile URL</label><input type="text" id="googleBusinessProfile" placeholder="g.page/yourcompany"></div>
+    <div class="row">
+      <div class="field"><label>Owner / Principal Name<span class="req">*</span></label><input type="text" id="ownerName" required></div>
+      <div class="field"><label>Owner Cell Phone</label><input type="tel" id="ownerCell" inputmode="tel" maxlength="14" placeholder="(555) 555-5555"></div>
+    </div>
+    <div class="field">
+      <label>Trades You Perform<span class="req">*</span></label>
+      <div class="hint" style="margin-bottom:6px">Select every trade your company is licensed and insured to service.</div>
+      <div class="trade-grid" id="trade-grid"></div>
+      <div class="field" id="trade-other-wrap" style="display:none;margin-top:8px;margin-bottom:0">
+        <input type="text" id="tradeOther" placeholder="Tell us which other trade(s)">
+      </div>
+      <div class="fe" id="fe-trades">Select at least one trade</div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Years in Business</label><input type="number" id="yearsInBusiness" min="0" max="150" step="1" placeholder="10"></div>
+      <div class="field"><label>Tax ID / EIN</label><input type="text" id="taxId" inputmode="numeric" maxlength="10" placeholder="12-3456789"><div class="fe" id="fe-taxId">EIN should be 9 digits (12-3456789)</div></div>
+    </div>
+    <div class="field">
+      <label>Business Type</label>
+      <div class="radio-group">
+        <label><input type="radio" name="businessType" value="Sole Proprietorship"> Sole Proprietorship</label>
+        <label><input type="radio" name="businessType" value="LLC"> LLC</label>
+        <label><input type="radio" name="businessType" value="Corporation"> Corporation</label>
+        <label><input type="radio" name="businessType" value="Partnership"> Partnership</label>
+        <label><input type="radio" name="businessType" value="Other"> Other</label>
+      </div>
+    </div>
+    <div class="btn-row"><div></div><button class="btn btn-primary" onclick="goTo(2)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 2: OPERATIONS -->
+  <div class="panel" id="p2">
+    <h2>Operations</h2>
+    <div class="row">
+      <div class="field"><label>Number of Technicians</label><input type="number" id="numTechnicians" min="0"></div>
+      <div class="field"><label>Number of Vehicles</label><input type="number" id="vehicles" min="0"></div>
+    </div>
+    <div class="field"><label>Uniformed Technicians</label><input type="number" id="uniformedTechnicians" min="0" placeholder="Number of uniformed technicians"></div>
+    <div class="row">
+      <div class="field"><label>Hours — Mon-Fri</label><input type="text" id="hoursMF" placeholder="e.g. 8am - 6pm"></div>
+      <div class="field"><label>Hours — Saturday</label><input type="text" id="hoursSat" placeholder="e.g. 9am - 2pm"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Hours — Sunday</label><input type="text" id="hoursSun" placeholder="e.g. Closed"></div>
+      <div class="field"><label>Hours — Holidays</label><input type="text" id="hoursHoliday" placeholder="e.g. Emergency only"></div>
+    </div>
+    <div class="field"><label>Who answers the phone?</label><input type="text" id="phoneHandler" placeholder="e.g. Office staff, answering service"></div>
+    <div class="field"><label>Who handles emergency/after-hours calls?</label><input type="text" id="emergencyHandler" placeholder="e.g. On-call technician, owner"></div>
+    <div class="field"><label>Scheduling system used</label><input type="text" id="schedulingSystem" placeholder="e.g. ServiceTitan, Housecall Pro, manual"></div>
+    <div class="field">
+      <label>Payment Methods Accepted</label>
+      <div class="hint" style="margin-bottom:6px">Select every payment method your company accepts from homeowners.</div>
+      <div class="pay-grid" id="pay-grid"></div>
+    </div>
+    <div class="field"><label>Willing to install SHW-provided parts?</label><div class="radio-group"><label><input type="radio" name="installSHWParts" value="Yes"> Yes</label><label><input type="radio" name="installSHWParts" value="No"> No</label></div></div>
+    <div class="field"><label>Other warranty companies you work with</label><input type="text" id="otherWarrantyCompanies" placeholder="e.g. American Home Shield, First American"></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(1)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(3)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 3: LICENSES & RATES -->
+  <div class="panel" id="p3">
+    <h2>Licenses &amp; Rates</h2>
+    <div class="field"><label>Contractor Licenses</label><div class="hint">Add all applicable contractor licenses</div></div>
+    <div id="licenses-container">
+      <div class="license-row">
+        <div class="field"><label>Issuing Authority</label><input type="text" class="lic-authority" placeholder="e.g. TX TDLR"></div>
+        <div class="field"><label>License Type</label><input type="text" class="lic-type" placeholder="e.g. HVAC"></div>
+        <div class="field"><label>License #</label><input type="text" class="lic-number"></div>
+        <div class="field"><label>Permits Work For</label><input type="text" class="lic-permits" placeholder="e.g. HVAC Install/Repair"></div>
+        <button class="btn-sm danger" onclick="removeLicense(this)" style="height:36px;align-self:end">&#10005;</button>
+      </div>
+    </div>
+    <button class="btn-sm" onclick="addLicense()" style="margin-bottom:20px">+ Add License</button>
+    <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Service Call &amp; Labor Rates</h3>
+    <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Service Call Fee includes travel to the customer&rsquo;s home and first 30 minutes on the job site. Labor rates quoted in 15-minute increments.</p>
+    <div class="row">
+      <div class="field"><label>Service Call Fee (Regular)</label><div class="pre"><span class="sym">$</span><input type="number" id="serviceCallRegular" min="0" step="0.01" placeholder="0.00"></div></div>
+      <div class="field"><label>Service Call Fee (SHW Discounted)</label><div class="pre"><span class="sym">$</span><input type="number" id="serviceCallSHW" min="0" step="0.01" placeholder="0.00"></div></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Hourly Labor Rate (Regular)</label><div class="pre"><span class="sym">$</span><input type="number" id="laborRateRegular" min="0" step="0.01" placeholder="0.00"></div></div>
+      <div class="field"><label>Hourly Labor Rate (SHW Discounted)</label><div class="pre"><span class="sym">$</span><input type="number" id="laborRateSHW" min="0" step="0.01" placeholder="0.00"></div></div>
+    </div>
+    <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Parts Mark-Up Schedule</h3>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px">Enter your standard mark-up %. SHW maximums shown for reference.</p>
+    <table class="markup-table">
+      <thead><tr><th>Parts Cost Tier</th><th>SHW Max</th><th>Your %</th></tr></thead>
+      <tbody>
+        <tr><td>$0.00 – $25.00</td><td>50%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="0-25" data-max="50" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>$25.01 – $50.00</td><td>40%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="25-50" data-max="40" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>$50.01 – $100.00</td><td>30%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="50-100" data-max="30" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>$100.01 – $150.00</td><td>25%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="100-150" data-max="25" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>Above $150.00</td><td>10%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="150+" data-max="10" min="0" max="999" placeholder="0"></div></td></tr>
+      </tbody>
+    </table>
+    <div class="field"><label>Sales Tax</label><div class="suf"><span class="sym">%</span><input type="number" id="salesTax" min="0" max="20" step="0.01" placeholder="0.00"></div></div>
+    <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Coverage Area</h3>
+    <div class="field">
+      <label>States You Cover</label>
+      <div class="state-tools">
+        <button type="button" onclick="stateAll(true)">Select all</button>
+        <button type="button" onclick="stateAll(false)">Clear all</button>
+      </div>
+      <div class="state-grid" id="coverage-state-grid"></div>
+      <div class="state-count" id="state-count">None selected</div>
+    </div>
+    <div class="field"><label>Counties</label><input type="text" id="coverageCounties" placeholder="e.g. Bergen, Passaic, Rockland"></div>
+    <div class="field"><label>Cities</label><input type="text" id="coverageCities" placeholder="e.g. Mahwah, Ramsey, Suffern"></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(2)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(4)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 4: COVERAGE ITEMS -->
+  <div class="panel" id="p4">
+    <h2>Coverage Items</h2>
+    <p style="font-size:14px;color:var(--text-light);margin-bottom:20px">Select all items you are qualified and willing to service.</p>
+    <div class="coverage-cat"><h3>Appliances</h3><div class="coverage-grid" id="cov-grid-appliances"></div></div>
+    <div class="coverage-cat"><h3>HVAC</h3><div class="coverage-grid" id="cov-grid-hvac"></div></div>
+    <div class="coverage-cat"><h3>Plumbing</h3><div class="coverage-grid" id="cov-grid-plumbing"></div></div>
+    <div class="coverage-cat"><h3>Electrical</h3><div class="coverage-grid" id="cov-grid-electrical"></div></div>
+    <div class="coverage-cat"><h3>Other</h3><div class="coverage-grid" id="cov-grid-other"></div></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(3)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(5)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 5: AGREEMENT -->
+  <div class="panel" id="p5">
+    <h2>Agreement &amp; Signature</h2>
+    <div class="agreement-box">
+      <h4>SELECT HOME WARRANTY — MASTER SERVICES AGREEMENT</h4>
+      <p>This Master Services Agreement (&ldquo;Agreement&rdquo;) is entered into between Select Home Warranty (&ldquo;SHW&rdquo;), and the Servicer (&ldquo;Servicer&rdquo;) effective as of the date on which SHW receives the completed Service Agreement Acceptance Form from the Servicer (the &ldquo;Effective Date&rdquo;). The parties agree as follows:</p><br>
+
+      <p><strong>1. Agreement and Addendums.</strong> This Agreement contains the general terms and conditions pursuant to which Servicer will provide services (&ldquo;Services&rdquo;) to SHW and its customers (&ldquo;Customers&rdquo;).</p><br>
+
+      <p><strong>2. Servicer Obligations.</strong><br>
+      a) Servicer shall ensure that its officers, owners, employees, independent contractor technicians, and authorized subcontractors who provide Services as part of any Program (collectively, &ldquo;Servicer Associates&rdquo;) understand Servicer&rsquo;s obligations under this Agreement and agree to comply with and be bound by such obligations, and that Servicer is responsible for the actions and omissions of its Servicer Associates.<br>
+      b) Servicer will provide and pay for all labor, materials, transportation, insurance and equipment, including applicable sales tax payments, to promptly complete the Services required under any service work orders or other service requests assigned and authorized by SHW (collectively, a &ldquo;Dispatch&rdquo;) as part of any Program.<br>
+      c) If Servicer: i. fails to contact a Customer; ii. fails to initiate or complete a Dispatch; or iii. breaches any other term of this Agreement, then SHW may, in its sole discretion and without further notice, engage another service contractor, put Servicer&rsquo;s account on hold, and/or terminate this Agreement.<br>
+      d) Servicer, as required by state law or upon request by SHW, shall provide motor vehicle reports and evidence of conducting biennial criminal background checks from state or third-party resources for such checks for all Servicer Associates and acting on behalf of or under the direction or control of the Servicer whose duties require entry into a Customer&rsquo;s residence. This requirement pertains to all existing and future Servicer Associates hired, contracted, or otherwise retained by Servicer&rsquo;s firm or anyone else acting on behalf of or associated with Servicer. If any Servicer Associate or anyone else associated with Servicer fails a required check or if Servicer becomes aware of information that would cause such a person to fail a required check, Servicer shall prohibit that person from providing Services to, or performing any other work of any kind for, SHW&rsquo;s Customers.<br>
+      e) In the event a Customer harms or threatens to cause harm to Servicer, a Servicer Associate or SHW, Servicer will immediately report such harm or threat to SHW and, to the extent such harm or threat of harm is serious, to local law enforcement officials.</p><br>
+
+      <p><strong>3. Materials.</strong> Servicer shall only use materials that are free of liens in performing the Services. Servicer shall remove any lien attached to a Customer&rsquo;s property as a result of Servicer&rsquo;s Services within twenty-four (24) hours after SHW&rsquo;s or Customer&rsquo;s request. Servicer waives its rights to place, hold, or have any liens on Customer&rsquo;s property, and Servicer shall not use or cause to be issued any liens in connection with Services related to or in connection with covered work under this Agreement.</p><br>
+
+      <p><strong>4. Professionalism.</strong> Servicer shall at all times represent SHW in a professional manner to Customers and shall not make any written or oral representations, either direct or implied, to any Customer that are or could reasonably be construed to be negative or defamatory in nature toward SHW, its business, the brand name of the equipment it selects, or its Customer Contracts. Servicer shall provide to SHW a photograph representing company uniforms and service vehicles, and SHW expects this to be the standard for all Servicer Associates. Servicer shall be responsible for ensuring that Servicer and Servicer Associates comply with all SHW operating policies and procedures issued to Servicer.</p><br>
+
+      <p><strong>5. Laws.</strong> Servicer agrees to conduct itself, and to require its Servicer Associates to conduct themselves, in strict compliance with all applicable laws, rules, and regulations of all governmental authorities, including but not limited to, laws on preventing transactions with terrorists or terrorist support organizations, and to act at all times consistent with the highest standard of fair trade, fair compensation, and business ethics, including compliance with all federal, state, and local building codes, environmental, and/or hazardous waste recapture and removal laws, and federal, state, and local laws, regulations, and ordinances regarding public safety. Servicer agrees that its or its Servicer Associates&rsquo; failure to comply with any applicable laws and/or failure to adhere to any applicable standards constitutes a material breach of this Agreement, and that SHW may immediately terminate the Agreement upon such a breach and pursue any and all legal or equitable remedies.</p><br>
+
+      <p><strong>6. Permits.</strong> In addition to the obligations set forth in Paragraph 5 of this Agreement, Servicer agrees that: a) For Services requiring a permit by law or regulation, Servicer will comply with such permitting requirement and shall provide proof of compliance to SHW upon request; b) For Services where pertinent laws or regulations require obtaining a permit prior to service work or replacement installation, Servicer shall obtain a permit in a timely manner and shall provide proof of compliance to SHW upon request; and c) Servicer is knowledgeable about all permitting laws for the Services that its business performs, in the states, counties, cities and any other legal jurisdiction where it operates.</p><br>
+
+      <p><strong>7. Licensing and Certification.</strong> Servicer will at all times obtain and maintain in good standing valid, current licenses, certifications, and qualifications as required by applicable federal, state and local laws and regulations. This includes but is not limited to any permit or certification required by the U.S. Environmental Protection Agency. Servicer shall immediately provide SHW written notice of any changes with regard thereto including, without limitation, voluntary or involuntary license status, suspension, revocation, cancellation, lapse, disciplinary action, scope, type, or change of name. Servicer shall provide SHW with current copies of any and all applicable licenses, certifications or other supporting documentation: a) Upon request; b) Within 15 days of any change in status, renewal, change of business form or other alteration; and c) Annually, regardless of whether any change in form, status or name has occurred. Servicer agrees that failure to provide such documentation shall be deemed a material breach of this Agreement. Servicer warrants and represents that: a) Any and all of its contractor&rsquo;s licenses and certifications are held in the proper name of the individual and/or entity; b) If applicable, its licenses and certifications are legally assigned to the business entity; c) Servicer&rsquo;s form of business is proper and is appropriately set forth in this Agreement; and d) The name on Servicer&rsquo;s licenses and certifications is consistent with the name under which Servicer entered into this Agreement.</p><br>
+
+      <p><strong>8. Insurance.</strong><br>
+      a) Servicer shall maintain the following insurance coverages at all times during the term of this Agreement with limits no less than indicated:<br>
+      i. <em>General Liability:</em> Commercial general liability insurance with a limit of not less than $250,000 per occurrence and $500,000 in the aggregate. Coverage shall include contractual liability, independent contractor, property damage, bodily injury, liability assumed under an insured contract, products and completed operations, and premises coverage. Coverage shall name SHW and its subsidiaries, parent and affiliated companies as additional insured (including completed operations).<br>
+      ii. <em>Automobile Liability:</em> Coverage for owned, hired, and non-owned vehicles (listed and rated for business use) with minimum limits of $250,000 per person, $500,000 per occurrence for bodily injury, and $100,000 for property damage. Name SHW and its subsidiaries, parent and affiliated companies as additional insureds.<br>
+      iii. <em>Workers Compensation:</em> Coverage shall include occupational disease and employer&rsquo;s liability coverage at statutory limits for workers&rsquo; compensation and employer&rsquo;s liability at a minimum limit of $250,000 each.<br>
+      b) All Servicer&rsquo;s insurance shall be: i. Endorsed as primary coverage listing SHW coverage as excess insurance; ii. Occurrence-based; iii. Non-contributory with SHW&rsquo;s own insurance; and iv. Provided by carriers with an A.M. Best rating of at least A-.<br>
+      c) Servicer waives all rights, including subrogation, against SHW and its agents, directors, employees, subsidiaries, parents, and affiliated companies for damages.<br>
+      d) Servicer shall supply SHW with a certificate of insurance as coverages are renewed, amended, modified, canceled, terminated, or replaced.<br>
+      e) SHW does not represent that the coverage and limits required under this Section 8 will necessarily be adequate to protect Servicer.<br>
+      f) All certificates of insurance shall provide for at least thirty (30) days written notice to SHW prior to the cancellation or material change of any insurance referred to in this Section 8.<br>
+      g) If Servicer&rsquo;s liability policies do not contain the standard ISO separation of insured&rsquo;s provision, or a substantially similar clause, they shall be endorsed to provide cross-liability coverage.</p><br>
+
+      <p><strong>9. Invoicing.</strong> Invoices must be sent to SHW by email to invoices&#64;selecthomewarranty&#46;com or as otherwise directed by SHW. Servicer shall maintain all invoices for seven (7) years or such other timeframe as is required by state law. All of Servicer&rsquo;s invoices are subject to an audit process by SHW. If Servicer is selected for audit purposes: a) All invoices submitted are subject to audit; b) Servicer shall provide paper copies of the original invoices to SHW&rsquo;s auditors within five (5) business days of SHW&rsquo;s request. Servicer&rsquo;s account may be placed on hold if Servicer fails to provide the invoices requested; and c) In the event any overpayment is found during an audit, Servicer will pay the amount of the overpayment to SHW upon receipt of notice of the overpayment.</p><br>
+
+      <p><strong>10. Payment.</strong> Payment to Servicer shall be due and payable net thirty (30) days after SHW&rsquo;s approval and verification of invoices. SHW has the right to offset payments due to Servicer against any amount Servicer owes to SHW and/or unapproved invoices. All payment shall be made via paper check or as otherwise directed by SHW.</p><br>
+
+      <p><strong>11. Non-Covered or Additional Services.</strong> Servicer may agree to provide services to a Customer that are not covered under or included in an SHW Program (&ldquo;Non-Covered/Additional Services&rdquo;). Servicer accepts sole responsibility for any work performed by Servicer Associates or anyone else acting on behalf of or associated with Servicer on any Non-Covered/Additional Services. Servicer agrees that SHW has no responsibility for Non-Covered/Additional Services nor payment or collection of monies for Non-Covered/Additional Services. Servicer shall notify Customer prior to commencement of any Non-Covered/Additional Services that: a) Customer can choose its own vendor; b) Servicer is providing such work solely on its own behalf and not in conjunction with SHW; c) SHW is not responsible for Servicer&rsquo;s rates or charges on Non-Covered/Additional Services; provided, however, Servicer shall charge competitive market rates for such Non-Covered/Additional Services; and d) Servicer will notify SHW, provide customer with a written estimate, acquire Customer&rsquo;s signature as written authorization before beginning any Non-Covered/Additional Services, and provide SHW a copy of such documents upon request.</p><br>
+
+      <p><strong>12. Confidential Information &ndash; Information Security.</strong> Servicer acknowledges that it may receive Confidential Information in connection with providing Services hereunder. &ldquo;Confidential Information&rdquo; shall include (a) trade secrets and proprietary information of SHW, including but not limited to financial information, manuals and procedures, communications, dispatch information and related costs, pricing and rate information, and any other materials or information provided by SHW to Servicer, and (b) personal information related to a Customer, including but not limited to social security number, driver&rsquo;s license number, state or federal identification number, date of birth, and financial information (including but not limited to account numbers, credit or debit card numbers and access codes). Servicer shall not use or disclose any Confidential Information for any purpose other than providing Services under this Agreement. Servicer shall implement and maintain security controls and measures necessary to protect Confidential Information from unauthorized access, loss, destruction, disclosure or use. Servicer shall not allow persons outside the United States to access Confidential Information without SHW&rsquo;s prior written consent. Servicer shall immediately notify SHW of any security breach or unauthorized disclosure of Confidential Information.</p><br>
+
+      <p><strong>13. Relationship.</strong> In performing the Services, Servicer shall be acting solely as an independent contractor, and neither Servicer nor any of its Servicer Associates shall be deemed to be employees of SHW. Neither SHW nor Servicer shall have the authority to bind, commit or incur any liability on behalf of the other party. Servicer shall be solely responsible for any income, employment, sales, use, service, payroll, withholding, workers&rsquo; compensation, unemployment and other taxes that may be imposed with respect to the performance of the Services and any payments made by SHW to Servicer. Servicer agrees that acceptance of work or performance of Services under this Agreement binds Servicer to a contract with the Customer on all work performed and any bond required of Servicer shall be actionable by the Customer.</p><br>
+
+      <p><strong>14. Subcontractors and Independent Contractors.</strong> Servicer agrees that: a) SHW must approve the use of any subcontractor or independent contractor technician before using them to provide Services hereunder; and b) Servicer shall be responsible for ensuring that any subcontractor or independent contractor technician used by Servicer to provide services under this Agreement shall comply with all applicable provisions of this Agreement, including, without limitation, insurance, licensing, name on license, laws and state regulations, professionalism, workmanship, materials, and confidential information.</p><br>
+
+      <p><strong>15. Term and Notice.</strong><br>
+      a) This Agreement shall remain in effect for one (1) year commencing on the Effective Date and shall be automatically renewed for successive one (1)-year periods unless terminated earlier in accordance with the terms of this Agreement. Either party may immediately terminate this Agreement at any time by giving written notice to the other party. Upon termination of this Agreement, all Addendums will also terminate.<br>
+      b) If Servicer does not cure any breach under this Agreement within ten (10) days after receiving notice from SHW, then Contractor shall be in default of this Agreement and SHW, at its sole discretion, may seek damages, including without limitation, court costs, attorney fees, and consequential secondary damages.<br>
+      c) SHW also may terminate this Agreement as set forth in Sections 2(c) and 5. Servicer shall immediately notify SHW of Servicer&rsquo;s insolvency, bankruptcy, or potential financial instability.<br>
+      d) Any notice or other written communication is deemed given: (i) Three (3) days after deposit in the U.S. Mail, postage prepaid; (ii) When sent by facsimile or electronic mail (with date/time noted); (iii) On the next business day if sent overnight by priority courier; or (iv) When personally delivered to an authorized representative of the party receiving notice.</p><br>
+
+      <p><strong>16. Indemnification.</strong><br>
+      a) To the fullest extent permitted by law, Servicer agrees to indemnify, hold harmless and defend, at Servicer&rsquo;s sole expense (including expenses and attorney&rsquo;s fees), SHW, its subsidiaries, parent and affiliated companies, and the agents, directors, and employees of SHW against any and all actions, investigations, commenced or threatened claims, losses, liabilities, and/or damages alleged to have been incurred or caused, either directly or indirectly, by the acts or omissions of Servicer or any of its Servicer Associates or any other person acting on Servicer&rsquo;s behalf in relation to any Dispatch, any Services performed for any Program, any non-covered items or additional services, and/or any and all consequential damages arising out of the performance of services for Customers.<br>
+      b) If the resolution of any Claim is reasonably expected to have a significant adverse effect on SHW or if Servicer fails to assume the defense of such Claim within fifteen (15) days after receipt of notice, then SHW may elect, at its sole discretion, to control the defense, compromise, or settlement of such Claim at Servicer&rsquo;s sole cost, risk, and expense.</p><br>
+
+      <p><strong>17. Trademarks.</strong> Neither party shall use, modify, or change the trademarks, service marks, logo types, customer contracts, or other commercial and promotional materials of the other party without such party&rsquo;s prior written consent.</p><br>
+
+      <p><strong>18. Assignment.</strong> Servicer shall not assign or transfer any of its rights, duties, or obligations under this Agreement without the prior written consent of SHW. SHW may assign or transfer this Agreement, in whole or in part, as it deems appropriate.</p><br>
+
+      <p><strong>19. Service.</strong><br>
+      a) Upon request from a Customer, SHW will dispatch a service work order to Servicer (a &ldquo;Dispatch&rdquo;). Servicer shall contact the Customer after receiving a Dispatch from SHW to schedule an appointment. Servicer shall: (i) use best efforts to commence diagnosis and authorized repairs or replacements at the customer&rsquo;s home within forty-eight (48) hours of receipt of a Dispatch; and (ii) notify SHW Service Network Team in accordance with guidelines established by SHW if service will commence more than forty-eight (48) hours after receipt of a Dispatch.<br>
+      b) For every Dispatch, Servicer shall provide SHW an accurate diagnosis of whether a Unit failed, a description of what failed, the reason why it failed and recommended repair or replacement. Upon request by SHW, Servicer will provide SHW with digital pictures and such other documentation as is reasonably necessary to support Servicer&rsquo;s diagnosis. Servicer agrees to contact SHW&rsquo;s Authorizations Department at 855-267-3532 if: (i) coverage may be denied; (ii) coverage questions exist; or (iii) the total expected liability exceeds any pre-approval provided in writing. Servicer shall use best efforts to respond to all Customer requests related to a Dispatch or a Covered Unit within four (4) business hours.</p><br>
+
+      <p><strong>20. Compensation.</strong> Servicer will agree to an hourly rate (the &ldquo;Hourly Service Rate&rdquo;). Upon completion of a Dispatch, SHW will pay Servicer a fee (the &ldquo;Labor Fee&rdquo;) for approved and covered labor required to repair or replace a Covered Unit. The Labor Fee will be equal to the Hourly Service Rate multiplied by the number of hours, which are quoted in quarter hour increments, Servicer spends in completing a repair or replacement (&ldquo;Labor Hours&rdquo;); provided, however, that the Labor Hours for each repair or replacement shall not (i) include any time spent traveling to the Customer&rsquo;s home or diagnosing the issue, or (ii) exceed the maximum labor hours allowed for a repair/replacement which would be standard and customary of a similar type of repair/replacement with a highly qualified service technician. In addition to the Labor Fee, SHW shall pay Servicer a service call fee, as agreed upon, for Contractor&rsquo;s time spent traveling to the Customer&rsquo;s home and diagnosing the malfunction.</p><br>
+
+      <p><strong>21. Workmanship.</strong> Servicer shall perform a thorough diagnosis of the Covered Unit and perform all repairs and replacements hereunder (a) in a skillful, non-defective, workmanlike manner; and (b) in accordance with all applicable laws, rules and regulations, including building codes (&ldquo;Servicer&rsquo;s Warranty&rdquo;). In the event a repair or replacement performed by Servicer hereunder fails to meet the requirements of the Servicer&rsquo;s Warranty or malfunctions within sixty (60) days following completion of the repair or replacement due to normal wear and tear, Servicer will perform the work necessary to remedy the failure under the Servicer&rsquo;s Warranty or the malfunction without expense to Customer or SHW.</p><br>
+
+      <p><strong>22. Other.</strong> This Agreement supersedes all prior Service and/or Operational Agreements along with any negotiations, proposals and/or understandings, and constitutes the entire understanding of the parties. This Agreement shall not be modified or amended in any manner except in writing, signed by the parties; provided, however, this Agreement can be modified or amended electronically in accordance with applicable law. The invalidity or unenforceability of any provision shall not affect the enforceability of the remaining provisions. SHW&rsquo;s failure to exercise any of its rights does not constitute a waiver of such right. To the extent such waiver is permitted by law, the parties waive trial by jury in any proceedings. For quality assurance and other purposes, SHW may record calls between SHW and Servicer and Servicer hereby authorizes such recordings.</p>
+    </div>
+    <div class="field"><div class="check-group"><label style="border:2px solid var(--blue);padding:12px 16px;font-size:14px"><input type="checkbox" id="agreedToTerms"> I have read, understand, and agree to the terms above<span class="req">*</span></label></div></div>
+    <div class="row">
+      <div class="field"><label>Printed Name<span class="req">*</span></label><input type="text" id="signatureName" required></div>
+      <div class="field"><label>Date</label><input type="date" id="signatureDate"></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="goTo(4)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(6)">Next &rarr;</button></div>
+  </div>
+
+  <!-- STEP 6: UPLOAD & SUBMIT -->
+  <div class="panel" id="p6">
+    <h2>Upload Documents &amp; Submit</h2>
+    <p style="font-size:14px;color:var(--text-light);margin-bottom:16px">Last step. We need these to verify your license and add you to the dispatch network. Don&rsquo;t have them handy? Submit now and email them over later &mdash; your application stays on file either way. Max 2MB per file. PDF, JPG, or PNG.</p>
+    <div class="field">
+      <label>Certificate of Insurance<span class="req">*</span></label>
+      <div class="hint">Must list <strong>Select Home Warranty, LLC, 1000 Wyckoff Ave, Mahwah, NJ 07430</strong> as certificate holder and additional insured.</div>
+      <div class="upload-zone" data-category="Certificate of Insurance" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Certificate of Insurance</p></div>
+    </div>
+    <div class="field">
+      <label>Trade Licenses<span class="req">*</span></label>
+      <div class="upload-zone" data-category="Trade License" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Trade License(s)</p></div>
+    </div>
+    <div class="field">
+      <label>W-9<span class="req">*</span></label>
+      <div class="hint">Need a blank W-9? <a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Download Blank W-9 from IRS.gov &darr;</a></div>
+      <div class="upload-zone" data-category="W-9" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload completed W-9</p></div>
+    </div>
+    <div class="field">
+      <label>Workers' Comp Waiver (optional)</label>
+      <div class="upload-zone" data-category="Workers Comp Waiver" onclick="this.querySelector('input').click()"><input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleFile(this)"><div class="icon">&#128196;</div><p>Click to upload Workers' Comp Waiver</p></div>
+    </div>
+    <div class="file-list" id="file-list"></div>
+    <div id="submit-status" class="status"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goTo(5)">&larr; Back</button>
+      <button class="btn btn-primary" id="submit-btn" onclick="submitApplication()">Submit My Application</button>
+    </div>
+  </div>
+
+  </div><!-- end form-wrap -->
+  <div style="text-align:center;padding:0 16px 32px"><a href="#" onclick="goBackToPlans();return false" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back to Plans</a></div>
+</div>
+
+<!-- ===== SCREEN 3: SUCCESS ===== -->
+<div class="success-screen" id="screen-success">
+  <div class="s-icon">&#9989;</div>
+  <h2 id="success-heading">You&rsquo;re In &mdash; Application Received</h2>
+  <p id="success-msg">Your application is in. Our service provider team reviews it within 2&ndash;3 business days, and once you&rsquo;re approved we&rsquo;ll add you to the dispatch network for your coverage area and work orders start coming to you. A confirmation has been sent to your email. Questions in the meantime? Call us at 855-224-3399.</p>
+  <a href="https://www.selecthomewarranty.com" class="btn btn-primary" style="display:inline-block;text-decoration:none;margin-top:8px">Return to SelectHomeWarranty.com &rarr;</a>
+  <br><br>
+  <a href="/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;padding:8px 16px;text-decoration:none">&larr; Back</a>
+</div>
+
+<div class="footer">
+  &copy; 2026 Select Home Warranty, LLC — 1000 Wyckoff Ave, Mahwah, NJ 07430 — 855-224-3399
+</div>
+
+<!--email_off-->
+<script>
+// ── State ──
+let selectedPlan = 'free';
+let currentStep = 1;
+const totalSteps = 6;
+const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/44c356d5-2fb0-4e5a-9b80-a3237057bccb';
+
+// ── URL param pre-fill ──
+(function prefill() {
+  const params = new URLSearchParams(window.location.search);
+  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone' };
+  Object.entries(map).forEach(([param, fieldId]) => {
+    const val = params.get(param);
+    if (val) {
+      const el = document.getElementById(fieldId);
+      if (el) {
+        if (param === 'last_name' && el.value) { el.value = el.value + ' ' + val; }
+        else if (param === 'first_name') { el.value = val; }
+        else { el.value = val; }
+      }
+    }
+  });
+  // Pre-tick a trade if the landing page passed one
+  var natureParam = params.get('nature') || params.get('trade');
+  if (natureParam) {
+    var want = natureParam.toLowerCase();
+    var matched = false;
+    document.querySelectorAll('.trade-cb').forEach(function(b){
+      var v = b.value.toLowerCase();
+      if (v === want || v.indexOf(want) === 0 || want.indexOf(v) === 0) { b.checked = true; matched = true; }
+    });
+    if (!matched) {
+      document.querySelectorAll('.trade-cb').forEach(function(b){ if (b.value === 'Other') b.checked = true; });
+      var to = document.getElementById('tradeOther');
+      if (to) to.value = natureParam;
+    }
+    tradeChange();
+  }
+
+  // Capture salesperson if provided in URL
+  const salespersonParam = params.get('sp') || params.get('salesperson');
+  if (salespersonParam) {
+    sessionStorage.setItem('shw_salesperson', salespersonParam.toLowerCase());
+  }
+  // Personalize plans heading
+  const company = params.get('company') || params.get('company_name');
+  if (company) {
+    document.getElementById('plans-heading').textContent = 'Welcome, ' + company + '!';
+  }
+  // Set date
+  const dateEl = document.getElementById('signatureDate');
+  if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
+
+  // ── Handle Stripe return ──
+  // Only skip to application if payment_complete=1 param exists (set on Stripe redirect URL)
+  // Browser back button from Stripe won't have this param, so they'll see the plans page
+  const savedPlan = sessionStorage.getItem('shw_selected_plan');
+  const paymentComplete = params.get('payment_complete');
+  if (savedPlan && paymentComplete === '1' && (savedPlan === 'basic' || savedPlan === 'premium')) {
+    // Restore prefill params from before Stripe redirect
+    const savedParams = sessionStorage.getItem('shw_prefill_params');
+    if (savedParams) {
+      const restoredParams = new URLSearchParams(savedParams);
+      Object.entries(map).forEach(([param, fieldId]) => {
+        const val = restoredParams.get(param);
+        if (val) {
+          const el = document.getElementById(fieldId);
+          if (el && !el.value) {
+            if (param === 'last_name' && el.value) { el.value = el.value + ' ' + val; }
+            else { el.value = val; }
+          }
+        }
+      });
+    }
+    // Tell GHL the payment landed, before they start the 6-step form.
+    // Without this, someone who pays then abandons the form stays flagged as unpaid.
+    try {
+      const rp = new URLSearchParams(savedParams || '');
+      const paidEmail = rp.get('email') || document.getElementById('email')?.value || '';
+      if (paidEmail && paidEmail.includes('@') && !sessionStorage.getItem('shw_paid_pinged')) {
+        sessionStorage.setItem('shw_paid_pinged', '1');
+        fetch('/api/lead-capture', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            stage: 'paid',
+            plan: savedPlan,
+            email: paidEmail,
+            firstName: rp.get('first_name') || '',
+            lastName: rp.get('last_name') || '',
+            companyName: rp.get('company') || '',
+            phone: rp.get('phone') || '',
+            zip: rp.get('zip') || '',
+            trade: rp.get('nature') || '',
+            salesperson: rp.get('sp') || rp.get('salesperson') || ''
+          })
+        }).catch(function(){ /* never block the applicant on this */ });
+      }
+    } catch (e) { /* non-blocking */ }
+
+    // Clear session storage so refresh doesn't re-trigger
+    sessionStorage.removeItem('shw_selected_plan');
+    sessionStorage.removeItem('shw_prefill_params');
+    // Skip plans, go straight to application with payment confirmed
+    showApplication(savedPlan);
+  } else {
+    // Clear stale sessionStorage if no payment was completed (e.g. browser back from Stripe)
+    sessionStorage.removeItem('shw_selected_plan');
+    sessionStorage.removeItem('shw_prefill_params');
+  }
+})();
+
+// ── Plan selection ──
+function goBackToPlans() {
+  // If they already paid, warn them
+  if (selectedPlan === 'basic' || selectedPlan === 'premium') {
+    if (!confirm('You\'ve already completed payment for your plan. Going back will not change your plan. Continue?')) return;
+  }
+  document.getElementById('screen-app').classList.remove('visible');
+  document.getElementById('screen-plans').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function pickPlan(plan) {
+  selectedPlan = plan;
+
+  // Stripe Payment Links
+  // Payment Links
+  const PAYMENT_LINKS = {
+    'basic': 'https://buy.stripe.com/bJe6oIc9jedc4wOe8x0Fi0c',
+    'premium': 'https://buy.stripe.com/cNi8wQ6OZedc7J0c0p0Fi0d'
+  };
+
+  if (PAYMENT_LINKS[plan] && PAYMENT_LINKS[plan] !== '') {
+    // Save plan + any prefilled data to sessionStorage before leaving
+    sessionStorage.setItem('shw_selected_plan', plan);
+    // Preserve URL params so they survive the Stripe redirect
+    sessionStorage.setItem('shw_prefill_params', window.location.search);
+
+    // Build Stripe URL with email prefill if available
+    let payUrl = PAYMENT_LINKS[plan];
+    const emailField = document.getElementById('email');
+    const email = emailField?.value || new URLSearchParams(window.location.search).get('email');
+    if (email) payUrl += (payUrl.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(email);
+
+    // Redirect to Stripe — they'll come back after payment
+    window.location.href = payUrl;
+    return;
+  }
+
+  // Free plan — go straight to application
+  showApplication(plan);
+}
+
+function showApplication(plan) {
+  selectedPlan = plan;
+
+  // Highlight selected card
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  if (plan === 'basic') document.getElementById('card-basic')?.classList.add('selected');
+  if (plan === 'premium') document.getElementById('card-premium')?.classList.add('selected');
+
+  // Switch screens
+  document.getElementById('screen-plans').classList.add('hidden');
+  document.getElementById('screen-app').classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Coverage items ──
+const COVERAGE = {
+  appliances:['Clothes Washer','Refrigerator','Stand Alone Freezer','Microwave Oven','Cooktop – Electric','Cooktop – Gas','Range – Electric','Range – Gas','Wall Oven – Electric','Wall Oven – Gas','Trash Compactors','Exhaust Hoods','Garbage Disposals','Clothes Dryer – Electric','Clothes Dryer – Gas','Dishwasher'],
+  hvac:['Straight Cool / Heat Pump Split Units','Straight Cool / Heat Pump Package Units','Wall Units','Window Units','Mini-Split Units','Furnaces – Gas','Furnaces – Oil','Boilers – Gas','Boilers – Oil','Gas Package Units','Geothermal Units'],
+  plumbing:['Faucets','Water Lines','Waste Lines','Stoppages','Garbage Disposals','Water Heaters – Electric','Water Heater – Tankless','Water Heaters – Gas','Water Heaters – Oil','Gas Lines','Septic Systems','Sump Pumps','Water Softeners','Well Pumps','Tub/Shower Valves'],
+  electrical:['Main / Sub Panels','Electrical Wiring','Electrical Switches','Electrical Receptacles','Ceiling Fans','Exhaust Fans'],
+  other:['Garage Door Openers','Central Vacuum System','Sprinkler Systems','Pool/Spa Pumps','Pool/Spa Heaters','Roof Repairs']
+};
+Object.keys(COVERAGE).forEach(cat => {
+  const grid = document.getElementById('cov-grid-' + cat);
+  if (!grid) return;
+  grid.innerHTML = COVERAGE[cat].map(item => '<label><input type="checkbox" name="cov-' + cat + '" value="' + item + '"> ' + item + '</label>').join('');
+});
+
+// ── Field formatting & live validation ──────────────────────────────
+var US_STATES = [
+  ['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],
+  ['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],
+  ['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],
+  ['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],
+  ['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],
+  ['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],
+  ['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],
+  ['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],
+  ['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],
+  ['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],
+  ['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']
+];
+
+// Business-address state dropdown
+(function(){
+  var sel = document.getElementById('state');
+  if (!sel) return;
+  US_STATES.forEach(function(s){
+    var o = document.createElement('option');
+    o.value = s[0]; o.textContent = s[1] + ' (' + s[0] + ')';
+    sel.appendChild(o);
+  });
+})();
+
+// Payment methods accepted
+var PAY_METHODS = ['Cash','Check','Visa','Mastercard','American Express','Discover'];
+(function(){
+  var g = document.getElementById('pay-grid');
+  if (!g) return;
+  g.innerHTML = PAY_METHODS.map(function(p){
+    return '<label><input type="checkbox" class="pay-cb" value="' + p + '"> ' + p + '</label>';
+  }).join('');
+})();
+
+// Trades performed
+var TRADES = ['HVAC','Plumbing','Electrical','Appliance Repair','Roofing','Pool & Spa',
+              'Garage Door','Sprinkler / Irrigation','Lawn Care','Other'];
+(function(){
+  var g = document.getElementById('trade-grid');
+  if (!g) return;
+  g.innerHTML = TRADES.map(function(t){
+    return '<label><input type="checkbox" class="trade-cb" value="' + t + '" onchange="tradeChange()"> ' + t + '</label>';
+  }).join('');
+})();
+
+function tradeChange(){
+  var other = false;
+  document.querySelectorAll('.trade-cb:checked').forEach(function(b){ if (b.value === 'Other') other = true; });
+  var wrap = document.getElementById('trade-other-wrap');
+  if (wrap) wrap.style.display = other ? 'block' : 'none';
+  if (document.querySelectorAll('.trade-cb:checked').length) {
+    document.getElementById('fe-trades').classList.remove('on');
+  }
+}
+
+function selectedTrades(){
+  var out = [];
+  document.querySelectorAll('.trade-cb:checked').forEach(function(b){
+    if (b.value === 'Other') {
+      var t = (document.getElementById('tradeOther').value || '').trim();
+      if (t) out.push(t);
+    } else {
+      out.push(b.value);
+    }
+  });
+  return out;
+}
+
+// Coverage-area state checkboxes
+(function(){
+  var grid = document.getElementById('coverage-state-grid');
+  if (!grid) return;
+  grid.innerHTML = US_STATES.map(function(s){
+    return '<label title="' + s[1] + '"><input type="checkbox" class="cov-state" value="' + s[0] + '" onchange="stateCount()"> ' + s[0] + '</label>';
+  }).join('');
+})();
+
+function stateAll(on){
+  var boxes = document.querySelectorAll('.cov-state');
+  for (var i = 0; i < boxes.length; i++) boxes[i].checked = on;
+  stateCount();
+}
+function stateCount(){
+  var sel = document.querySelectorAll('.cov-state:checked');
+  var el = document.getElementById('state-count');
+  if (!el) return;
+  if (!sel.length) { el.textContent = 'None selected'; return; }
+  var codes = [];
+  for (var i = 0; i < sel.length; i++) codes.push(sel[i].value);
+  el.textContent = sel.length + (sel.length === 1 ? ' state: ' : ' states: ') + codes.join(', ');
+}
+
+// Phone mask -> (555) 555-5555
+function fmtPhone(raw){
+  var d = String(raw).replace(/\D/g, '').slice(0, 10);
+  if (d.length > 6) return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+  if (d.length > 3) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+  if (d.length > 0) return '(' + d;
+  return '';
+}
+['phone','mobile','ownerCell'].forEach(function(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', function(){
+    var atEnd = this.selectionStart === this.value.length;
+    this.value = fmtPhone(this.value);
+    if (atEnd) this.setSelectionRange(this.value.length, this.value.length);
+    this.classList.remove('bad');
+    var fe = document.getElementById('fe-' + id); if (fe) fe.classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = this.value.replace(/\D/g,'').length === 10;
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    var fe = document.getElementById('fe-' + id); if (fe) fe.classList.toggle('on', !good);
+  });
+});
+
+// Email
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+(function(){
+  var el = document.getElementById('email');
+  if (!el) return;
+  el.addEventListener('input', function(){
+    this.classList.remove('bad');
+    document.getElementById('fe-email').classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    this.value = this.value.trim().toLowerCase();
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = EMAIL_RE.test(this.value);
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    document.getElementById('fe-email').classList.toggle('on', !good);
+  });
+})();
+
+// ZIP
+(function(){
+  var el = document.getElementById('zip');
+  if (!el) return;
+  el.addEventListener('input', function(){
+    this.value = this.value.replace(/\D/g, '').slice(0, 5);
+    this.classList.remove('bad');
+    document.getElementById('fe-zip').classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = this.value.length === 5;
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    document.getElementById('fe-zip').classList.toggle('on', !good);
+  });
+})();
+
+// EIN -> 12-3456789
+(function(){
+  var el = document.getElementById('taxId');
+  if (!el) return;
+  el.addEventListener('input', function(){
+    var d = this.value.replace(/\D/g, '').slice(0, 9);
+    this.value = d.length > 2 ? d.slice(0,2) + '-' + d.slice(2) : d;
+    this.classList.remove('bad');
+    document.getElementById('fe-taxId').classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = this.value.replace(/\D/g,'').length === 9;
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    document.getElementById('fe-taxId').classList.toggle('on', !good);
+  });
+})();
+
+// URLs -> add https:// if missing
+['website','googleBusinessProfile'].forEach(function(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('blur', function(){
+    var v = this.value.trim();
+    if (v && !/^https?:\/\//i.test(v)) this.value = 'https://' + v;
+    this.classList.toggle('ok', !!this.value);
+  });
+});
+
+// Markup: flag anything above the SHW maximum, matching the email report
+document.querySelectorAll('.markup-input').forEach(function(inp){
+  inp.addEventListener('input', function(){
+    var max = parseFloat(this.dataset.max);
+    var val = parseFloat(this.value);
+    var over = !isNaN(val) && !isNaN(max) && val > max;
+    this.classList.toggle('bad', over);
+    this.classList.toggle('ok', !over && this.value !== '');
+    var row = this.closest('tr');
+    if (row) {
+      var cell = row.querySelector('td:nth-child(2)');
+      if (cell) cell.classList.toggle('markup-warn', over);
+    }
+  });
+});
+
+// Required text fields: clear the red border as soon as they start typing
+document.querySelectorAll('#screen-app input[required], #screen-app select[required]').forEach(function(el){
+  el.addEventListener('input', function(){ if (this.value.trim()) this.style.borderColor = ''; });
+  el.addEventListener('change', function(){ if (this.value.trim()) this.style.borderColor = ''; });
+});
+
+// ── Stepper navigation ──
+function goTo(step) {
+  if (step > currentStep) {
+    const panel = document.getElementById('p' + currentStep);
+    const required = panel.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(inp => {
+      if (!inp.value.trim()) { inp.style.borderColor = 'var(--red)'; valid = false; }
+      else { inp.style.borderColor = ''; }
+    });
+    // Validate email format on Step 1
+    if (currentStep === 1) {
+      if (!document.querySelectorAll('.trade-cb:checked').length) {
+        document.getElementById('fe-trades').classList.add('on');
+        document.getElementById('trade-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      const mobileField = document.getElementById('mobile');
+      if (mobileField.value.replace(/\D/g, '').length !== 10) {
+        mobileField.classList.add('bad');
+        document.getElementById('fe-mobile').classList.add('on');
+        mobileField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      const emailField = document.getElementById('email');
+      const emailVal = emailField.value.trim();
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        emailField.style.borderColor = 'var(--red)';
+        alert('Please enter a valid email address (e.g. name@company.com).');
+        return;
+      }
+    }
+    if (currentStep === 5 && !document.getElementById('agreedToTerms').checked) { alert('Please agree to the terms before continuing.'); return; }
+    if (!valid) { alert('Please fill in all required fields.'); return; }
+  }
+  // Capture free-path applicants after Step 1 so abandoners aren't invisible.
+  // Paid users already have a status from the payment ping, so skip them.
+  if (currentStep === 1 && step === 2 && selectedPlan === 'free' && !sessionStorage.getItem('shw_app_pinged')) {
+    var apEmail = (document.getElementById('email').value || '').trim();
+    if (apEmail && apEmail.includes('@')) {
+      sessionStorage.setItem('shw_app_pinged', '1');
+      var owner = (document.getElementById('ownerName').value || '').trim();
+      var qp = new URLSearchParams(window.location.search);
+      fetch('/api/lead-capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stage: 'app_started',
+          plan: 'free',
+          email: apEmail,
+          firstName: owner.split(' ')[0] || '',
+          lastName: owner.split(' ').slice(1).join(' ') || '',
+          companyName: (document.getElementById('companyName').value || '').trim(),
+          phone: (document.getElementById('phone').value || '').trim(),
+          zip: (document.getElementById('zip').value || '').trim(),
+          trade: selectedTrades().join(', '),
+          salesperson: qp.get('sp') || qp.get('salesperson') || ''
+        })
+      }).catch(function(){ /* never block the applicant */ });
+    }
+  }
+
+  document.getElementById('p' + currentStep).classList.remove('active');
+  document.getElementById('p' + step).classList.add('active');
+  for (let i = 1; i <= totalSteps; i++) {
+    const si = document.getElementById('si' + i);
+    const sn = document.getElementById('sn' + i);
+    const sl = document.getElementById('sl' + i);
+    si.classList.remove('active', 'done');
+    if (sl) sl.classList.remove('done');
+    if (i < step) { si.classList.add('done'); sn.textContent = '\u2713'; if (sl) sl.classList.add('done'); }
+    else if (i === step) { si.classList.add('active'); sn.textContent = i; }
+    else { sn.textContent = i; }
+  }
+  currentStep = step;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── License repeater ──
+function addLicense() {
+  const c = document.getElementById('licenses-container');
+  const r = document.createElement('div');
+  r.className = 'license-row';
+  r.innerHTML = '<div class="field"><label>Issuing Authority</label><input type="text" class="lic-authority" placeholder="e.g. TX TDLR"></div><div class="field"><label>License Type</label><input type="text" class="lic-type" placeholder="e.g. HVAC"></div><div class="field"><label>License #</label><input type="text" class="lic-number"></div><div class="field"><label>Permits Work For</label><input type="text" class="lic-permits" placeholder="e.g. HVAC Install/Repair"></div><button class="btn-sm danger" onclick="removeLicense(this)" style="height:36px;align-self:end">&#10005;</button>';
+  c.appendChild(r);
+}
+function removeLicense(btn) { if (document.querySelectorAll('.license-row').length > 1) btn.closest('.license-row').remove(); }
+
+// ── File upload ──
+const uploadedFiles = [];
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+function handleFile(input) {
+  const zone = input.closest('.upload-zone');
+  const category = zone.dataset.category;
+  for (const file of input.files) {
+    if (file.size > MAX_FILE_SIZE) { alert(file.name + ' exceeds the 2MB limit.'); continue; }
+    const reader = new FileReader();
+    reader.onload = function(e) { uploadedFiles.push({ name: file.name, type: file.type, category: category, base64: e.target.result }); renderFileList(); };
+    reader.readAsDataURL(file);
+  }
+  input.value = '';
+}
+function renderFileList() {
+  document.getElementById('file-list').innerHTML = uploadedFiles.map((f, i) =>
+    '<div class="file-item"><span class="name">' + f.name + '</span><span class="cat">' + f.category + '</span><button class="remove" onclick="removeFile(' + i + ')">&#10005;</button></div>'
+  ).join('');
+}
+function removeFile(i) { uploadedFiles.splice(i, 1); renderFileList(); }
+
+// ── Collect data ──
+function collectData() {
+  const val = id => (document.getElementById(id)?.value || '').trim();
+  const radio = name => { const el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; };
+  const licenses = [];
+  document.querySelectorAll('.license-row').forEach(row => {
+    const a = row.querySelector('.lic-authority')?.value?.trim();
+    const t = row.querySelector('.lic-type')?.value?.trim();
+    const n = row.querySelector('.lic-number')?.value?.trim();
+    const p = row.querySelector('.lic-permits')?.value?.trim();
+    if (a || t || n) licenses.push({ authority: a, type: t, number: n, permits: p });
+  });
+  const partsMarkup = {};
+  document.querySelectorAll('.markup-input').forEach(inp => { if (inp.value) partsMarkup[inp.dataset.tier] = inp.value; });
+  const coverageItems = {};
+  Object.keys(COVERAGE).forEach(cat => {
+    const checked = [];
+    document.querySelectorAll('input[name="cov-' + cat + '"]:checked').forEach(cb => checked.push(cb.value));
+    if (checked.length) coverageItems[cat] = checked;
+  });
+  return {
+    selectedPlan, companyName: val('companyName'), dba: val('dba'), address: val('address'),
+    city: val('city'), state: val('state'), zip: val('zip'), phone: val('phone'),
+    mobile: val('mobile'), email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
+    ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: selectedTrades().join(', '),
+    yearsInBusiness: val('yearsInBusiness'), taxId: val('taxId'), businessType: radio('businessType'),
+    numTechnicians: val('numTechnicians'), uniformedTechnicians: val('uniformedTechnicians'), vehicles: val('vehicles'),
+    hoursMF: val('hoursMF'), hoursSat: val('hoursSat'), hoursSun: val('hoursSun'), hoursHoliday: val('hoursHoliday'),
+    phoneHandler: val('phoneHandler'), emergencyHandler: val('emergencyHandler'), schedulingSystem: val('schedulingSystem'),
+    creditCards: (function(){var a=[];document.querySelectorAll('.pay-cb:checked').forEach(function(b){a.push(b.value)});return a.join(', ');})(), installSHWParts: radio('installSHWParts'), otherWarrantyCompanies: val('otherWarrantyCompanies'),
+    licenses, serviceCallRegular: val('serviceCallRegular'), serviceCallSHW: val('serviceCallSHW'),
+    laborRateRegular: val('laborRateRegular'), laborRateSHW: val('laborRateSHW'), partsMarkup,
+    salesTax: val('salesTax'), coverageStates: (function(){var a=[];document.querySelectorAll('.cov-state:checked').forEach(function(b){a.push(b.value)});return a.join(', ');})(), coverageCounties: val('coverageCounties'), coverageCities: val('coverageCities'), coverageItems,
+    agreedToTerms: document.getElementById('agreedToTerms').checked,
+    signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles,
+    salesperson: sessionStorage.getItem('shw_salesperson') || '',
+    docsMissing: (function(){
+      var m = [];
+      if (!uploadedFiles.some(f => f.category === 'Certificate of Insurance')) m.push('Certificate of Insurance');
+      if (!uploadedFiles.some(f => f.category === 'Trade License')) m.push('Trade License');
+      if (!uploadedFiles.some(f => f.category === 'W-9')) m.push('W-9');
+      return m.join(', ');
+    })()
+  };
+}
+
+function confirmSubmitAnyway(){
+  window.__shwConfirmedMissing = true;
+  submitApplication();
+}
+
+// ── Submit: email to serviceprovider@ AND send to SSP via GHL ──
+async function submitApplication() {
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('submit-status');
+  const missing = [];
+  if (!uploadedFiles.some(f => f.category === 'Certificate of Insurance')) missing.push('Certificate of Insurance');
+  if (!uploadedFiles.some(f => f.category === 'Trade License')) missing.push('Trade License');
+  if (!uploadedFiles.some(f => f.category === 'W-9')) missing.push('W-9');
+
+  // Documents are needed for approval, but they no longer block submission.
+  if (missing.length && !window.__shwConfirmedMissing) {
+    status.className = 'status error';
+    status.style.display = '';
+    status.innerHTML = '<strong>Still missing:</strong> ' + missing.join(', ') +
+      '<br><span style="font-weight:400">You can submit now and email these to ' +
+      '<a href="mailto:serviceprovider@selecthomewarranty.com" style="color:var(--navy);font-weight:600">serviceprovider@selecthomewarranty.com</a> ' +
+      'when you have them. We can\'t approve you until they arrive, but your application will be on file.</span>' +
+      '<div style="margin-top:12px"><button class="btn btn-primary" style="padding:9px 20px;font-size:14px" onclick="confirmSubmitAnyway()">Submit without documents</button></div>';
+    return;
+  }
+  // Validate email before submitting
+  const emailVal = document.getElementById('email').value.trim();
+  if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+    status.className = 'status error';
+    status.style.display = '';
+    status.textContent = 'Please enter a valid email address (e.g. name@company.com).';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  status.className = 'status';
+  status.style.display = 'none';
+
+  try {
+    const data = collectData();
+
+    // 1) Send to Resend (email to serviceprovider@)
+    const resp = await fetch('/api/contractor-application', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    if (!resp.ok || !result.success) throw new Error(result.error || 'Email submission failed');
+
+    // 2) GHL webhook handled server-side in contractor-application.js
+
+    // 3) Show success
+    document.getElementById('screen-app').classList.remove('visible');
+    document.getElementById('stepper').style.display = 'none';
+    document.getElementById('screen-success').classList.add('visible');
+    if (data.companyName) {
+      document.getElementById('success-heading').textContent = 'Welcome, ' + data.companyName + '!';
+    }
+    if (data.docsMissing) {
+      document.getElementById('success-msg').innerHTML =
+        'Your application is on file. Before we can approve you we still need your <strong>' + data.docsMissing + '</strong>. ' +
+        'Email them to <a href="mailto:serviceprovider@selecthomewarranty.com" style="color:var(--blue);font-weight:600">serviceprovider@selecthomewarranty.com</a> ' +
+        'and we\'ll pick up right where you left off. Questions? Call 855-224-3399.';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    status.className = 'status error';
+    status.style.display = '';
+    status.textContent = 'Error: ' + err.message + '. Please try again or call 855-224-3399.';
+    btn.disabled = false;
+    btn.textContent = 'Submit Application';
+  }
+}
+</script>
+<!--/email_off-->
+</body>
+</html>
