@@ -666,8 +666,12 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
   // ── Handle Stripe return ──
   // Only skip to application if payment_complete=1 param exists (set on Stripe redirect URL)
   // Browser back button from Stripe won't have this param, so they'll see the plans page
-  const savedPlan = sessionStorage.getItem('shw_selected_plan');
   const paymentComplete = params.get('payment_complete');
+  // Prefer sessionStorage, but fall back to the plan Stripe passes in the URL.
+  // sessionStorage can be lost mid-payment (new tab, browser restart, privacy settings),
+  // and a contractor who actually paid must never get dumped back on the plan cards.
+  const urlPlan = params.get('plan');
+  const savedPlan = sessionStorage.getItem('shw_selected_plan') || urlPlan;
   if (savedPlan && paymentComplete === '1' && (savedPlan === 'basic' || savedPlan === 'premium')) {
     // Restore prefill params from before Stripe redirect
     const savedParams = sessionStorage.getItem('shw_prefill_params');
@@ -715,8 +719,8 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
     sessionStorage.removeItem('shw_prefill_params');
     // Skip plans, go straight to application with payment confirmed
     showApplication(savedPlan);
-  } else {
-    // Clear stale sessionStorage if no payment was completed (e.g. browser back from Stripe)
+  } else if (paymentComplete !== '1') {
+    // No payment in this visit — clear stale state (e.g. browser back from Stripe)
     sessionStorage.removeItem('shw_selected_plan');
     sessionStorage.removeItem('shw_prefill_params');
   }
