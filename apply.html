@@ -666,64 +666,92 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
   // ── Handle Stripe return ──
   // Only skip to application if payment_complete=1 param exists (set on Stripe redirect URL)
   // Browser back button from Stripe won't have this param, so they'll see the plans page
-  const paymentComplete = params.get('payment_complete');
-  // Prefer sessionStorage, but fall back to the plan Stripe passes in the URL.
-  // sessionStorage can be lost mid-payment (new tab, browser restart, privacy settings),
-  // and a contractor who actually paid must never get dumped back on the plan cards.
-  const urlPlan = params.get('plan');
-  const savedPlan = sessionStorage.getItem('shw_selected_plan') || urlPlan;
-  if (savedPlan && paymentComplete === '1' && (savedPlan === 'basic' || savedPlan === 'premium')) {
-    // Restore prefill params from before Stripe redirect
-    const savedParams = sessionStorage.getItem('shw_prefill_params');
-    if (savedParams) {
-      const restoredParams = new URLSearchParams(savedParams);
-      Object.entries(map).forEach(([param, fieldId]) => {
-        const val = restoredParams.get(param);
-        if (val) {
-          const el = document.getElementById(fieldId);
-          if (el && !el.value) {
-            if (param === 'last_name' && el.value) { el.value = el.value + ' ' + val; }
-            else { el.value = val; }
-          }
-        }
-      });
-    }
-    // Tell GHL the payment landed, before they start the 6-step form.
-    // Without this, someone who pays then abandons the form stays flagged as unpaid.
-    try {
-      const rp = new URLSearchParams(savedParams || '');
-      const paidEmail = rp.get('email') || document.getElementById('email')?.value || '';
-      if (paidEmail && paidEmail.includes('@') && !sessionStorage.getItem('shw_paid_pinged')) {
-        sessionStorage.setItem('shw_paid_pinged', '1');
-        fetch('/api/lead-capture', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            stage: 'paid',
-            plan: savedPlan,
-            email: paidEmail,
-            firstName: rp.get('first_name') || '',
-            lastName: rp.get('last_name') || '',
-            companyName: rp.get('company') || '',
-            phone: rp.get('phone') || '',
-            zip: rp.get('zip') || '',
-            trade: rp.get('nature') || '',
-            salesperson: rp.get('sp') || rp.get('salesperson') || ''
-          })
-        }).catch(function(){ /* never block the applicant on this */ });
-      }
-    } catch (e) { /* non-blocking */ }
+  // ── Stripe return: verify the payment server-side ──
+  // Stripe passes a checkout session id. We ask Stripe whether it was really paid,
+  // so a typed-in URL cannot get anyone into the application as a paying member.
+  const sessionId = params.get('session_id');
+  const legacyFlag = params.get('payment_complete');
 
-    // Clear session storage so refresh doesn't re-trigger
-    sessionStorage.removeItem('shw_selected_plan');
-    sessionStorage.removeItem('shw_prefill_params');
-    // Skip plans, go straight to application with payment confirmed
-    showApplication(savedPlan);
-  } else if (paymentComplete !== '1') {
-    // No payment in this visit — clear stale state (e.g. browser back from Stripe)
+  if (sessionId) {
+    document.getElementById('screen-plans').classList.add('hidden');
+    showVerifying(true);
+    fetch('/api/verify-payment?session_id=' + encodeURIComponent(sessionId))
+      .then(function(r){ return r.json(); })
+      .then(function(v){
+        showVerifying(false);
+        if (v && v.verified && (v.plan === 'basic' || v.plan === 'premium')) {
+          restorePrefill(map);
+          if (v.email) { const e = document.getElementById('email'); if (e && !e.value) e.value = v.email; }
+          if (v.firstName) { const o = document.getElementById('ownerName'); if (o && !o.value) o.value = (v.firstName + ' ' + v.lastName).trim(); }
+          if (v.phone) { const p = document.getElementById('phone'); if (p && !p.value) p.value = v.phone; }
+          pingPaid(v.plan, v.email);
+          sessionStorage.removeItem('shw_selected_plan');
+          sessionStorage.removeItem('shw_prefill_params');
+          showApplication(v.plan);
+        } else {
+          // Not a valid paid session — send them back to choose a plan
+          document.getElementById('screen-plans').classList.remove('hidden');
+          sessionStorage.removeItem('shw_selected_plan');
+          sessionStorage.removeItem('shw_prefill_params');
+        }
+      })
+      .catch(function(){
+        showVerifying(false);
+        document.getElementById('screen-plans').classList.remove('hidden');
+      });
+  } else if (legacyFlag !== '1') {
+    // Normal visit — clear any stale state
     sessionStorage.removeItem('shw_selected_plan');
     sessionStorage.removeItem('shw_prefill_params');
   }
+
+  function restorePrefill(fieldMap){
+    const savedParams = sessionStorage.getItem('shw_prefill_params');
+    if (!savedParams) return;
+    const rp = new URLSearchParams(savedParams);
+    Object.entries(fieldMap).forEach(([param, fieldId]) => {
+      const val = rp.get(param);
+      if (val) { const el = document.getElementById(fieldId); if (el && !el.value) el.value = val; }
+    });
+    const nat = rp.get('nature');
+    if (nat) {
+      let matched = false;
+      document.querySelectorAll('.trade-cb').forEach(function(b){
+        if (b.value.toLowerCase().indexOf(nat.toLowerCase()) === 0) { b.checked = true; matched = true; }
+      });
+      if (matched) tradeChange();
+    }
+  }
+
+  function pingPaid(plan, email){
+    if (!email || sessionStorage.getItem('shw_paid_pinged')) return;
+    sessionStorage.setItem('shw_paid_pinged', '1');
+    const rp = new URLSearchParams(sessionStorage.getItem('shw_prefill_params') || '');
+    fetch('/api/lead-capture', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        stage: 'paid', plan: plan, email: email,
+        firstName: rp.get('first_name') || '', lastName: rp.get('last_name') || '',
+        companyName: rp.get('company') || '', phone: rp.get('phone') || '',
+        zip: rp.get('zip') || '', trade: rp.get('nature') || '',
+        salesperson: rp.get('sp') || rp.get('salesperson') || ''
+      })
+    }).catch(function(){});
+  }
+
+  function showVerifying(on){
+    let el = document.getElementById('verifying');
+    if (!el && on) {
+      el = document.createElement('div');
+      el.id = 'verifying';
+      el.style.cssText = 'padding:80px 24px;text-align:center;color:var(--text-light);font-size:16px';
+      el.innerHTML = '<div style="font-size:34px;margin-bottom:14px">&#128274;</div>Confirming your payment&hellip;';
+      document.body.insertBefore(el, document.getElementById('screen-app'));
+    }
+    if (el) el.style.display = on ? 'block' : 'none';
+  }
+
 })();
 
 // ── Plan selection ──
