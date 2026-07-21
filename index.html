@@ -129,6 +129,11 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 .suf{position:relative}
 .suf span.sym{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:14px;pointer-events:none}
 .suf input{padding-right:28px !important}
+.pay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:7px}
+.pay-grid label{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--navy);cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;background:var(--white);transition:all .15s}
+.pay-grid label:hover{border-color:#b9c6dd}
+.pay-grid label:has(input:checked){border-color:var(--blue);border-width:2px;background:rgba(37,87,167,.06);padding:9.5px 11.5px}
+.pay-grid input{width:auto;accent-color:var(--blue);flex-shrink:0}
 .trade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px}
 .trade-grid label{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--navy);cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;background:var(--white);transition:all .15s}
 .trade-grid label:hover{border-color:#b9c6dd}
@@ -400,7 +405,11 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
     <div class="field"><label>Who answers the phone?</label><input type="text" id="phoneHandler" placeholder="e.g. Office staff, answering service"></div>
     <div class="field"><label>Who handles emergency/after-hours calls?</label><input type="text" id="emergencyHandler" placeholder="e.g. On-call technician, owner"></div>
     <div class="field"><label>Scheduling system used</label><input type="text" id="schedulingSystem" placeholder="e.g. ServiceTitan, Housecall Pro, manual"></div>
-    <div class="field"><label>Credit cards accepted?</label><input type="text" id="creditCards" placeholder="e.g. Visa, MC, Amex"></div>
+    <div class="field">
+      <label>Payment Methods Accepted</label>
+      <div class="hint" style="margin-bottom:6px">Select every payment method your company accepts from homeowners.</div>
+      <div class="pay-grid" id="pay-grid"></div>
+    </div>
     <div class="field"><label>Willing to install SHW-provided parts?</label><div class="radio-group"><label><input type="radio" name="installSHWParts" value="Yes"> Yes</label><label><input type="radio" name="installSHWParts" value="No"> No</label></div></div>
     <div class="field"><label>Other warranty companies you work with</label><input type="text" id="otherWarrantyCompanies" placeholder="e.g. American Home Shield, First American"></div>
     <div class="btn-row"><button class="btn btn-outline" onclick="goTo(1)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(3)">Next &rarr;</button></div>
@@ -555,7 +564,7 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
   <!-- STEP 6: UPLOAD & SUBMIT -->
   <div class="panel" id="p6">
     <h2>Upload Documents &amp; Submit</h2>
-    <p style="font-size:14px;color:var(--text-light);margin-bottom:16px">Last step. Upload these four documents and you&rsquo;re done &mdash; we need them to verify your license and add you to the dispatch network. Max 2MB per file. PDF, JPG, or PNG.</p>
+    <p style="font-size:14px;color:var(--text-light);margin-bottom:16px">Last step. We need these to verify your license and add you to the dispatch network. Don&rsquo;t have them handy? Submit now and email them over later &mdash; your application stays on file either way. Max 2MB per file. PDF, JPG, or PNG.</p>
     <div class="field">
       <label>Certificate of Insurance<span class="req">*</span></label>
       <div class="hint">Must list <strong>Select Home Warranty, LLC, 1000 Wyckoff Ave, Mahwah, NJ 07430</strong> as certificate holder and additional insured.</div>
@@ -807,6 +816,16 @@ var US_STATES = [
     o.value = s[0]; o.textContent = s[1] + ' (' + s[0] + ')';
     sel.appendChild(o);
   });
+})();
+
+// Payment methods accepted
+var PAY_METHODS = ['Cash','Check','Visa','Mastercard','American Express','Discover'];
+(function(){
+  var g = document.getElementById('pay-grid');
+  if (!g) return;
+  g.innerHTML = PAY_METHODS.map(function(p){
+    return '<label><input type="checkbox" class="pay-cb" value="' + p + '"> ' + p + '</label>';
+  }).join('');
 })();
 
 // Trades performed
@@ -1121,27 +1140,46 @@ function collectData() {
     numTechnicians: val('numTechnicians'), uniformedTechnicians: val('uniformedTechnicians'), vehicles: val('vehicles'),
     hoursMF: val('hoursMF'), hoursSat: val('hoursSat'), hoursSun: val('hoursSun'), hoursHoliday: val('hoursHoliday'),
     phoneHandler: val('phoneHandler'), emergencyHandler: val('emergencyHandler'), schedulingSystem: val('schedulingSystem'),
-    creditCards: val('creditCards'), installSHWParts: radio('installSHWParts'), otherWarrantyCompanies: val('otherWarrantyCompanies'),
+    creditCards: (function(){var a=[];document.querySelectorAll('.pay-cb:checked').forEach(function(b){a.push(b.value)});return a.join(', ');})(), installSHWParts: radio('installSHWParts'), otherWarrantyCompanies: val('otherWarrantyCompanies'),
     licenses, serviceCallRegular: val('serviceCallRegular'), serviceCallSHW: val('serviceCallSHW'),
     laborRateRegular: val('laborRateRegular'), laborRateSHW: val('laborRateSHW'), partsMarkup,
     salesTax: val('salesTax'), coverageStates: (function(){var a=[];document.querySelectorAll('.cov-state:checked').forEach(function(b){a.push(b.value)});return a.join(', ');})(), coverageCounties: val('coverageCounties'), coverageCities: val('coverageCities'), coverageItems,
     agreedToTerms: document.getElementById('agreedToTerms').checked,
     signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles,
-    salesperson: sessionStorage.getItem('shw_salesperson') || ''
+    salesperson: sessionStorage.getItem('shw_salesperson') || '',
+    docsMissing: (function(){
+      var m = [];
+      if (!uploadedFiles.some(f => f.category === 'Certificate of Insurance')) m.push('Certificate of Insurance');
+      if (!uploadedFiles.some(f => f.category === 'Trade License')) m.push('Trade License');
+      if (!uploadedFiles.some(f => f.category === 'W-9')) m.push('W-9');
+      return m.join(', ');
+    })()
   };
+}
+
+function confirmSubmitAnyway(){
+  window.__shwConfirmedMissing = true;
+  submitApplication();
 }
 
 // ── Submit: email to serviceprovider@ AND send to SSP via GHL ──
 async function submitApplication() {
   const btn = document.getElementById('submit-btn');
   const status = document.getElementById('submit-status');
-  const hasCOI = uploadedFiles.some(f => f.category === 'Certificate of Insurance');
-  const hasLicense = uploadedFiles.some(f => f.category === 'Trade License');
-  const hasW9 = uploadedFiles.some(f => f.category === 'W-9');
-  if (!hasCOI || !hasLicense || !hasW9) {
+  const missing = [];
+  if (!uploadedFiles.some(f => f.category === 'Certificate of Insurance')) missing.push('Certificate of Insurance');
+  if (!uploadedFiles.some(f => f.category === 'Trade License')) missing.push('Trade License');
+  if (!uploadedFiles.some(f => f.category === 'W-9')) missing.push('W-9');
+
+  // Documents are needed for approval, but they no longer block submission.
+  if (missing.length && !window.__shwConfirmedMissing) {
     status.className = 'status error';
     status.style.display = '';
-    status.textContent = 'Please upload a Certificate of Insurance, at least one Trade License, and a completed W-9.';
+    status.innerHTML = '<strong>Still missing:</strong> ' + missing.join(', ') +
+      '<br><span style="font-weight:400">You can submit now and email these to ' +
+      '<a href="mailto:serviceprovider@selecthomewarranty.com" style="color:var(--navy);font-weight:600">serviceprovider@selecthomewarranty.com</a> ' +
+      'when you have them. We can\'t approve you until they arrive, but your application will be on file.</span>' +
+      '<div style="margin-top:12px"><button class="btn btn-primary" style="padding:9px 20px;font-size:14px" onclick="confirmSubmitAnyway()">Submit without documents</button></div>';
     return;
   }
   // Validate email before submitting
@@ -1177,6 +1215,12 @@ async function submitApplication() {
     document.getElementById('screen-success').classList.add('visible');
     if (data.companyName) {
       document.getElementById('success-heading').textContent = 'Welcome, ' + data.companyName + '!';
+    }
+    if (data.docsMissing) {
+      document.getElementById('success-msg').innerHTML =
+        'Your application is on file. Before we can approve you we still need your <strong>' + data.docsMissing + '</strong>. ' +
+        'Email them to <a href="mailto:serviceprovider@selecthomewarranty.com" style="color:var(--blue);font-weight:600">serviceprovider@selecthomewarranty.com</a> ' +
+        'and we\'ll pick up right where you left off. Questions? Call 855-224-3399.';
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
