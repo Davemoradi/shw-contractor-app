@@ -343,8 +343,8 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
       <div class="field"><label>ZIP<span class="req">*</span></label><input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="07430" autocomplete="postal-code" required><div class="fe" id="fe-zip">Enter a 5-digit ZIP code</div></div>
     </div>
     <div class="row">
-      <div class="field"><label>Phone<span class="req">*</span></label><input type="tel" id="phone" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="fe" id="fe-phone">Enter a 10-digit phone number</div></div>
-      <div class="field"><label>Fax</label><input type="tel" id="fax" inputmode="tel" maxlength="14" placeholder="(555) 555-5555"></div>
+      <div class="field"><label>Business Phone<span class="req">*</span></label><input type="tel" id="phone" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="fe" id="fe-phone">Enter a 10-digit phone number</div></div>
+      <div class="field"><label>Mobile Number<span class="req">*</span></label><input type="tel" id="mobile" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="hint">Where we text work order dispatches</div><div class="fe" id="fe-mobile">Enter a 10-digit mobile number</div></div>
     </div>
     <div class="row">
       <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" spellcheck="false" autocomplete="email" placeholder="you@company.com" required><div class="fe" id="fe-email">Enter a valid email address, like you@company.com</div></div>
@@ -875,7 +875,7 @@ function fmtPhone(raw){
   if (d.length > 0) return '(' + d;
   return '';
 }
-['phone','fax','ownerCell'].forEach(function(id){
+['phone','mobile','ownerCell'].forEach(function(id){
   var el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('input', function(){
@@ -1000,6 +1000,13 @@ function goTo(step) {
         document.getElementById('trade-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
+      const mobileField = document.getElementById('mobile');
+      if (mobileField.value.replace(/\D/g, '').length !== 10) {
+        mobileField.classList.add('bad');
+        document.getElementById('fe-mobile').classList.add('on');
+        mobileField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
       const emailField = document.getElementById('email');
       const emailVal = emailField.value.trim();
       if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
@@ -1107,8 +1114,8 @@ function collectData() {
   });
   return {
     selectedPlan, companyName: val('companyName'), dba: val('dba'), address: val('address'),
-    city: val('city'), state: val('state'), zip: val('zip'), phone: val('phone'), fax: val('fax'),
-    email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
+    city: val('city'), state: val('state'), zip: val('zip'), phone: val('phone'),
+    mobile: val('mobile'), email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
     ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: selectedTrades().join(', '),
     yearsInBusiness: val('yearsInBusiness'), taxId: val('taxId'), businessType: radio('businessType'),
     numTechnicians: val('numTechnicians'), uniformedTechnicians: val('uniformedTechnicians'), vehicles: val('vehicles'),
