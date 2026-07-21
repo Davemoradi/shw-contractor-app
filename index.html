@@ -28,7 +28,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:
 h1{font-family:var(--display);font-size:clamp(33px,4.3vw,50px);font-weight:800;line-height:1.04;letter-spacing:-1.8px;color:var(--navy);margin-bottom:17px}
 h1 em{font-style:normal;color:var(--orange)}
 .lede{font-size:16.5px;line-height:1.6;color:var(--muted);max-width:480px;margin-bottom:24px}
-.stats{display:flex;gap:36px;flex-wrap:wrap;padding:21px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:22px}
+.stats{display:flex;gap:36px;flex-wrap:wrap;padding:21px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:24px}
 .stats strong{display:block;font-family:var(--display);font-size:25px;font-weight:800;color:var(--navy);line-height:1.15;letter-spacing:-.8px;font-variant-numeric:tabular-nums}
 .stats span{font-size:12.5px;color:var(--muted);letter-spacing:.1px}
 .pts{list-style:none;margin-bottom:0}
@@ -45,13 +45,16 @@ h1 em{font-style:normal;color:var(--orange)}
 
 @media(max-width:620px){.stats{gap:20px}.stats strong{font-size:20px}}
 
-.lcta{margin-top:28px;padding-top:26px;border-top:1px solid var(--border)}
+.lcta{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
 .lcta-btn{display:inline-block;background:var(--orange);color:var(--white);border:none;border-radius:9px;padding:15px 34px;font-family:var(--display);font-size:16.5px;font-weight:700;letter-spacing:-.2px;cursor:pointer;transition:background .18s,transform .18s;box-shadow:0 4px 18px rgba(240,86,31,.28)}
 .lcta-btn:hover{background:#d64614;transform:translateY(-1px)}
 .lcta-alt{font-size:13.5px;color:var(--muted);margin-top:13px}
 .lcta-alt a{color:var(--navy);font-weight:700;text-decoration:none;font-variant-numeric:tabular-nums}
 .lcta-alt a:hover{color:var(--blue)}
-.card{background:var(--white);border-radius:13px;box-shadow:0 8px 34px rgba(18,35,77,.11);overflow:hidden;position:sticky;top:22px}
+.card{background:var(--white);border-radius:13px;box-shadow:0 8px 34px rgba(18,35,77,.11);overflow:hidden;position:sticky;top:22px;transition:box-shadow .3s,transform .3s}
+.card.pulse{box-shadow:0 0 0 3px var(--orange),0 12px 42px rgba(240,86,31,.28);transform:translateY(-3px)}
+.trade.hint{border-color:var(--orange);background:#fff8f5}
+@media(prefers-reduced-motion:reduce){.card{transition:none}.card.pulse{transform:none}}
 @media(max-width:960px){.card{position:static}}
 .card-head{background:var(--navy);padding:18px 24px}
 .card-head h2{font-family:var(--display);color:var(--white);font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:3px}
@@ -134,6 +137,11 @@ h1 em{font-style:normal;color:var(--orange)}
       <div><strong>All 50</strong><span>States</span></div>
     </div>
 
+    <div class="lcta">
+      <button type="button" class="lcta-btn" onclick="startNow()">Get jobs sent to me &rarr;</button>
+      <div class="lcta-alt">Prefer to talk it through? Call <a href="tel:8552243399">855-224-3399</a></div>
+    </div>
+
     <ul class="pts">
       <li><b>Never pay for a lead</b> &mdash; jobs are dispatched to you, not resold to four competitors</li>
       <li><b>Every job is a real claim</b> &mdash; the homeowner already filed and needs it fixed today</li>
@@ -144,11 +152,6 @@ h1 em{font-style:normal;color:var(--orange)}
       <li><b>Get paid without chasing</b> &mdash; Net 30, or Net 15 on Premium</li>
       <li><b>Dispatch.me included free</b> &mdash; about $300/mo on its own</li>
     </ul>
-
-    <div class="lcta">
-      <button type="button" class="lcta-btn" onclick="startNow()">Get jobs sent to me &rarr;</button>
-      <div class="lcta-alt">Prefer to talk it through? Call <a href="tel:8552243399">855-224-3399</a></div>
-    </div>
 
   </div>
 
@@ -277,11 +280,24 @@ var $ = function(id){ return document.getElementById(id); };
 function startNow(){
   var card = document.querySelector('.card');
   if (!card) return;
-  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Scroll only if the card isn't already fully in view (mobile / short screens)
+  var r = card.getBoundingClientRect();
+  var offscreen = r.top < 0 || r.bottom > window.innerHeight;
+  if (offscreen) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Always give a visible cue so the button never feels dead
+  var delay = offscreen ? 380 : 0;
   setTimeout(function(){
-    var first = document.querySelector('.trade');
-    if (first) first.focus({ preventScroll: true });
-  }, 420);
+    card.classList.add('pulse');
+    var tiles = document.querySelectorAll('.trade');
+    for (var i = 0; i < tiles.length; i++) tiles[i].classList.add('hint');
+    setTimeout(function(){
+      card.classList.remove('pulse');
+      for (var j = 0; j < tiles.length; j++) tiles[j].classList.remove('hint');
+    }, 1100);
+    if (tiles[0]) tiles[0].focus({ preventScroll: true });
+  }, delay);
 }
 
 $('zip').addEventListener('input', function(){
