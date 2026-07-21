@@ -89,6 +89,7 @@ export default async function handler(req, res) {
         lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
         name: data.ownerName,
         phone: digits(data.phone),
+        mobile_phone: digits(data.mobile),
         email: (data.email || '').trim().toLowerCase(),
         companyName: data.companyName,
         address1: data.address,
@@ -221,8 +222,8 @@ function buildEmailHTML(d) {
           ${row('DBA', d.dba)}
           ${row('Address', d.address)}
           ${row('City / State / ZIP', `${d.city || ''}, ${d.state || ''} ${d.zip || ''}`)}
-          ${row('Phone', d.phone)}
-          ${row('Fax', d.fax)}
+          ${row('Business Phone', d.phone)}
+          ${row('Mobile', d.mobile)}
           ${row('Email', d.email)}
           ${row('Website', d.website)}
           ${row('Google Business Profile', d.googleBusinessProfile)}
