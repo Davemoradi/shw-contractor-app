@@ -78,6 +78,8 @@ export default async function handler(req, res) {
         'free': '$0'
       };
       // Capitalize salesperson code for display (e.g. "celia" -> "Celia")
+      // GHL matches on raw digits — strip display formatting like (555) 555-5555
+      const digits = (v) => (v || '').replace(/\D/g, '');
       const isPaid = (data.selectedPlan === 'basic' || data.selectedPlan === 'premium');
       const spRaw = (data.salesperson || '').toLowerCase().trim();
       const spDisplay = spRaw ? spRaw.charAt(0).toUpperCase() + spRaw.slice(1) : '';
@@ -86,8 +88,8 @@ export default async function handler(req, res) {
         firstName: data.ownerName ? data.ownerName.split(' ')[0] : '',
         lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
         name: data.ownerName,
-        phone: data.phone,
-        email: data.email,
+        phone: digits(data.phone),
+        email: (data.email || '').trim().toLowerCase(),
         companyName: data.companyName,
         address1: data.address,
         city: data.city,
@@ -148,15 +150,46 @@ function buildEmailHTML(d) {
 
   let licensesHTML = '';
   if (d.licenses && Array.isArray(d.licenses)) {
-    licensesHTML = d.licenses.map((lic, i) =>
-      `License ${i + 1}: ${lic.authority || ''} | ${lic.type || ''} | #${lic.number || ''} | Permits: ${lic.permits || ''}`
-    ).join('<br>');
+    licensesHTML = d.licenses.map((lic, i) => {
+      const bits = [];
+      if (lic.authority) bits.push(lic.authority);
+      if (lic.type) bits.push(lic.type);
+      if (lic.number) bits.push('#' + lic.number);
+      if (lic.permits) bits.push('Permits: ' + lic.permits);
+      return bits.length ? `<strong>License ${i + 1}:</strong> ${bits.join(' &nbsp;|&nbsp; ')}` : '';
+    }).filter(Boolean).join('<br>');
   }
 
+  const TIERS = [
+    { key: '0-25',    label: '$0.00 &ndash; $25.00',     max: 50 },
+    { key: '25-50',   label: '$25.01 &ndash; $50.00',    max: 40 },
+    { key: '50-100',  label: '$50.01 &ndash; $100.00',   max: 30 },
+    { key: '100-150', label: '$100.01 &ndash; $150.00',  max: 25 },
+    { key: '150+',    label: 'Above $150.00',            max: 10 }
+  ];
   let markupHTML = '';
-  if (d.partsMarkup && typeof d.partsMarkup === 'object') {
-    const tiers = Object.entries(d.partsMarkup);
-    markupHTML = tiers.map(([tier, pct]) => `${tier}: ${pct}%`).join(', ');
+  let markupOver = false;
+  if (d.partsMarkup && typeof d.partsMarkup === 'object' && Object.keys(d.partsMarkup).length) {
+    const rows = TIERS.map(t => {
+      const raw = d.partsMarkup[t.key];
+      if (raw === undefined || raw === '') {
+        return `<tr><td style="padding:6px 10px;border:1px solid #ddd;font-size:13px;">${t.label}</td><td style="padding:6px 10px;border:1px solid #ddd;font-size:13px;color:#888;">${t.max}%</td><td style="padding:6px 10px;border:1px solid #ddd;font-size:13px;color:#999;font-style:italic;">Not provided</td></tr>`;
+      }
+      const val = parseFloat(raw);
+      const over = !isNaN(val) && val > t.max;
+      if (over) markupOver = true;
+      const style = over
+        ? 'padding:6px 10px;border:1px solid #ddd;font-size:13px;color:#c62828;font-weight:700;background:#fdecea;'
+        : 'padding:6px 10px;border:1px solid #ddd;font-size:13px;';
+      return `<tr><td style="padding:6px 10px;border:1px solid #ddd;font-size:13px;">${t.label}</td><td style="padding:6px 10px;border:1px solid #ddd;font-size:13px;color:#888;">${t.max}%</td><td style="${style}">${raw}%${over ? ' &#9888; over max' : ''}</td></tr>`;
+    }).join('');
+    markupHTML = `<table style="width:100%;border-collapse:collapse;margin:4px 0;">
+      <tr>
+        <th style="padding:6px 10px;border:1px solid #ddd;background:#f0f2f5;font-size:12px;text-align:left;">Parts Cost Tier</th>
+        <th style="padding:6px 10px;border:1px solid #ddd;background:#f0f2f5;font-size:12px;text-align:left;">SHW Max</th>
+        <th style="padding:6px 10px;border:1px solid #ddd;background:#f0f2f5;font-size:12px;text-align:left;">Contractor</th>
+      </tr>${rows}</table>` +
+      (markupOver ? '<div style="margin-top:6px;font-size:12px;color:#c62828;font-weight:600;">&#9888; One or more tiers exceed the SHW maximum &mdash; needs review before approval.</div>' : '');
   }
 
   let filesHTML = '';
@@ -195,7 +228,7 @@ function buildEmailHTML(d) {
           ${row('Google Business Profile', d.googleBusinessProfile)}
           ${row('Owner Name', d.ownerName)}
           ${row('Owner Cell', d.ownerCell)}
-          ${row('Nature of Business', d.natureOfBusiness)}
+          ${row('Trades Performed', d.natureOfBusiness)}
           ${row('Years in Business', d.yearsInBusiness)}
           ${row('Tax ID / EIN', d.taxId)}
           ${row('Business Type', d.businessType)}
@@ -228,7 +261,7 @@ function buildEmailHTML(d) {
           ${row('Hourly Labor Rate (SHW Discounted)', d.laborRateSHW)}
           ${row('Parts Mark-up', markupHTML)}
           ${row('Sales Tax %', d.salesTax)}
-          ${row('Coverage States', d.coverageStates)}
+          ${row('States Covered', d.coverageStates)}
           ${row('Coverage Counties', d.coverageCounties)}
           ${row('Coverage Cities', d.coverageCities)}
         </table>
