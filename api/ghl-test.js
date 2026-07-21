@@ -1,6 +1,7 @@
 export default async function handler(req, res) {
   // Fires a full-field payload at GHL so every variable appears in the mapping reference.
   // ?stage=lead | app | paid | paidcomplete | freecomplete   (default: paidcomplete)
+  // ?docs=missing  -> simulates an application submitted without documents
   const stage = (req.query && req.query.stage) || 'paidcomplete';
   const stamp = Date.now().toString().slice(-6);
 
@@ -42,6 +43,9 @@ export default async function handler(req, res) {
     contractor_plan_name: cfg.plan,
     contractor_plan_price: cfg.price,
 
+    docs_status: (req.query && req.query.docs === 'missing') ? 'Incomplete' : 'Complete',
+    docs_missing: (req.query && req.query.docs === 'missing') ? 'Certificate of Insurance, W-9' : '',
+
     salesperson: '',
     salesperson_tag: '',
 
@@ -55,7 +59,7 @@ export default async function handler(req, res) {
       body: JSON.stringify(payload)
     });
     const text = await resp.text();
-    return res.status(200).json({ success: true, stage: stage, searchFor: payload.name, ghlStatus: resp.status, ghlResponse: text, payloadSent: payload });
+    return res.status(200).json({ success: true, stage: stage, searchFor: payload.name, docs: payload.docs_status, ghlStatus: resp.status, ghlResponse: text, payloadSent: payload });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
