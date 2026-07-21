@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         from: process.env.RESEND_FROM || 'SHW Contractor App <onboarding@resend.dev>',
         to: [process.env.NOTIFY_EMAIL || 'serviceprovider@selecthomewarranty.com'],
         cc: data.email && data.email.includes('@') ? [data.email] : [],
-        subject: `New Contractor Application — ${data.companyName || 'Unknown Company'}`,
+        subject: `New Contractor Application — ${data.companyName || 'Unknown Company'}${data.docsMissing ? ' [DOCS MISSING]' : ''}`,
         html: html,
         attachments: attachments
       })
@@ -84,6 +84,77 @@ export default async function handler(req, res) {
       const spRaw = (data.salesperson || '').toLowerCase().trim();
       const spDisplay = spRaw ? spRaw.charAt(0).toUpperCase() + spRaw.slice(1) : '';
 
+      // Full application as readable text — posted to GHL as a note
+      const na = (v) => (v === undefined || v === null || v === '') ? '—' : v;
+      const licLines = (data.licenses || []).map((l, i) => {
+        const bits = [l.authority, l.type, l.number ? '#' + l.number : '', l.permits ? 'Permits: ' + l.permits : ''].filter(Boolean);
+        return bits.length ? '  ' + (i + 1) + '. ' + bits.join(' | ') : '';
+      }).filter(Boolean).join('\n');
+      const covLines = Object.entries(data.coverageItems || {})
+        .map(([cat, items]) => Array.isArray(items) && items.length ? '  ' + cat.toUpperCase() + ': ' + items.join(', ') : '')
+        .filter(Boolean).join('\n');
+      const mkLabels = { '0-25': '$0-25', '25-50': '$25-50', '50-100': '$50-100', '100-150': '$100-150', '150+': 'Over $150' };
+      const mkLine = Object.entries(data.partsMarkup || {})
+        .map(([k, v]) => (mkLabels[k] || k) + ': ' + v + '%').join(' | ');
+
+      const applicationSummary = [
+        '=== CONTRACTOR APPLICATION ===',
+        'Submitted: ' + new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }) + ' ET',
+        'Plan: ' + (planNames[data.selectedPlan] || 'Unknown') + ' (' + (planPrices[data.selectedPlan] || '$0') + ')',
+        '',
+        '--- BUSINESS ---',
+        'Company: ' + na(data.companyName),
+        'DBA: ' + na(data.dba),
+        'Address: ' + na(data.address) + ', ' + na(data.city) + ', ' + na(data.state) + ' ' + na(data.zip),
+        'Business Phone: ' + na(data.phone),
+        'Mobile: ' + na(data.mobile),
+        'Email: ' + na(data.email),
+        'Website: ' + na(data.website),
+        'Google Business Profile: ' + na(data.googleBusinessProfile),
+        'Owner: ' + na(data.ownerName) + ' | Cell: ' + na(data.ownerCell),
+        'Trades: ' + na(data.natureOfBusiness),
+        'Years in Business: ' + na(data.yearsInBusiness),
+        'Tax ID / EIN: ' + na(data.taxId),
+        'Business Type: ' + na(data.businessType),
+        '',
+        '--- OPERATIONS ---',
+        'Technicians: ' + na(data.numTechnicians) + ' (uniformed: ' + na(data.uniformedTechnicians) + ')',
+        'Vehicles: ' + na(data.vehicles),
+        'Hours M-F: ' + na(data.hoursMF),
+        'Hours Sat: ' + na(data.hoursSat) + ' | Sun: ' + na(data.hoursSun) + ' | Holiday: ' + na(data.hoursHoliday),
+        'Phone answered by: ' + na(data.phoneHandler),
+        'After-hours / emergency: ' + na(data.emergencyHandler),
+        'Scheduling system: ' + na(data.schedulingSystem),
+        'Payment methods accepted: ' + na(data.creditCards),
+        'Will install SHW parts: ' + na(data.installSHWParts),
+        'Other warranty companies: ' + na(data.otherWarrantyCompanies),
+        '',
+        '--- LICENSES ---',
+        licLines || '  None provided',
+        '',
+        '--- RATES ---',
+        'Service Call — Regular: $' + na(data.serviceCallRegular) + ' | SHW: $' + na(data.serviceCallSHW),
+        'Hourly Labor — Regular: $' + na(data.laborRateRegular) + ' | SHW: $' + na(data.laborRateSHW),
+        'Parts Mark-up: ' + (mkLine || '—'),
+        'Sales Tax: ' + na(data.salesTax) + '%',
+        '',
+        '--- COVERAGE AREA ---',
+        'States: ' + na(data.coverageStates),
+        'Counties: ' + na(data.coverageCounties),
+        'Cities: ' + na(data.coverageCities),
+        '',
+        '--- SERVICES OFFERED ---',
+        covLines || '  None selected',
+        '',
+        '--- AGREEMENT ---',
+        'Agreed to MSA: ' + (data.agreedToTerms ? 'Yes' : 'No'),
+        'Signed by: ' + na(data.signatureName) + ' on ' + na(data.signatureDate),
+        '',
+        '--- DOCUMENTS ---',
+        'Received: ' + ((data.files || []).map(f => f.category).filter(Boolean).join(', ') || 'None'),
+        'Outstanding: ' + (data.docsMissing || 'None — all documents received')
+      ].join('\n');
+
       const ghlPayload = {
         firstName: data.ownerName ? data.ownerName.split(' ')[0] : '',
         lastName: data.ownerName ? data.ownerName.split(' ').slice(1).join(' ') : '',
@@ -110,6 +181,20 @@ export default async function handler(req, res) {
         lead_status: isPaid ? '4 - Paid, App Complete' : '5 - Free, App Complete',
         lead_status_tag: isPaid ? 'SHW Lead - Paid Complete' : 'SHW Lead - Free Complete',
 
+        application_summary: applicationSummary,
+
+        // Filterable operational fields
+        years_in_business: data.yearsInBusiness || '',
+        num_technicians: data.numTechnicians || '',
+        service_call_fee: data.serviceCallSHW || '',
+        labor_rate: data.laborRateSHW || '',
+        business_type: data.businessType || '',
+        owner_name: data.ownerName || '',
+        coverage_counties: data.coverageCounties || '',
+        coverage_cities: data.coverageCities || '',
+
+        docs_status: data.docsMissing ? 'Incomplete' : 'Complete',
+        docs_missing: data.docsMissing || '',
         salesperson: spDisplay,
         salesperson_tag: spDisplay ? 'Sold by ' + spDisplay : '',
         lead_id: 'SHW-VP-' + Date.now()
@@ -215,6 +300,7 @@ function buildEmailHTML(d) {
           Selected Plan: ${planLabel}
         </div>
         ${d.salesperson ? `<div style="background:#f0f2f5;border-left:4px solid #1a2b5f;padding:10px 14px;margin-bottom:20px;font-size:14px;">Referred by: <strong>${d.salesperson}</strong></div>` : ''}
+        ${d.docsMissing ? `<div style="background:#fdecea;border-left:4px solid #c62828;padding:12px 16px;margin-bottom:20px;font-size:14px;color:#8a1c17;"><strong>&#9888; Documents outstanding &mdash; cannot approve yet</strong><br>Missing: <strong>${d.docsMissing}</strong><br><span style="font-size:13px;">The contractor was told to email these to serviceprovider@selecthomewarranty.com. Follow up to complete onboarding.</span></div>` : `<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;margin-bottom:20px;font-size:14px;color:#1b5e20;"><strong>&#10003; All required documents received</strong></div>`}
 
         <h2 style="color:#1a2b5f;border-bottom:2px solid #2557a7;padding-bottom:8px;">General Information</h2>
         <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
@@ -248,7 +334,7 @@ function buildEmailHTML(d) {
           ${row('Phone Handler', d.phoneHandler)}
           ${row('Emergency Handler', d.emergencyHandler)}
           ${row('Scheduling System', d.schedulingSystem)}
-          ${row('Credit Cards Accepted', d.creditCards)}
+          ${row('Payment Methods Accepted', d.creditCards)}
           ${row('Will Install SHW Parts?', d.installSHWParts)}
           ${row('Other Warranty Companies', d.otherWarrantyCompanies)}
         </table>
@@ -281,7 +367,8 @@ function buildEmailHTML(d) {
 
         <h2 style="color:#1a2b5f;border-bottom:2px solid #2557a7;padding-bottom:8px;">Uploaded Documents</h2>
         <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-          ${row('Files', filesHTML || 'No files uploaded')}
+          ${row('Files Received', filesHTML || '<span style="color:#c62828;font-weight:600">None uploaded</span>')}
+          ${d.docsMissing ? `<tr><td ${sh}>Still Needed</td><td ${s}><span style="color:#c62828;font-weight:700">${d.docsMissing}</span></td></tr>` : ''}
         </table>
 
         <hr style="border:none;border-top:1px solid #ddd;margin:24px 0;">
