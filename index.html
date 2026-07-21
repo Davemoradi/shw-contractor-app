@@ -117,6 +117,31 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,87,167,.12)}
 .field textarea{resize:vertical;min-height:80px}
 .field .hint{font-size:12px;color:var(--text-light);margin-top:3px}
+.field input.ok,.field select.ok{border-color:#7cc496;background-image:linear-gradient(transparent,transparent)}
+.field input.bad,.field select.bad{border-color:var(--red)}
+.fe{font-size:12px;color:var(--red);margin-top:4px;display:none}
+.fe.on{display:block}
+.fok{font-size:12px;color:var(--green);margin-top:4px;display:none}
+.fok.on{display:block}
+.pre{position:relative}
+.pre span.sym{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:14px;pointer-events:none}
+.pre input{padding-left:26px !important}
+.suf{position:relative}
+.suf span.sym{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:14px;pointer-events:none}
+.suf input{padding-right:28px !important}
+.trade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px}
+.trade-grid label{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--navy);cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;background:var(--white);transition:all .15s}
+.trade-grid label:hover{border-color:#b9c6dd}
+.trade-grid label:has(input:checked){border-color:var(--blue);border-width:2px;background:rgba(37,87,167,.06);padding:9.5px 11.5px}
+.trade-grid input{width:auto;accent-color:var(--blue);flex-shrink:0}
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:4px;max-height:190px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:10px;background:var(--white)}
+.state-grid label{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:400;cursor:pointer;padding:3px 4px;border-radius:4px}
+.state-grid label:hover{background:var(--bg)}
+.state-grid input{width:auto;accent-color:var(--blue)}
+.state-tools{display:flex;gap:10px;margin-bottom:6px;font-size:12px}
+.state-tools button{background:none;border:none;color:var(--blue);cursor:pointer;font-family:inherit;font-size:12px;text-decoration:underline;padding:0}
+.state-count{font-size:12px;color:var(--text-light);margin-top:5px}
+.markup-warn{color:var(--red);font-weight:700}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 @media(max-width:600px){.row,.row-3{grid-template-columns:1fr}}
@@ -310,26 +335,38 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
     <div class="field"><label>Street Address<span class="req">*</span></label><input type="text" id="address" required></div>
     <div class="row-3">
       <div class="field"><label>City<span class="req">*</span></label><input type="text" id="city" required></div>
-      <div class="field"><label>State<span class="req">*</span></label><input type="text" id="state" required></div>
-      <div class="field"><label>ZIP<span class="req">*</span></label><input type="text" id="zip" required></div>
+      <div class="field"><label>State<span class="req">*</span></label>
+        <select id="state" required>
+          <option value="">Select...</option>
+        </select>
+      </div>
+      <div class="field"><label>ZIP<span class="req">*</span></label><input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="07430" autocomplete="postal-code" required><div class="fe" id="fe-zip">Enter a 5-digit ZIP code</div></div>
     </div>
     <div class="row">
-      <div class="field"><label>Phone<span class="req">*</span></label><input type="tel" id="phone" required></div>
-      <div class="field"><label>Fax</label><input type="tel" id="fax"></div>
+      <div class="field"><label>Phone<span class="req">*</span></label><input type="tel" id="phone" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="fe" id="fe-phone">Enter a 10-digit phone number</div></div>
+      <div class="field"><label>Fax</label><input type="tel" id="fax" inputmode="tel" maxlength="14" placeholder="(555) 555-5555"></div>
     </div>
     <div class="row">
-      <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" required></div>
-      <div class="field"><label>Website</label><input type="url" id="website" placeholder="https://"></div>
+      <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" spellcheck="false" autocomplete="email" placeholder="you@company.com" required><div class="fe" id="fe-email">Enter a valid email address, like you@company.com</div></div>
+      <div class="field"><label>Website</label><input type="text" id="website" placeholder="yourcompany.com"><div class="hint">We\u2019ll add https:// automatically</div></div>
     </div>
-    <div class="field"><label>Google Business Profile URL</label><input type="url" id="googleBusinessProfile" placeholder="https://g.co/..."></div>
+    <div class="field"><label>Google Business Profile URL</label><input type="text" id="googleBusinessProfile" placeholder="g.page/yourcompany"></div>
     <div class="row">
       <div class="field"><label>Owner / Principal Name<span class="req">*</span></label><input type="text" id="ownerName" required></div>
-      <div class="field"><label>Owner Cell Phone</label><input type="tel" id="ownerCell"></div>
+      <div class="field"><label>Owner Cell Phone</label><input type="tel" id="ownerCell" inputmode="tel" maxlength="14" placeholder="(555) 555-5555"></div>
     </div>
-    <div class="field"><label>Nature of Business</label><input type="text" id="natureOfBusiness" placeholder="e.g. HVAC, Plumbing, Electrical"></div>
+    <div class="field">
+      <label>Trades You Perform<span class="req">*</span></label>
+      <div class="hint" style="margin-bottom:6px">Select every trade your company is licensed and insured to service.</div>
+      <div class="trade-grid" id="trade-grid"></div>
+      <div class="field" id="trade-other-wrap" style="display:none;margin-top:8px;margin-bottom:0">
+        <input type="text" id="tradeOther" placeholder="Tell us which other trade(s)">
+      </div>
+      <div class="fe" id="fe-trades">Select at least one trade</div>
+    </div>
     <div class="row">
-      <div class="field"><label>Years in Business</label><input type="number" id="yearsInBusiness" min="0"></div>
-      <div class="field"><label>Tax ID / EIN</label><input type="text" id="taxId"></div>
+      <div class="field"><label>Years in Business</label><input type="number" id="yearsInBusiness" min="0" max="150" step="1" placeholder="10"></div>
+      <div class="field"><label>Tax ID / EIN</label><input type="text" id="taxId" inputmode="numeric" maxlength="10" placeholder="12-3456789"><div class="fe" id="fe-taxId">EIN should be 9 digits (12-3456789)</div></div>
     </div>
     <div class="field">
       <label>Business Type</label>
@@ -386,28 +423,36 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
     <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Service Call &amp; Labor Rates</h3>
     <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Service Call Fee includes travel to the customer&rsquo;s home and first 30 minutes on the job site. Labor rates quoted in 15-minute increments.</p>
     <div class="row">
-      <div class="field"><label>Service Call Fee (Regular) $</label><input type="number" id="serviceCallRegular" min="0" step="0.01"></div>
-      <div class="field"><label>Service Call Fee (SHW Discounted) $</label><input type="number" id="serviceCallSHW" min="0" step="0.01"></div>
+      <div class="field"><label>Service Call Fee (Regular)</label><div class="pre"><span class="sym">$</span><input type="number" id="serviceCallRegular" min="0" step="0.01" placeholder="0.00"></div></div>
+      <div class="field"><label>Service Call Fee (SHW Discounted)</label><div class="pre"><span class="sym">$</span><input type="number" id="serviceCallSHW" min="0" step="0.01" placeholder="0.00"></div></div>
     </div>
     <div class="row">
-      <div class="field"><label>Hourly Labor Rate (Regular) $</label><input type="number" id="laborRateRegular" min="0" step="0.01"></div>
-      <div class="field"><label>Hourly Labor Rate (SHW Discounted) $</label><input type="number" id="laborRateSHW" min="0" step="0.01"></div>
+      <div class="field"><label>Hourly Labor Rate (Regular)</label><div class="pre"><span class="sym">$</span><input type="number" id="laborRateRegular" min="0" step="0.01" placeholder="0.00"></div></div>
+      <div class="field"><label>Hourly Labor Rate (SHW Discounted)</label><div class="pre"><span class="sym">$</span><input type="number" id="laborRateSHW" min="0" step="0.01" placeholder="0.00"></div></div>
     </div>
     <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Parts Mark-Up Schedule</h3>
     <p style="font-size:13px;color:var(--text-light);margin-bottom:8px">Enter your standard mark-up %. SHW maximums shown for reference.</p>
     <table class="markup-table">
       <thead><tr><th>Parts Cost Tier</th><th>SHW Max</th><th>Your %</th></tr></thead>
       <tbody>
-        <tr><td>$0.00 – $25.00</td><td>50%</td><td><input type="number" class="markup-input" data-tier="0-25" min="0" max="999"></td></tr>
-        <tr><td>$25.01 – $50.00</td><td>40%</td><td><input type="number" class="markup-input" data-tier="25-50" min="0" max="999"></td></tr>
-        <tr><td>$50.01 – $100.00</td><td>30%</td><td><input type="number" class="markup-input" data-tier="50-100" min="0" max="999"></td></tr>
-        <tr><td>$100.01 – $150.00</td><td>25%</td><td><input type="number" class="markup-input" data-tier="100-150" min="0" max="999"></td></tr>
-        <tr><td>Above $150.00</td><td>10%</td><td><input type="number" class="markup-input" data-tier="150+" min="0" max="999"></td></tr>
+        <tr><td>$0.00 – $25.00</td><td>50%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="0-25" data-max="50" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>$25.01 – $50.00</td><td>40%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="25-50" data-max="40" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>$50.01 – $100.00</td><td>30%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="50-100" data-max="30" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>$100.01 – $150.00</td><td>25%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="100-150" data-max="25" min="0" max="999" placeholder="0"></div></td></tr>
+        <tr><td>Above $150.00</td><td>10%</td><td><div class="suf"><span class="sym">%</span><input type="number" class="markup-input" data-tier="150+" data-max="10" min="0" max="999" placeholder="0"></div></td></tr>
       </tbody>
     </table>
-    <div class="field"><label>Sales Tax %</label><input type="number" id="salesTax" min="0" step="0.01"></div>
+    <div class="field"><label>Sales Tax</label><div class="suf"><span class="sym">%</span><input type="number" id="salesTax" min="0" max="20" step="0.01" placeholder="0.00"></div></div>
     <h3 style="font-size:15px;color:var(--navy);margin:20px 0 12px">Coverage Area</h3>
-    <div class="field"><label>States</label><input type="text" id="coverageStates" placeholder="e.g. NJ, NY, PA"></div>
+    <div class="field">
+      <label>States You Cover</label>
+      <div class="state-tools">
+        <button type="button" onclick="stateAll(true)">Select all</button>
+        <button type="button" onclick="stateAll(false)">Clear all</button>
+      </div>
+      <div class="state-grid" id="coverage-state-grid"></div>
+      <div class="state-count" id="state-count">None selected</div>
+    </div>
     <div class="field"><label>Counties</label><input type="text" id="coverageCounties" placeholder="e.g. Bergen, Passaic, Rockland"></div>
     <div class="field"><label>Cities</label><input type="text" id="coverageCities" placeholder="e.g. Mahwah, Ramsey, Suffern"></div>
     <div class="btn-row"><button class="btn btn-outline" onclick="goTo(2)">&larr; Back</button><button class="btn btn-primary" onclick="goTo(4)">Next &rarr;</button></div>
@@ -566,7 +611,7 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
 // ── URL param pre-fill ──
 (function prefill() {
   const params = new URLSearchParams(window.location.search);
-  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone', nature:'natureOfBusiness', trade:'natureOfBusiness' };
+  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone' };
   Object.entries(map).forEach(([param, fieldId]) => {
     const val = params.get(param);
     if (val) {
@@ -578,6 +623,23 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
       }
     }
   });
+  // Pre-tick a trade if the landing page passed one
+  var natureParam = params.get('nature') || params.get('trade');
+  if (natureParam) {
+    var want = natureParam.toLowerCase();
+    var matched = false;
+    document.querySelectorAll('.trade-cb').forEach(function(b){
+      var v = b.value.toLowerCase();
+      if (v === want || v.indexOf(want) === 0 || want.indexOf(v) === 0) { b.checked = true; matched = true; }
+    });
+    if (!matched) {
+      document.querySelectorAll('.trade-cb').forEach(function(b){ if (b.value === 'Other') b.checked = true; });
+      var to = document.getElementById('tradeOther');
+      if (to) to.value = natureParam;
+    }
+    tradeChange();
+  }
+
   // Capture salesperson if provided in URL
   const salespersonParam = params.get('sp') || params.get('salesperson');
   if (salespersonParam) {
@@ -721,6 +783,206 @@ Object.keys(COVERAGE).forEach(cat => {
   grid.innerHTML = COVERAGE[cat].map(item => '<label><input type="checkbox" name="cov-' + cat + '" value="' + item + '"> ' + item + '</label>').join('');
 });
 
+// ── Field formatting & live validation ──────────────────────────────
+var US_STATES = [
+  ['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],
+  ['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],
+  ['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],
+  ['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],
+  ['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],
+  ['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],
+  ['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],
+  ['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],
+  ['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],
+  ['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],
+  ['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']
+];
+
+// Business-address state dropdown
+(function(){
+  var sel = document.getElementById('state');
+  if (!sel) return;
+  US_STATES.forEach(function(s){
+    var o = document.createElement('option');
+    o.value = s[0]; o.textContent = s[1] + ' (' + s[0] + ')';
+    sel.appendChild(o);
+  });
+})();
+
+// Trades performed
+var TRADES = ['HVAC','Plumbing','Electrical','Appliance Repair','Roofing','Pool & Spa',
+              'Garage Door','Sprinkler / Irrigation','Lawn Care','Other'];
+(function(){
+  var g = document.getElementById('trade-grid');
+  if (!g) return;
+  g.innerHTML = TRADES.map(function(t){
+    return '<label><input type="checkbox" class="trade-cb" value="' + t + '" onchange="tradeChange()"> ' + t + '</label>';
+  }).join('');
+})();
+
+function tradeChange(){
+  var other = false;
+  document.querySelectorAll('.trade-cb:checked').forEach(function(b){ if (b.value === 'Other') other = true; });
+  var wrap = document.getElementById('trade-other-wrap');
+  if (wrap) wrap.style.display = other ? 'block' : 'none';
+  if (document.querySelectorAll('.trade-cb:checked').length) {
+    document.getElementById('fe-trades').classList.remove('on');
+  }
+}
+
+function selectedTrades(){
+  var out = [];
+  document.querySelectorAll('.trade-cb:checked').forEach(function(b){
+    if (b.value === 'Other') {
+      var t = (document.getElementById('tradeOther').value || '').trim();
+      if (t) out.push(t);
+    } else {
+      out.push(b.value);
+    }
+  });
+  return out;
+}
+
+// Coverage-area state checkboxes
+(function(){
+  var grid = document.getElementById('coverage-state-grid');
+  if (!grid) return;
+  grid.innerHTML = US_STATES.map(function(s){
+    return '<label title="' + s[1] + '"><input type="checkbox" class="cov-state" value="' + s[0] + '" onchange="stateCount()"> ' + s[0] + '</label>';
+  }).join('');
+})();
+
+function stateAll(on){
+  var boxes = document.querySelectorAll('.cov-state');
+  for (var i = 0; i < boxes.length; i++) boxes[i].checked = on;
+  stateCount();
+}
+function stateCount(){
+  var sel = document.querySelectorAll('.cov-state:checked');
+  var el = document.getElementById('state-count');
+  if (!el) return;
+  if (!sel.length) { el.textContent = 'None selected'; return; }
+  var codes = [];
+  for (var i = 0; i < sel.length; i++) codes.push(sel[i].value);
+  el.textContent = sel.length + (sel.length === 1 ? ' state: ' : ' states: ') + codes.join(', ');
+}
+
+// Phone mask -> (555) 555-5555
+function fmtPhone(raw){
+  var d = String(raw).replace(/\D/g, '').slice(0, 10);
+  if (d.length > 6) return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+  if (d.length > 3) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+  if (d.length > 0) return '(' + d;
+  return '';
+}
+['phone','fax','ownerCell'].forEach(function(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', function(){
+    var atEnd = this.selectionStart === this.value.length;
+    this.value = fmtPhone(this.value);
+    if (atEnd) this.setSelectionRange(this.value.length, this.value.length);
+    this.classList.remove('bad');
+    var fe = document.getElementById('fe-' + id); if (fe) fe.classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = this.value.replace(/\D/g,'').length === 10;
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    var fe = document.getElementById('fe-' + id); if (fe) fe.classList.toggle('on', !good);
+  });
+});
+
+// Email
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+(function(){
+  var el = document.getElementById('email');
+  if (!el) return;
+  el.addEventListener('input', function(){
+    this.classList.remove('bad');
+    document.getElementById('fe-email').classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    this.value = this.value.trim().toLowerCase();
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = EMAIL_RE.test(this.value);
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    document.getElementById('fe-email').classList.toggle('on', !good);
+  });
+})();
+
+// ZIP
+(function(){
+  var el = document.getElementById('zip');
+  if (!el) return;
+  el.addEventListener('input', function(){
+    this.value = this.value.replace(/\D/g, '').slice(0, 5);
+    this.classList.remove('bad');
+    document.getElementById('fe-zip').classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = this.value.length === 5;
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    document.getElementById('fe-zip').classList.toggle('on', !good);
+  });
+})();
+
+// EIN -> 12-3456789
+(function(){
+  var el = document.getElementById('taxId');
+  if (!el) return;
+  el.addEventListener('input', function(){
+    var d = this.value.replace(/\D/g, '').slice(0, 9);
+    this.value = d.length > 2 ? d.slice(0,2) + '-' + d.slice(2) : d;
+    this.classList.remove('bad');
+    document.getElementById('fe-taxId').classList.remove('on');
+  });
+  el.addEventListener('blur', function(){
+    if (!this.value) { this.classList.remove('ok','bad'); return; }
+    var good = this.value.replace(/\D/g,'').length === 9;
+    this.classList.toggle('ok', good);
+    this.classList.toggle('bad', !good);
+    document.getElementById('fe-taxId').classList.toggle('on', !good);
+  });
+})();
+
+// URLs -> add https:// if missing
+['website','googleBusinessProfile'].forEach(function(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('blur', function(){
+    var v = this.value.trim();
+    if (v && !/^https?:\/\//i.test(v)) this.value = 'https://' + v;
+    this.classList.toggle('ok', !!this.value);
+  });
+});
+
+// Markup: flag anything above the SHW maximum, matching the email report
+document.querySelectorAll('.markup-input').forEach(function(inp){
+  inp.addEventListener('input', function(){
+    var max = parseFloat(this.dataset.max);
+    var val = parseFloat(this.value);
+    var over = !isNaN(val) && !isNaN(max) && val > max;
+    this.classList.toggle('bad', over);
+    this.classList.toggle('ok', !over && this.value !== '');
+    var row = this.closest('tr');
+    if (row) {
+      var cell = row.querySelector('td:nth-child(2)');
+      if (cell) cell.classList.toggle('markup-warn', over);
+    }
+  });
+});
+
+// Required text fields: clear the red border as soon as they start typing
+document.querySelectorAll('#screen-app input[required], #screen-app select[required]').forEach(function(el){
+  el.addEventListener('input', function(){ if (this.value.trim()) this.style.borderColor = ''; });
+  el.addEventListener('change', function(){ if (this.value.trim()) this.style.borderColor = ''; });
+});
+
 // ── Stepper navigation ──
 function goTo(step) {
   if (step > currentStep) {
@@ -733,6 +995,11 @@ function goTo(step) {
     });
     // Validate email format on Step 1
     if (currentStep === 1) {
+      if (!document.querySelectorAll('.trade-cb:checked').length) {
+        document.getElementById('fe-trades').classList.add('on');
+        document.getElementById('trade-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
       const emailField = document.getElementById('email');
       const emailVal = emailField.value.trim();
       if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
@@ -764,7 +1031,7 @@ function goTo(step) {
           companyName: (document.getElementById('companyName').value || '').trim(),
           phone: (document.getElementById('phone').value || '').trim(),
           zip: (document.getElementById('zip').value || '').trim(),
-          trade: (document.getElementById('natureOfBusiness').value || '').trim(),
+          trade: selectedTrades().join(', '),
           salesperson: qp.get('sp') || qp.get('salesperson') || ''
         })
       }).catch(function(){ /* never block the applicant */ });
@@ -842,7 +1109,7 @@ function collectData() {
     selectedPlan, companyName: val('companyName'), dba: val('dba'), address: val('address'),
     city: val('city'), state: val('state'), zip: val('zip'), phone: val('phone'), fax: val('fax'),
     email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
-    ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: val('natureOfBusiness'),
+    ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: selectedTrades().join(', '),
     yearsInBusiness: val('yearsInBusiness'), taxId: val('taxId'), businessType: radio('businessType'),
     numTechnicians: val('numTechnicians'), uniformedTechnicians: val('uniformedTechnicians'), vehicles: val('vehicles'),
     hoursMF: val('hoursMF'), hoursSat: val('hoursSat'), hoursSun: val('hoursSun'), hoursHoliday: val('hoursHoliday'),
@@ -850,7 +1117,7 @@ function collectData() {
     creditCards: val('creditCards'), installSHWParts: radio('installSHWParts'), otherWarrantyCompanies: val('otherWarrantyCompanies'),
     licenses, serviceCallRegular: val('serviceCallRegular'), serviceCallSHW: val('serviceCallSHW'),
     laborRateRegular: val('laborRateRegular'), laborRateSHW: val('laborRateSHW'), partsMarkup,
-    salesTax: val('salesTax'), coverageStates: val('coverageStates'), coverageCounties: val('coverageCounties'), coverageCities: val('coverageCities'), coverageItems,
+    salesTax: val('salesTax'), coverageStates: (function(){var a=[];document.querySelectorAll('.cov-state:checked').forEach(function(b){a.push(b.value)});return a.join(', ');})(), coverageCounties: val('coverageCounties'), coverageCities: val('coverageCities'), coverageItems,
     agreedToTerms: document.getElementById('agreedToTerms').checked,
     signatureName: val('signatureName'), signatureDate: val('signatureDate'), files: uploadedFiles,
     salesperson: sessionStorage.getItem('shw_salesperson') || ''
