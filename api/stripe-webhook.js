@@ -1,9 +1,62 @@
 import crypto from 'crypto';
 
+// ═══════════════════════════════════════════════════════════════════════════
+// STRIPE → GHL WEBHOOK
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// GHL CUSTOM FIELDS TO CREATE (mapped 1:1 from payload keys below)
+// ───────────────────────────────────────────────────────────────────────────
+//
+// ALREADY EXISTS IN GHL:
+//   paying_member           → "Paying Member"           Single Line Text
+//   contractor_plan_name    → "Contractor Plan Name"    Single Line Text
+//   contractor_plan_price   → "Contractor Plan Price"   Single Line Text
+//
+// TO CREATE (Single Line Text unless noted):
+//   payment_status          → "Payment Status"
+//   payment_failure_reason  → "Payment Failure Reason"
+//   payment_failure_code    → "Payment Failure Code"
+//   payment_action_needed   → "Payment Action Needed"
+//   issuer_message          → "Issuer Message"
+//   last_payment_amount     → "Last Payment Amount"
+//   last_payment_date       → "Last Payment Date"       ← DATE type
+//   last_failed_amount      → "Last Failed Amount"
+//   last_failed_date        → "Last Failed Date"        ← DATE type
+//   next_billing_date       → "Next Billing Date"       ← DATE type
+//   next_retry_date         → "Next Retry Date"         ← DATE type
+//   cancelled_date          → "Cancelled Date"          ← DATE type
+//   stripe_customer_id      → "Stripe Customer ID"
+//   card_brand              → "Card Brand"
+//   card_last4              → "Card Last 4"
+//   card_expiration         → "Card Expiration"
+//   avs_check               → "AVS Check"
+//   cvc_check               → "CVC Check"
+//   failed_attempt_count    → "Failed Attempt Count"
+//   lead_status             → "Lead Status"
+//   lead_status_tag         → "Lead Status Tag"
+//   source                  → "Source"
+//
+// GHL MAPPING RULE: In the workflow's Update Contact action, each GHL field
+// must be set via the variable PICKER — never hand-typed. The picker inserts
+// {{inboundWebhookRequest.<key>}} which resolves; hand-typed does not.
+// ═══════════════════════════════════════════════════════════════════════════
+
 // Stripe signature verification needs the raw body, so disable Vercel's parser.
 export const config = { api: { bodyParser: false } };
 
 const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZa5AQ/webhook-trigger/44c356d5-2fb0-4e5a-9b80-a3237057bccb';
+
+// ── Plan lookup by charged amount (in cents) ────────────────────────────
+// Update this table whenever plan pricing changes.
+const PLAN_BY_AMOUNT = {
+  4999:  'Basic',
+  12999: 'Premium'
+};
+
+function planFromCents(cents) {
+  if (cents == null) return 'Unknown';
+  return PLAN_BY_AMOUNT[cents] || 'Unknown ($' + (cents / 100).toFixed(2) + ')';
+}
 
 // ── Decline codes → plain-English reasons ───────────────────────────────
 const DECLINE_REASONS = {
@@ -87,7 +140,7 @@ async function sendToGHL(payload) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    console.log('Stripe -> GHL:', resp.status, '|', payload.email, '|', payload.payment_status);
+    console.log('Stripe -> GHL:', resp.status, '|', payload.email, '|', payload.payment_status, '|', 'plan:', payload.contractor_plan_name);
     return resp.status;
   } catch (err) {
     console.error('GHL send failed:', err.message);
@@ -98,6 +151,11 @@ async function sendToGHL(payload) {
 function money(cents, currency) {
   if (cents == null) return '';
   return '$' + (cents / 100).toFixed(2) + (currency && currency !== 'usd' ? ' ' + currency.toUpperCase() : '');
+}
+
+function isoDate(unixSeconds) {
+  if (!unixSeconds) return '';
+  return new Date(unixSeconds * 1000).toISOString().split('T')[0];
 }
 
 function cardInfo(pmDetails) {
@@ -143,13 +201,15 @@ export default async function handler(req, res) {
         if (!email) break;
         await sendToGHL({
           email: email,
+          contractor_plan_name: planFromCents(obj.amount_total),
+          contractor_plan_price: money(obj.amount_total, obj.currency),
+          paying_member: 'Yes',
           payment_status: 'Active',
           payment_failure_reason: '',
           payment_action_needed: 'No',
           last_payment_amount: money(obj.amount_total, obj.currency),
-          last_payment_date: new Date(event.created * 1000).toISOString().split('T')[0],
+          last_payment_date: isoDate(event.created),
           stripe_customer_id: obj.customer || '',
-          paying_member: 'Yes',
           lead_status: '3 - Paid, App Pending',
           lead_status_tag: 'SHW Lead - Paid Pending',
           source: 'Stripe Checkout'
@@ -163,15 +223,17 @@ export default async function handler(req, res) {
         if (!email) break;
         await sendToGHL({
           email: email,
+          contractor_plan_name: planFromCents(obj.amount_paid),
+          contractor_plan_price: money(obj.amount_paid, obj.currency),
+          paying_member: 'Yes',
           payment_status: 'Active',
           payment_failure_reason: '',
           payment_action_needed: 'No',
           last_payment_amount: money(obj.amount_paid, obj.currency),
-          last_payment_date: new Date(event.created * 1000).toISOString().split('T')[0],
+          last_payment_date: isoDate(event.created),
           next_billing_date: obj.lines && obj.lines.data && obj.lines.data[0] && obj.lines.data[0].period
-            ? new Date(obj.lines.data[0].period.end * 1000).toISOString().split('T')[0] : '',
+            ? isoDate(obj.lines.data[0].period.end) : '',
           stripe_customer_id: obj.customer || '',
-          paying_member: 'Yes',
           source: 'Stripe Renewal'
         });
         break;
@@ -193,6 +255,8 @@ export default async function handler(req, res) {
 
         await sendToGHL({
           email: email,
+          contractor_plan_name: planFromCents(obj.amount),
+          contractor_plan_price: money(obj.amount, obj.currency),
           payment_status: 'Payment Failed',
           payment_failure_reason: reason + avsNote,
           payment_failure_code: code,
@@ -204,7 +268,7 @@ export default async function handler(req, res) {
           avs_check: card.avs,
           cvc_check: card.cvc,
           last_failed_amount: money(obj.amount, obj.currency),
-          last_failed_date: new Date(event.created * 1000).toISOString().split('T')[0],
+          last_failed_date: isoDate(event.created),
           stripe_customer_id: obj.customer || '',
           lead_status: '6 - Payment Failed',
           lead_status_tag: 'SHW Lead - Payment Failed',
@@ -219,14 +283,15 @@ export default async function handler(req, res) {
         if (!email) break;
         await sendToGHL({
           email: email,
+          contractor_plan_name: planFromCents(obj.amount_due),
+          contractor_plan_price: money(obj.amount_due, obj.currency),
           payment_status: 'Payment Failed',
           payment_failure_reason: 'Subscription payment failed',
           payment_action_needed: 'Yes',
           failed_attempt_count: String(obj.attempt_count || 1),
-          next_retry_date: obj.next_payment_attempt
-            ? new Date(obj.next_payment_attempt * 1000).toISOString().split('T')[0] : 'No further retries',
+          next_retry_date: obj.next_payment_attempt ? isoDate(obj.next_payment_attempt) : 'No further retries',
           last_failed_amount: money(obj.amount_due, obj.currency),
-          last_failed_date: new Date(event.created * 1000).toISOString().split('T')[0],
+          last_failed_date: isoDate(event.created),
           stripe_customer_id: obj.customer || '',
           lead_status: '6 - Payment Failed',
           lead_status_tag: 'SHW Lead - Payment Failed',
@@ -259,7 +324,7 @@ export default async function handler(req, res) {
           payment_status: 'Cancelled',
           payment_action_needed: 'No',
           paying_member: 'No',
-          cancelled_date: new Date(event.created * 1000).toISOString().split('T')[0],
+          cancelled_date: isoDate(event.created),
           lead_status: '7 - Cancelled',
           lead_status_tag: 'SHW Lead - Cancelled',
           source: 'Stripe Cancellation'
