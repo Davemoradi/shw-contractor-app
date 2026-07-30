@@ -695,7 +695,7 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
           if (v.email) { const e = document.getElementById('email'); if (e && !e.value) e.value = v.email; }
           if (v.firstName) { const o = document.getElementById('ownerName'); if (o && !o.value) o.value = (v.firstName + ' ' + v.lastName).trim(); }
           if (v.phone) { const p = document.getElementById('phone'); if (p && !p.value) p.value = v.phone; }
-          pingPaid(v.plan, v.email);
+          pingPaid(v.plan, v.email, v.amount);
           sessionStorage.removeItem('shw_selected_plan');
           sessionStorage.removeItem('shw_prefill_params');
           showApplication(v.plan);
@@ -734,9 +734,21 @@ const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/QfDToN545k1TOpFZ
     }
   }
 
-  function pingPaid(plan, email){
+  function pingPaid(plan, email, amount){
     if (!email || sessionStorage.getItem('shw_paid_pinged')) return;
     sessionStorage.setItem('shw_paid_pinged', '1');
+    // ── GTM conversion event: fires once, only on server-verified payment ──
+    try {
+      window.dataLayer = window.dataLayer || [];
+      var amt = (typeof amount === 'number' ? amount : 0) / 100;
+      window.dataLayer.push({
+        event: 'contractor_purchase',
+        plan: plan,
+        value: amt,
+        currency: 'USD',
+        payment_email: email
+      });
+    } catch (e) {}
     const rp = new URLSearchParams(sessionStorage.getItem('shw_prefill_params') || '');
     fetch('/api/lead-capture', {
       method: 'POST',
