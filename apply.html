@@ -382,10 +382,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="field"><label for="zip">ZIP<span class="req">*</span></label><input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="07430" autocomplete="postal-code" required><div class="fe" id="fe-zip">Enter a 5-digit ZIP code</div></div>
     </div>
-    <div class="row">
-      <div class="field"><label for="phone">Business Phone<span class="req">*</span></label><input type="tel" id="phone" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="fe" id="fe-phone">Enter a 10-digit phone number</div></div>
-      <div class="field"><label for="mobile">Mobile Number<span class="req">*</span></label><input type="tel" id="mobile" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="hint">Where we text work order dispatches</div><div class="fe" id="fe-mobile">Enter a 10-digit mobile number</div></div>
-    </div>
+    <!-- Mobile leads and is the required field. Business Phone used to be first and
+         required, so contractors typed the office line in the first box — and for a lot
+         of one-truck shops that's a landline, which cannot receive dispatch texts. -->
+    <div class="field"><label for="mobile">Mobile Number<span class="req">*</span></label><input type="tel" id="mobile" inputmode="tel" maxlength="14" placeholder="(555) 555-5555" autocomplete="tel" required><div class="hint"><strong>Must be a mobile.</strong> This is where we text your work orders &mdash; a landline can't receive them.</div><div class="fe" id="fe-mobile">Enter a 10-digit mobile number</div></div>
     <div class="row">
       <div class="field"><label for="email">Email<span class="req">*</span></label><input type="email" id="email" spellcheck="false" autocomplete="email" placeholder="you@company.com" required><div class="fe" id="fe-email">Enter a valid email address, like you@company.com</div></div>
       <div class="field"><label for="website">Website</label><input type="text" id="website" placeholder="yourcompany.com"><div class="hint">We&rsquo;ll add https:// automatically</div></div>
@@ -712,7 +712,7 @@ if (SHOW_CALL_BAR) document.body.classList.add('has-bar');
 // ── URL param pre-fill ──
 (function prefill() {
   const params = new URLSearchParams(window.location.search);
-  const map = { name:'ownerName', company:'companyName', email:'email', phone:'phone', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'phone' };
+  const map = { name:'ownerName', company:'companyName', email:'email', phone:'mobile', address:'address', city:'city', state:'state', zip:'zip', first_name:'ownerName', last_name:'ownerName', company_name:'companyName', primary_phone:'mobile', mobile:'mobile' };
   Object.entries(map).forEach(([param, fieldId]) => {
     const val = params.get(param);
     if (val) {
@@ -764,7 +764,7 @@ if (SHOW_CALL_BAR) document.body.classList.add('has-bar');
           restorePrefill(map);
           if (v.email) { const e = document.getElementById('email'); if (e && !e.value) e.value = v.email; }
           if (v.firstName) { const o = document.getElementById('ownerName'); if (o && !o.value) o.value = (v.firstName + ' ' + v.lastName).trim(); }
-          if (v.phone) { const p = document.getElementById('phone'); if (p && !p.value) p.value = v.phone; }
+          if (v.phone) { const p = document.getElementById('mobile'); if (p && !p.value) p.value = fmtPhone(v.phone); }
           pingPaid(v.plan, v.email, v.amount);
           sessionStorage.removeItem('shw_selected_plan');
           sessionStorage.removeItem('shw_prefill_params');
@@ -815,7 +815,8 @@ if (SHOW_CALL_BAR) document.body.classList.add('has-bar');
       body: JSON.stringify({
         stage: 'paid', plan: plan, email: email,
         firstName: rp.get('first_name') || '', lastName: rp.get('last_name') || '',
-        companyName: rp.get('company') || '', phone: rp.get('phone') || '',
+        companyName: rp.get('company') || '',
+        phone: rp.get('phone') || '', mobile: rp.get('phone') || '',
         zip: rp.get('zip') || '', trade: rp.get('nature') || '',
         salesperson: rp.get('sp') || rp.get('salesperson') || ''
       })
@@ -1004,7 +1005,7 @@ function fmtPhone(raw){
   if (d.length > 0) return '(' + d;
   return '';
 }
-['phone','mobile','ownerCell'].forEach(function(id){
+['mobile','ownerCell'].forEach(function(id){
   var el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('input', function(){
@@ -1167,7 +1168,9 @@ function goTo(step) {
           firstName: owner.split(' ')[0] || '',
           lastName: owner.split(' ').slice(1).join(' ') || '',
           companyName: (document.getElementById('companyName').value || '').trim(),
-          phone: (document.getElementById('phone').value || '').trim(),
+          // Only one number is collected now, and it is the mobile.
+          mobile: (document.getElementById('mobile').value || '').trim(),
+          phone: (document.getElementById('mobile').value || '').trim(),
           zip: (document.getElementById('zip').value || '').trim(),
           trade: selectedTrades().join(', '),
           salesperson: qp.get('sp') || qp.get('salesperson') || ''
@@ -1244,7 +1247,7 @@ function collectData() {
   });
   return {
     selectedPlan, companyName: val('companyName'), dba: val('dba'), address: val('address'),
-    city: val('city'), state: val('state'), zip: val('zip'), phone: val('phone'),
+    city: val('city'), state: val('state'), zip: val('zip'), phone: val('mobile'),
     mobile: val('mobile'), email: val('email'), website: val('website'), googleBusinessProfile: val('googleBusinessProfile'),
     ownerName: val('ownerName'), ownerCell: val('ownerCell'), natureOfBusiness: selectedTrades().join(', '),
     yearsInBusiness: val('yearsInBusiness'), taxId: val('taxId'), businessType: radio('businessType'),

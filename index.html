@@ -211,6 +211,7 @@ h1 em{font-style:normal;color:var(--orange)}
 .brand-fb{display:none;font-family:var(--display);font-weight:800;color:var(--navy);letter-spacing:-.5px;line-height:1.05;font-size:17px;white-space:nowrap}
 .brand-fb i{display:block;font-style:normal;font-weight:600;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-top:1px}
 @media(max-width:620px){.brand-fb{font-size:15px}.brand-fb i{font-size:8.5px;letter-spacing:1.2px}}
+.hintline{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -307,7 +308,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="fld">
             <label for="phone">Mobile number</label>
             <input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="(555) 555-5555" maxlength="14">
-            <div class="fe" id="fe-phone">Enter a 10-digit phone number</div>
+            <div class="hintline">We text work orders here &mdash; a landline won't receive them.</div>
+            <div class="fe" id="fe-phone">Enter a 10-digit mobile number</div>
           </div>
           <div class="err" id="e2" role="alert">Fill in your name, email, and mobile number to continue.</div>
           <button type="submit" class="go" id="b2">Continue &rarr;</button>
@@ -667,6 +669,7 @@ function contact(){
     companyName: $('company').value.trim() || ($('fname').value.trim() + ' ' + $('lname').value.trim()).trim(),
     email: $('email').value.trim().toLowerCase(),
     phone: $('phone').value.replace(/\D/g, ''),
+    mobile: $('phone').value.replace(/\D/g, ''),   // step 2 asks for mobile specifically
     zip: $('zip').value.trim(),
     trade: trade,
     salesperson: sp()
