@@ -254,12 +254,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </ul>
 
     <!-- ===== EDIT ME: TESTIMONIALS — set CFG.SHOW_TESTIMONIALS = true once filled ===== -->
+    <!-- ===== TESTIMONIALS =====
+         Commented out, not hidden with CSS. display:none still leaves the text in the DOM
+         where crawlers, scrapers and link-preview bots read it — placeholder copy was
+         appearing in fetched versions of the live page.
+
+         To activate: uncomment this block, replace every bracketed field with a real
+         contractor, and set CFG.SHOW_TESTIMONIALS = true in the script below.
+         Each needs: initials, one sentence in his own words with a real dollar figure or
+         job count, then name, company, city + state, trade.
+
     <div class="quotes" id="quotes" style="display:none">
       <div class="quotes-h">From contractors in the network</div>
-      <div class="q"><div class="q-av">[--]</div><div><div class="q-t">[One sentence in his own words, with a real dollar figure or job count.]</div><div class="q-m">[First Last] &middot; [Company] &middot; [City, ST] &middot; [Trade]</div></div></div>
-      <div class="q"><div class="q-av">[--]</div><div><div class="q-t">[One sentence in his own words, with a real dollar figure or job count.]</div><div class="q-m">[First Last] &middot; [Company] &middot; [City, ST] &middot; [Trade]</div></div></div>
-      <div class="q"><div class="q-av">[--]</div><div><div class="q-t">[One sentence in his own words, with a real dollar figure or job count.]</div><div class="q-m">[First Last] &middot; [Company] &middot; [City, ST] &middot; [Trade]</div></div></div>
+      <div class="q"><div class="q-av">JM</div><div><div class="q-t">Quote goes here.</div><div class="q-m">Name / Company / City, ST / Trade</div></div></div>
+      <div class="q"><div class="q-av">JM</div><div><div class="q-t">Quote goes here.</div><div class="q-m">Name / Company / City, ST / Trade</div></div></div>
+      <div class="q"><div class="q-av">JM</div><div><div class="q-t">Quote goes here.</div><div class="q-m">Name / Company / City, ST / Trade</div></div></div>
     </div>
+    ===== END TESTIMONIALS ===== -->
   </div>
 
   <div class="card" id="card">
@@ -555,7 +566,8 @@ function sp(){
     $('stat1').textContent = 'Since 2012';
     $('stat1l').textContent = 'Serving homeowners';
   }
-  if (CFG.SHOW_TESTIMONIALS) $('quotes').style.display = 'block';
+  var qEl = $('quotes');
+  if (CFG.SHOW_TESTIMONIALS && qEl) qEl.style.display = 'block';
   if (CFG.SHOW_CALL_BAR) document.body.classList.add('has-bar');
 })();
 
