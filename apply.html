@@ -220,6 +220,11 @@ h1,h2,h3,.plan-name,.plan-price,.amt,.cost-title,.trust-item strong,.btn,.plan-c
 @media(max-width:620px){body.has-bar{padding-bottom:64px}body.has-bar .callbar{display:block}}
 .footer{text-align:center;padding:24px;font-size:12px;color:var(--text-light);border-top:1px solid var(--border);margin-top:40px}
 .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.brand img{display:block}
+.brand-fb{display:none;font-family:var(--display);font-weight:800;color:var(--navy);letter-spacing:-.5px;line-height:1.05;font-size:17px;white-space:nowrap}
+.brand-fb i{display:block;font-style:normal;font-weight:600;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-top:1px}
+@media(max-width:620px){.brand-fb{font-size:15px}.brand-fb i{font-size:8.5px;letter-spacing:1.2px}}
 </style>
 </head>
 <body>
@@ -229,7 +234,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="header">
-  <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
+  <a class="brand" href="/" aria-label="Select Home Warranty"><img src="logo.png" alt="Select Home Warranty" height="38" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="brand-fb">Select<i>Home Warranty</i></span></a>
   <a href="tel:8552243399" class="header-phone" onclick="dl('phone_click',{location:'header'})">855-224-3399<span>Questions? Call us</span></a>
 </div>
 

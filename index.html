@@ -206,6 +206,11 @@ h1 em{font-style:normal;color:var(--orange)}
 @media(max-width:620px){body.has-bar{padding-bottom:64px}body.has-bar .callbar{display:block}}
 .footer{background:var(--navy);padding:17px 24px;text-align:center;font-size:11.5px;color:rgba(255,255,255,.42)}
 .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.brand img{display:block}
+.brand-fb{display:none;font-family:var(--display);font-weight:800;color:var(--navy);letter-spacing:-.5px;line-height:1.05;font-size:17px;white-space:nowrap}
+.brand-fb i{display:block;font-style:normal;font-weight:600;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-top:1px}
+@media(max-width:620px){.brand-fb{font-size:15px}.brand-fb i{font-size:8.5px;letter-spacing:1.2px}}
 </style>
 </head>
 <body>
@@ -213,7 +218,7 @@ h1 em{font-style:normal;color:var(--orange)}
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav class="nav">
-  <img src="/logo.png" alt="Select Home Warranty" onerror="this.style.display='none'">
+  <a class="brand" href="/" aria-label="Select Home Warranty"><img src="logo.png" alt="Select Home Warranty" height="38" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="brand-fb">Select<i>Home Warranty</i></span></a>
   <div class="nav-right">
     <a href="tel:8552243399" class="nav-phone" onclick="dl('phone_click',{location:'nav'})">855-224-3399</a>
     <button type="button" class="nav-cta" onclick="startNow()">Get Started</button>
