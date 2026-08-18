@@ -38,6 +38,16 @@ export default async function handler(req, res) {
       );
     }
 
+    // ── Phone vs mobile ──────────────────────────────────────────────────────
+    // SMS campaigns pull from the `phone` field, so it must hold an SMS-reachable
+    // number. Contractors' business lines are frequently landlines, and landlines
+    // in the send list are what destroyed delivery rates previously. Mobile always
+    // wins; the business line is preserved separately rather than overwriting it.
+    const mobileDigits = (d.mobile || '').replace(/\D/g, '');
+    const phoneDigits  = (d.phone  || '').replace(/\D/g, '');
+    const smsNumber    = mobileDigits || phoneDigits;
+    const businessOnly = (d.businessPhone || '').replace(/\D/g, '');
+
     const planNames = {
       'basic': 'SHW Basic Plan',
       'premium': 'SHW Premium Service Network',
@@ -66,7 +76,10 @@ export default async function handler(req, res) {
       lastName: d.lastName || '',
       name: [d.firstName, d.lastName].filter(Boolean).join(' '),
       email: (d.email || '').trim().toLowerCase(),
-      phone: (d.phone || '').replace(/\D/g, ''),
+      phone: smsNumber,
+      mobile: mobileDigits,
+      business_phone: businessOnly && businessOnly !== smsNumber ? businessOnly : '',
+      sms_ready: mobileDigits ? 'Yes' : 'No',
       companyName: d.companyName || '',
       zip: d.zip || '',
 
@@ -113,6 +126,7 @@ export default async function handler(req, res) {
       '| email:', d.email,
       '| plan:', plan || 'none',
       '| trade:', tradeValue,
+      '| sms_ready:', mobileDigits ? 'Yes' : 'No',
       '| zip:', d.zip || 'none');
 
     return res.status(200).json({
