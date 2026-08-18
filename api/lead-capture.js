@@ -14,10 +14,29 @@ export default async function handler(req, res) {
     }
 
     // stage: 'started'      = filled the landing form, has not paid
-    //        'app_started'  = began the application (free path), not submitted
+    //        'app_started'  = began the application, not submitted
     //        'paid'         = payment completed, application not yet submitted
     const VALID = ['started', 'app_started', 'paid'];
     const stage = VALID.indexOf(d.stage) !== -1 ? d.stage : 'started';
+
+    // ── Trade ────────────────────────────────────────────────────────────────
+    // Trade is required by the front end on both index.html (step 1) and
+    // apply.html (step 1). We deliberately do NOT reject the request when it's
+    // missing: the browser calls this with .catch() swallowing errors, so a 400
+    // here would silently destroy the lead instead of saving it. Better to store
+    // the lead with a flagged placeholder and log it loudly so it can be chased.
+    const trade = (d.trade || '').trim();
+    const tradeMissing = trade === '';
+    const tradeValue = tradeMissing ? 'Not specified' : trade;
+
+    if (tradeMissing) {
+      console.warn(
+        'Lead capture: MISSING TRADE — front-end validation may have been bypassed.',
+        '| stage:', stage,
+        '| email:', d.email,
+        '| zip:', d.zip || 'none'
+      );
+    }
 
     const planNames = {
       'basic': 'SHW Basic Plan',
@@ -37,9 +56,9 @@ export default async function handler(req, res) {
     const plan = d.plan || '';
 
     const STATUS = {
-      'started':     { label: '1 - Lead, Not Paid',       tag: 'SHW Lead - Not Paid' },
+      'started':     { label: '1 - Lead, Not Paid',        tag: 'SHW Lead - Not Paid' },
       'app_started': { label: '2 - App Started, Not Paid', tag: 'SHW Lead - App Started' },
-      'paid':        { label: '3 - Paid, App Pending',    tag: 'SHW Lead - Paid Pending' }
+      'paid':        { label: '3 - Paid, App Pending',     tag: 'SHW Lead - Paid Pending' }
     }[stage];
 
     const payload = {
@@ -50,7 +69,15 @@ export default async function handler(req, res) {
       phone: (d.phone || '').replace(/\D/g, ''),
       companyName: d.companyName || '',
       zip: d.zip || '',
-      industry: d.trade || '',
+
+      // Trade is sent under BOTH keys on purpose. GHL inbound webhooks only expose
+      // fields that were present in the sample payload at mapping time, and the
+      // original code sent this as `industry` only. Sending both means the mapping
+      // works whether the GHL custom field was wired to `industry` or to `trade`.
+      industry: tradeValue,
+      trade: tradeValue,
+      trade_missing: tradeMissing ? 'Yes' : 'No',
+
       source: spDisplay ? 'SHW Landing Page - ' + spDisplay : 'SHW Landing Page',
       type: 'contractor',
 
@@ -75,14 +102,25 @@ export default async function handler(req, res) {
       body: JSON.stringify(payload)
     });
 
+    // Surface a non-2xx from GHL in the logs — previously any status was logged
+    // identically, so a rejected webhook looked the same as a successful one.
+    if (!ghlResp.ok) {
+      console.error('Lead capture: GHL webhook returned', ghlResp.status, 'for', d.email);
+    }
+
     console.log('Lead capture -> GHL:', ghlResp.status,
       '| stage:', stage,
       '| email:', d.email,
       '| plan:', plan || 'none',
-      '| trade:', d.trade || 'none',
+      '| trade:', tradeValue,
       '| zip:', d.zip || 'none');
 
-    return res.status(200).json({ success: true, stage: stage, ghlStatus: ghlResp.status });
+    return res.status(200).json({
+      success: true,
+      stage: stage,
+      trade: tradeValue,
+      ghlStatus: ghlResp.status
+    });
   } catch (err) {
     console.error('Lead capture error:', err.message);
     // Never block the funnel on a CRM failure
